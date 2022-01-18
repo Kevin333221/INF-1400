@@ -4,8 +4,6 @@ import Enemies
 import Ball
 import precode
 
-
-
 pygame.init()
 universal_speed = 8
 screen_w = 1200
