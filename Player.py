@@ -8,7 +8,7 @@ class player:
         self.pos = Vector2((screen_w - (3*self.screen_w)/5), self.screen_h - 100)
         self.IMG = pygame.transform.smoothscale(pygame.image.load('player.png'),(200, 50))
         self.w = 200
-        self.h = 50
+        self.h = 15
 
     def walk(self, direction):
         self.xspeed = direction
