@@ -6,8 +6,9 @@ class player:
         self.screen_w = screen_w
         self.screen_h = screen_h
         self.pos = Vector2((screen_w - (3*self.screen_w)/5), self.screen_h - 100)
+        self.IMG = pygame.image.load('player.png')
         self.w = 200
-        self.h = 15
+        self.h = 10
 
     def walk(self, direction):
         self.xspeed = direction
@@ -15,4 +16,5 @@ class player:
 
     def draw(self, surface):
         itself = pygame.Rect(self.pos.x, self.pos.y, self.w, self.h)
-        pygame.draw.rect(surface, (180, 0, 0), itself)
+        #pygame.draw.rect(surface, (180, 0, 0), itself)
+        surface.blit(self.IMG, (self.pos.x, self.pos.y))
