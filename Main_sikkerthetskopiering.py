@@ -5,16 +5,20 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 1250
+screen_w = 1200
 screen_h = 900
 
-num_of_enemies = 30
+num_of_enemies = 50
 universal_speed = 8
 distance_between_other_enemies = 100
 
 pygame.init()
 
 screen = pygame.display.set_mode((screen_w, screen_h))
+pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
+logo = pygame.image.load('logo.png')
+pygame.display.set_icon(logo)
+
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 messuring_enemy = Enemies.basic_enemy(screen_w, screen_h, 0, 40, 100)
@@ -40,14 +44,19 @@ enemy_ypos = 40
 for x in enumerate(range(num_of_enemies)):
     enemy_xpos = counter*distance_between_other_enemies
     enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w)
-    bots.append(enemy)
     counter += 1
     if enemy.pos.x + enemy.w >= screen_w:
-        enemy.pos.x = enemy_spawn_shift
-        enemy.pos.y += 50
-        enemy_ypos += 50
-        counter = 1
+        if enemy.pos.y + 50 < screen_h - 300:
+            enemy.pos.x = enemy_spawn_shift
+            enemy.pos.y += 50
+            enemy_ypos += 50
+            counter = 1
+        else:
+            bots.remove(enemy)
+            num_of_enemies -= 1
+    bots.append(enemy)
 
+print(num_of_enemies)
 clock = pygame.time.Clock()
 
 running = True
