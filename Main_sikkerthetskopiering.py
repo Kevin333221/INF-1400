@@ -5,7 +5,6 @@ import Enemies
 import Ball
 import precode
 
-
 screen_w = 1200
 screen_h = 900
 
