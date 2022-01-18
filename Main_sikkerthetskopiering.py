@@ -1,4 +1,5 @@
 from os import remove
+import random
 import pygame
 import Player
 import Enemies
@@ -11,6 +12,7 @@ screen_h = 900
 num_of_enemies = 48
 universal_speed = 8
 distance_between_other_enemies = 110
+enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
 
 pygame.init()
 
@@ -21,7 +23,7 @@ pygame.display.set_icon(logo)
 
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
-messuring_enemy = Enemies.basic_enemy(screen_w, screen_h, 0, 40, 100)
+messuring_enemy = Enemies.basic_enemy(screen_w, screen_h, 0, 40, 100, enemy_color)
 
 # Initalizing Enemy values
 all_enemies_length = distance_between_other_enemies*num_of_enemies
@@ -38,18 +40,16 @@ else:
 if messuring_enemy.w >= distance_between_other_enemies:
     messuring_enemy.w = distance_between_other_enemies - 10
 
-print(screen_w)
-print(messuring_enemy.w)
-print(messuring_enemy.pos.x)
-
 enemy_spawn_shift = (screen_w - messuring_enemy.pos.x)/2 + 5
 bots = []
 counter = 0
 enemy_ypos = 40
+
 # Creating enemies
 for x in enumerate(range(num_of_enemies)):
+    enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
     enemy_xpos = counter*distance_between_other_enemies
-    enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w)
+    enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w, enemy_color)
     if enemy.pos.y + 50 < screen_h - 300:
         if enemy.pos.x + enemy.w < screen_w:
             counter += 1
