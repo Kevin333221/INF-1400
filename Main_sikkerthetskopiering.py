@@ -5,7 +5,7 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 1200
+screen_w = 500
 screen_h = 900
 
 num_of_enemies = 50
@@ -44,19 +44,17 @@ enemy_ypos = 40
 for x in enumerate(range(num_of_enemies)):
     enemy_xpos = counter*distance_between_other_enemies
     enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w)
-    counter += 1
-    if enemy.pos.x + enemy.w >= screen_w:
-        if enemy.pos.y + 50 < screen_h - 300:
+    if enemy.pos.y + 50 < screen_h - 300:
+        if enemy.pos.x + enemy.w < screen_w:
+            counter += 1
+        else:
             enemy.pos.x = enemy_spawn_shift
             enemy.pos.y += 50
             enemy_ypos += 50
             counter = 1
-        else:
-            bots.remove(enemy)
-            num_of_enemies -= 1
-    bots.append(enemy)
-
-print(num_of_enemies)
+        bots.append(enemy)
+    else:
+        num_of_enemies -= 1
 clock = pygame.time.Clock()
 
 running = True
