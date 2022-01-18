@@ -5,12 +5,12 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 500
+screen_w = 700
 screen_h = 900
 
-num_of_enemies = 50
+num_of_enemies = 30
 universal_speed = 8
-distance_between_other_enemies = 100
+distance_between_other_enemies = 110
 
 pygame.init()
 
@@ -26,16 +26,21 @@ messuring_enemy = Enemies.basic_enemy(screen_w, screen_h, 0, 40, 100)
 # Initalizing Enemy values
 all_enemies_length = distance_between_other_enemies*num_of_enemies
 
+# Calculating the total width of x number of enemies on the screen
+if all_enemies_length > screen_w:
+    while messuring_enemy.pos.x + messuring_enemy.w < screen_w:
+        messuring_enemy.pos.x += messuring_enemy.w
+    messuring_enemy.pos.x -= messuring_enemy.w
+else:
+    while messuring_enemy.pos.x + messuring_enemy.w < all_enemies_length:
+        messuring_enemy.pos.x += messuring_enemy.w
+    messuring_enemy.pos.x -= messuring_enemy.w
+
 # Calculating the width of the enemies depending on the screen size
 if messuring_enemy.w >= distance_between_other_enemies:
     messuring_enemy.w = distance_between_other_enemies - 10
-    
-# Calculating the total width of x number of enemies on the screen
-if all_enemies_length >= screen_w:
-    while messuring_enemy.pos.x + messuring_enemy.w < screen_w:
-        messuring_enemy.pos.x += messuring_enemy.w
 
-enemy_spawn_shift = (screen_w - messuring_enemy.pos.x)/2
+enemy_spawn_shift = (screen_w - messuring_enemy.pos.x - messuring_enemy.w)/2
 
 bots = []
 counter = 0
