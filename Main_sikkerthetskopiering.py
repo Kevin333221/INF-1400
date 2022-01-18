@@ -5,10 +5,10 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 700
+screen_w = 1400
 screen_h = 900
 
-num_of_enemies = 30
+num_of_enemies = 48
 universal_speed = 8
 distance_between_other_enemies = 110
 
@@ -28,20 +28,21 @@ all_enemies_length = distance_between_other_enemies*num_of_enemies
 
 # Calculating the total width of x number of enemies on the screen
 if all_enemies_length > screen_w:
-    while messuring_enemy.pos.x + messuring_enemy.w < screen_w:
-        messuring_enemy.pos.x += messuring_enemy.w
-    messuring_enemy.pos.x -= messuring_enemy.w
+    while messuring_enemy.pos.x + distance_between_other_enemies < screen_w:
+        messuring_enemy.pos.x += distance_between_other_enemies
 else:
-    while messuring_enemy.pos.x + messuring_enemy.w < all_enemies_length:
-        messuring_enemy.pos.x += messuring_enemy.w
-    messuring_enemy.pos.x -= messuring_enemy.w
+    while messuring_enemy.pos.x + distance_between_other_enemies < all_enemies_length:
+        messuring_enemy.pos.x += distance_between_other_enemies
 
 # Calculating the width of the enemies depending on the screen size
 if messuring_enemy.w >= distance_between_other_enemies:
     messuring_enemy.w = distance_between_other_enemies - 10
 
-enemy_spawn_shift = (screen_w - messuring_enemy.pos.x - messuring_enemy.w)/2
+print(screen_w)
+print(messuring_enemy.w)
+print(messuring_enemy.pos.x)
 
+enemy_spawn_shift = (screen_w - messuring_enemy.pos.x)/2 + 5
 bots = []
 counter = 0
 enemy_ypos = 40
