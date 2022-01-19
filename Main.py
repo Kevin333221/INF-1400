@@ -64,16 +64,8 @@ def creating_enemies(num_of_enemies):
             num_of_enemies -= 1
 
     return bots
-    
-def enemies_init():
-    for x in bots:
-        x.collision_test(ball1, universal_speed)
-        x.draw(screen)
-        if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
-            bots.remove(x)
 
 bots = creating_enemies(num_of_enemies)
-
 clock = pygame.time.Clock()
 
 running = True
@@ -95,9 +87,13 @@ while running:
     if keys[pygame.K_LEFT] and user.pos.x > 0:
         user.walk(-universal_speed)
 
-    # Checking if the ball hits an enemy
+    # Enemies init
     if len(bots) != 0:
-        enemies_init()
+        for x in bots:
+            x.collision_test(ball1, universal_speed)
+            x.draw(screen)
+        if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
+            bots.remove(x)
     else:
         print("CONGRATULATION! YOU'VE WON!")
         pygame.quit()

@@ -20,3 +20,7 @@ class basic_enemy:
     
         if impulse:
             ball.dir = impulse * universal_speed
+        
+    def update(self, surface):
+        
+        pass
