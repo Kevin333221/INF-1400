@@ -65,7 +65,7 @@ def creating_enemies(num_of_enemies):
 
     return bots
 
-bots = creating_enemies(num_of_enemies)
+enemies = creating_enemies(num_of_enemies)
 
 clock = pygame.time.Clock()
 running = True
@@ -78,7 +78,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-            exit()
 
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
@@ -88,16 +87,16 @@ while running:
         user.walk(-universal_speed)
 
     # Enemies init
-    if len(bots) != 0:
-        for x in bots:
+    if len(enemies) != 0:
+        for x in enemies:
             x.collision_test(ball1, universal_speed)
             if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
-                bots.remove(x)
-            else:
+                enemies.remove(x)
+            else:    
                 x.draw(screen)
         
     else:
-        print("CONGRATULATION! YOU'VE WON!")
+        print("congatulton! YOU'VE WON!")
         pygame.quit()
         quit()
 
