@@ -23,26 +23,26 @@ pygame.display.set_icon(logo)
 
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
-messuring_enemy = Enemies.basic_enemy(screen_w, screen_h, 0, 40, 100, enemy_color)
 
 def creating_enemies(num_of_enemies):
     counter = 0
     all_enemies_length = distance_between_other_enemies*num_of_enemies
-    enemy_width = 40
+    enemy_messuring_unit = 0
+    enemy_width = 100
 
     # Calculating the total width of x number of enemies on the screen
     if all_enemies_length > screen_w:
-        while messuring_enemy.pos.x + distance_between_other_enemies < screen_w:
-            messuring_enemy.pos.x += distance_between_other_enemies
+        while enemy_messuring_unit + distance_between_other_enemies < screen_w:
+            enemy_messuring_unit += distance_between_other_enemies
     else:
-        while messuring_enemy.pos.x + distance_between_other_enemies < all_enemies_length:
-            messuring_enemy.pos.x += distance_between_other_enemies
+        while enemy_messuring_unit + distance_between_other_enemies < all_enemies_length:
+            enemy_messuring_unit += distance_between_other_enemies
 
     # Calculating the width of the enemies depending on the screen size
-    if messuring_enemy.w >= distance_between_other_enemies:
-        messuring_enemy.w = distance_between_other_enemies - 10
+    if enemy_width >= distance_between_other_enemies:
+        enemy_width = distance_between_other_enemies - 10
 
-    enemy_spawn_shift = (screen_w - messuring_enemy.pos.x)/2 + 5
+    enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
     bots = []
     enemy_ypos = 40
 
@@ -50,7 +50,7 @@ def creating_enemies(num_of_enemies):
     for x in range(num_of_enemies):
         enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
         enemy_xpos = counter*distance_between_other_enemies
-        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w, enemy_color)
+        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, enemy_color)
         if enemy.pos.y + 50 < screen_h - 300:
             if enemy.pos.x + enemy.w < screen_w:
                 counter += 1
@@ -88,10 +88,8 @@ while running:
     if keys[pygame.K_LEFT] and user.pos.x > 0:
         user.walk(-universal_speed)
 
-    # Checking if the ball hit the user
-    impulse_user = precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir)
-    if impulse_user:
-        ball1.dir = impulse_user * universal_speed
+    # Checking if the ball hits the user
+    ball1.dir = user.ball_hit(ball1.pos, ball1.r, ball1.dir, universal_speed)
 
     # Checking if the ball hits an enemy
     if len(bots) != 0:
