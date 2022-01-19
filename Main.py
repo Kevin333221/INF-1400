@@ -6,10 +6,10 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 1400
+screen_w = 1600
 screen_h = 900
 
-num_of_enemies = 48
+num_of_enemies = 50
 universal_speed = 8
 distance_between_other_enemies = 110
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))

@@ -28,10 +28,8 @@ class basic_ball:
             self.dir.y *= -1
         
         if self.pos.y - self.r > self.screen_h:
-            self.pos.y = self.screen_h - self.r
-            self.dir.y *= -1
-            #print("Game Over")
-            #pygame.quit()
-            #quit()
+            print("Game Over")
+            pygame.quit()
+            quit()
         
         self.pos += self.dir
