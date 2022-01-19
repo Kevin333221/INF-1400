@@ -72,7 +72,7 @@ running = True
 while running:
     clock.tick(60)
     screen.fill((40,40,40))
-    
+
     # Handling the events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
