@@ -46,7 +46,7 @@ counter = 0
 enemy_ypos = 40
 
 # Creating enemies
-for x in enumerate(range(num_of_enemies)):
+for x in range(num_of_enemies):
     enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
     enemy_xpos = counter*distance_between_other_enemies
     enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, messuring_enemy.w, enemy_color)
