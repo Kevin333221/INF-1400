@@ -1,12 +1,13 @@
 import random
 import pygame
 from pygame import Vector2
+import pygame as math
 
 class basic_ball:
     def __init__(self, screen_w, screen_h, speed):
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.pos = Vector2((screen_w - (3*self.screen_w)/5), screen_h - 200)
+        self.pos = math.Vector2((screen_w - (3*self.screen_w)/5), screen_h - 200)
         self.r = 10
         self.dir = Vector2(random.randint(-speed, speed), -speed)
 

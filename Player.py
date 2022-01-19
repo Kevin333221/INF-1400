@@ -16,11 +16,10 @@ class player:
         self.xspeed = direction
         self.pos.x += self.xspeed
 
-    def ball_hit(self, ball_pos, ball_r, ball_dir, universal_speed):
-        impulse_user = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball_pos, ball_r, ball_dir)
+    def ball_hit(self, ball, universal_speed):
+        impulse_user = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
         if impulse_user:
-            ball_dir = impulse_user * universal_speed
-        return ball_dir
+            ball.dir = impulse_user * universal_speed
 
     def draw(self, surface):
         itself = pygame.Rect(self.pos.x, self.pos.y, self.w, self.h)

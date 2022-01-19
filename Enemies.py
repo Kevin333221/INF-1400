@@ -15,9 +15,8 @@ class basic_enemy:
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
 
-    def collision_test(self, ball_pos, ball_r, ball_dir, universal_speed):
-        impulse = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball_pos, ball_r, ball_dir)
+    def collision_test(self, ball, universal_speed):
+        impulse = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
     
         if impulse:
-            ball_dir = impulse * universal_speed
-        return ball_dir
+            ball.dir = impulse * universal_speed
