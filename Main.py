@@ -91,9 +91,11 @@ while running:
     if len(bots) != 0:
         for x in bots:
             x.collision_test(ball1, universal_speed)
-            x.draw(screen)
-        if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
-            bots.remove(x)
+            if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
+                bots.remove(x)
+            else:
+                x.draw(screen)
+        
     else:
         print("CONGRATULATION! YOU'VE WON!")
         pygame.quit()
