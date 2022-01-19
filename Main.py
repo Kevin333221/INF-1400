@@ -11,7 +11,6 @@ screen_h = 900
 
 num_of_enemies = 50
 universal_speed = 8
-distance_between_other_enemies = 200
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
 
 pygame.init()
@@ -24,11 +23,11 @@ pygame.display.set_icon(logo)
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
-def creating_enemies(num_of_enemies):
+def creating_enemies(num_of_enemies, enemy_width):
     counter = 0
+    distance_between_other_enemies = 200
     all_enemies_length = distance_between_other_enemies*num_of_enemies
     enemy_messuring_unit = 0
-    enemy_width = 100
 
     # Calculating the total width of x number of enemies on the screen
     if all_enemies_length > screen_w:
@@ -62,10 +61,9 @@ def creating_enemies(num_of_enemies):
             bots.append(enemy)
         else:
             num_of_enemies -= 1
-
     return bots
 
-enemies = creating_enemies(num_of_enemies)
+enemies = creating_enemies(num_of_enemies, 100)
 
 clock = pygame.time.Clock()
 running = True

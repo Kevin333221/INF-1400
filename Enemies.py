@@ -1,7 +1,7 @@
 from pygame import Vector2
 import pygame
 import precode
-import random
+import Ball
 
 class basic_enemy:
     def __init__(self, screen_w, screen_h, xpos, ypos, width, color):
@@ -15,12 +15,9 @@ class basic_enemy:
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
 
-    def collision_test(self, ball, universal_speed):
+    def collision_test(self, ball: Ball.basic_ball, universal_speed):
         impulse = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
     
         if impulse:
             ball.dir = impulse * universal_speed
         
-    def update(self, surface):
-        
-        pass
