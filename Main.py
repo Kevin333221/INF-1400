@@ -11,7 +11,7 @@ screen_h = 900
 
 num_of_enemies = 50
 universal_speed = 8
-distance_between_other_enemies = 110
+distance_between_other_enemies = 200
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
 
 pygame.init()
@@ -96,11 +96,11 @@ while running:
                 x.draw(screen)
         
     else:
-        print("congatulton! YOU'VE WON!")
+        print("Congatulton! YU WÅN!")
         pygame.quit()
         quit()
 
-    # 'Renderer'
+    # Renderer
     user.ball_hit(ball1, universal_speed)
     ball1.update()
     ball1.draw(screen)

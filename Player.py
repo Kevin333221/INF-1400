@@ -1,4 +1,6 @@
+import imp
 from pygame import Vector2
+import random
 import pygame
 import precode
 
@@ -17,9 +19,14 @@ class player:
         self.pos.x += self.xspeed
 
     def ball_hit(self, ball, universal_speed):
-        impulse_user = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
-        if impulse_user:
-            ball.dir = impulse_user * universal_speed
+        amount_of_force = ((self.pos.x + self.w/2) - ball.pos.x)/10
+        if precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir):
+            ball.dir.y = -ball.dir.y
+            if ball.pos.x <= self.pos.x + self.w/2:
+                ball.dir.x = -amount_of_force
+            if ball.pos.x > self.pos.x + self.w/2:
+                ball.dir.x = abs(amount_of_force)
+
 
     def draw(self, surface):
         itself = pygame.Rect(self.pos.x, self.pos.y, self.w, self.h)

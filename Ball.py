@@ -9,7 +9,7 @@ class basic_ball:
         self.screen_h = screen_h
         self.pos = math.Vector2((screen_w - (3*self.screen_w)/5), screen_h - 200)
         self.r = 10
-        self.dir = Vector2(random.randint(-speed, speed), -speed)
+        self.dir = math.Vector2(random.randint(-speed, speed), -speed)
 
     def draw(self, surface):
         pygame.draw.circle(surface, (255, 255, 255), self.pos, self.r)
