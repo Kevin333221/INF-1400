@@ -66,8 +66,8 @@ def creating_enemies(num_of_enemies):
     return bots
 
 bots = creating_enemies(num_of_enemies)
-clock = pygame.time.Clock()
 
+clock = pygame.time.Clock()
 running = True
 while running:
     clock.tick(60)

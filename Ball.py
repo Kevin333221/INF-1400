@@ -35,7 +35,3 @@ class basic_ball:
             #quit()
         
         self.pos += self.dir
-    
-    def hit(self, enemy):
-        
-        pass
