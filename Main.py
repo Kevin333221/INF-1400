@@ -73,7 +73,6 @@ def animate_enemies(enemies):
     for x in enemies:
         print(x.pos.x + x.w)
         if x.pos.x + x.w >= x.screen_w:
-            print("JA")
             Enemies.basic_enemy.dir_right = False
             return 1
         elif x.pos.x <= 0:
