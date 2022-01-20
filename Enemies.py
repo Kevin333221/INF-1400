@@ -4,6 +4,8 @@ import precode
 import Ball
 
 class basic_enemy:
+    dir_right = True
+
     def __init__(self, screen_w, screen_h, xpos, ypos, width, color):
         self.screen_w = screen_w
         self.screen_h = screen_h
@@ -11,7 +13,7 @@ class basic_enemy:
         self.w = width
         self.h = 40
         self.color = color
-        self.dir_right = True
+        self.xspeed = 0.7
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
@@ -22,18 +24,8 @@ class basic_enemy:
         if impulse:
             ball.dir = impulse * universal_speed
     
-    def update(self, surface):
-        if self.pos.x + self.w >= self.screen_w: 
-            self.pos.x = self.screen_w - self.w 
-            self.dir_right = False
-            self.pos.y += 50
-
-        if self.pos.x <= 0:
-            self.pos.x = 0
-            self.dir_right = True
-            self.pos.y += 50
-
-        if self.dir_right == True:
-            self.pos.x += 1
-        elif self.dir_right == False:
-            self.pos.x -= 1
+    def update(self):
+        if self.dir_right:
+            self.pos.x += self.xspeed
+        else:
+            self.pos.x -= self.xspeed

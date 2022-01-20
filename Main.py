@@ -11,7 +11,7 @@ screen_w = 1000
 screen_h = 600
 
 num_of_enemies = 45
-universal_speed = 3
+universal_speed = 5
 distance_between_other_enemies = 100
 
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
@@ -69,6 +69,19 @@ def creating_enemies(num_of_enemies, enemy_width):
             num_of_enemies -= 1
     return bots
 
+def animate_enemies(enemies):
+    for x in enemies:
+        print(x.pos.x + x.w)
+        if x.pos.x + x.w >= x.screen_w:
+            print("JA")
+            Enemies.basic_enemy.dir_right = False
+            return 1
+        elif x.pos.x <= 0:
+            Enemies.basic_enemy.dir_right = True
+            return 1
+        else:
+            return 0
+
 enemies = creating_enemies(num_of_enemies, 100)
 
 clock = pygame.time.Clock()
@@ -96,10 +109,19 @@ while running:
             x.collision_test(ball1, universal_speed)
             if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
                 enemies.remove(x)
-            else:    
-                x.update(screen)
+            else:
+                if x.pos.x + x.w >= x.screen_w:
+                    Enemies.basic_enemy.dir_right = False
+                    for y in enemies:
+                        y.pos.y += 5
+                if x.pos.x <= 0:
+                    Enemies.basic_enemy.dir_right = True                
+                    for y in enemies:
+                        y.pos.y += 5
+                x.update()
                 x.draw(screen)
-        
+
+                            
     else:
         print("Congatulton! YU WÅN!")
         if ball1.dead == True:

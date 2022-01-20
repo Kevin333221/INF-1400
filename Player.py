@@ -21,6 +21,7 @@ class player:
     def ball_hit(self, ball, universal_speed):
         amount_of_force = ((self.pos.x + self.w/2) - ball.pos.x)/10
         if precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir):
+            dir = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
             ball.dir.y = -ball.dir.y
             if ball.pos.x <= self.pos.x + self.w/2:
                 ball.dir.x = -amount_of_force
