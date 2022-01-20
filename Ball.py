@@ -1,3 +1,4 @@
+from asyncio import sleep
 import random
 import pygame
 from pygame import Vector2
@@ -15,6 +16,8 @@ class basic_ball:
         pygame.draw.circle(surface, (255, 255, 255), self.pos, self.r)
 
     def update(self):
+        self.dead = False
+        self.ded = False
         if self.pos.x - self.r < 0:
             self.pos.x = self.r
             self.dir.x *= -1
@@ -27,9 +30,10 @@ class basic_ball:
             self.pos.y = self.r
             self.dir.y *= -1
         
-        if self.pos.y - self.r > self.screen_h:
+        if self.pos.y - self.r > self.screen_h and self.dead == False and self.ded == False:
+            self.dead = True
+            self.ded = True
             print("Game Over")
             pygame.quit()
             quit()
-        
         self.pos += self.dir

@@ -1,3 +1,4 @@
+from asyncio import sleep
 from os import remove
 import random
 import pygame
@@ -6,26 +7,31 @@ import Enemies
 import Ball
 import precode
 
-screen_w = 1600
-screen_h = 900
+screen_w = 1000
+screen_h = 600
 
-num_of_enemies = 50
-universal_speed = 8
+num_of_enemies = 45
+universal_speed = 7
+distance_between_other_enemies = 100
+
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
 
 pygame.init()
+pygame.mixer.init()
 
 screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
 logo = pygame.image.load('logo.png')
 pygame.display.set_icon(logo)
+mario = pygame.mixer.Sound('Mario.mp3')
+rick = pygame.mixer.Sound('RickRoll.mp3')
+somebody = pygame.mixer.Sound('Somebody.mp3')
 
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
 def creating_enemies(num_of_enemies, enemy_width):
     counter = 0
-    distance_between_other_enemies = 200
     all_enemies_length = distance_between_other_enemies*num_of_enemies
     enemy_messuring_unit = 0
 
@@ -80,9 +86,9 @@ while running:
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
     if keys[pygame.K_RIGHT] and user.pos.x + user.w < screen_w:
-        user.walk(universal_speed)
+        user.walk(universal_speed + 2)
     if keys[pygame.K_LEFT] and user.pos.x > 0:
-        user.walk(-universal_speed)
+        user.walk(-universal_speed - 2)
 
     # Enemies init
     if len(enemies) != 0:
@@ -95,8 +101,9 @@ while running:
         
     else:
         print("Congatulton! YU WÅN!")
-        pygame.quit()
-        quit()
+        if ball1.dead == True:
+            ball1.dead = False
+
 
     # Renderer
     user.ball_hit(ball1, universal_speed)
