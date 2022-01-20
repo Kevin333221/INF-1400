@@ -11,7 +11,7 @@ screen_w = 1000
 screen_h = 600
 
 num_of_enemies = 45
-universal_speed = 7
+universal_speed = 3
 distance_between_other_enemies = 100
 
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
@@ -97,6 +97,7 @@ while running:
             if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
                 enemies.remove(x)
             else:    
+                x.update(screen)
                 x.draw(screen)
         
     else:
