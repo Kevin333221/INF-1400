@@ -27,8 +27,8 @@ my_font = pygame.font.SysFont('Times New Roman', 30)
 loser_text = my_font.render("You're a loser, go cry to your mama", False, (255, 255, 255))
 
 alpha_surface = pygame.Surface((screen_w, screen_h))
+alpha_surface.set_alpha(40)
 alpha_surface.fill((40, 40, 40))
-alpha_surface.set_alpha(60)
 
 # Sounds
 mario = pygame.mixer.Sound('Mario.mp3')
@@ -63,8 +63,9 @@ def creating_enemies(num_of_enemies, enemy_width):
 
     # Creating enemies
     for x in range(num_of_enemies):
+        enemy_color = ((random.randint(0,255)), (random.randint(0,255)), (random.randint(0,255)))
         enemy_xpos = counter*distance_between_other_enemies
-        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, 0)
+        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, enemy_color)
         if enemy.pos.y + 50 < screen_h - 300:
             if enemy.pos.x + enemy.w < screen_w:
                 counter += 1
@@ -96,7 +97,6 @@ screen.fill((40,40,40))
 
 while running:
     clock.tick(60)
-    screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
 
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
@@ -137,6 +137,7 @@ while running:
     else:
         print("Congatulton! YU WÅN!")
     
+    screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
     pygame.display.update()
 
     # Handling the events

@@ -17,7 +17,7 @@ class basic_enemy:
 
     def draw(self, surface):
         #self.color = abs(self.screen_h - self.pos.y)
-        pygame.draw.rect(surface, (self.color,self.color,self.color), (self.pos.x, self.pos.y, self.w, self.h))
+        pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
 
     def update(self):
         if self.dir_right:
