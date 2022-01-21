@@ -67,13 +67,6 @@ def creating_enemies(num_of_enemies, enemy_width):
         else:
             num_of_enemies -= 1
     return bots
-
-def range_range(value, left_min, left_max, right_min, right_max):
-    left_span = left_max - left_min
-    right_span = right_max - right_min
-    scaled_value = float(value - left_min) / float(left_span)
-    return right_min + (scaled_value * right_span)
-
 enemies = creating_enemies(num_of_enemies, 100)
 
 clock = pygame.time.Clock()
@@ -90,10 +83,15 @@ while running:
 
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
-    if keys[pygame.K_RIGHT] and user.pos.x + user.w < screen_w:
-        user.walk(universal_speed + 2)
-    if keys[pygame.K_LEFT] and user.pos.x > 0:
-        user.walk(-universal_speed - 2)
+    user.walk(keys, universal_speed)
+
+    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+        user.ball_hit(ball1, universal_speed)
+
+    # Renderer
+    ball1.update()
+    ball1.draw(screen)
+    user.draw(screen)
         
     # Enemies Method Init
     if len(enemies) != 0:
@@ -123,15 +121,9 @@ while running:
         print("You've lost")
         pygame.quit()
         quit()
-
     
-
-    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
-        user.ball_hit(ball1, universal_speed)
-
-    # Renderer
-    ball1.update()
-    ball1.draw(screen)
-    user.draw(screen)
+    
     pygame.display.update()
+
+
 

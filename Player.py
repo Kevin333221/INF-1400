@@ -14,9 +14,13 @@ class player:
         self.IMG = pygame.transform.smoothscale(pygame.image.load('player.png'),(self.w, 50))
         
 
-    def walk(self, direction):
-        self.xspeed = direction
-        self.pos.x += self.xspeed
+    def walk(self, keys, direction):
+        if keys[pygame.K_RIGHT] and self.pos.x + self.w < self.screen_w:
+            self.xspeed = direction
+            self.pos.x += self.xspeed
+        if keys[pygame.K_LEFT] and self.pos.x > 0:
+            self.xspeed = direction
+            self.pos.x -= self.xspeed
 
     def ball_hit(self, ball, speed):
         where_it_hits = ((self.pos.x + self.w/2) - ball.pos.x)/(self.w/2)
