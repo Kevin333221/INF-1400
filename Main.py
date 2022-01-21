@@ -1,4 +1,3 @@
-from asyncio import sleep
 from os import remove
 import random
 import pygame
@@ -11,7 +10,7 @@ screen_w = 1000
 screen_h = 600
 
 num_of_enemies = 45
-universal_speed = 5
+universal_speed = 6
 distance_between_other_enemies = 100
 
 enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
@@ -69,17 +68,11 @@ def creating_enemies(num_of_enemies, enemy_width):
             num_of_enemies -= 1
     return bots
 
-def animate_enemies(enemies):
-    for x in enemies:
-        print(x.pos.x + x.w)
-        if x.pos.x + x.w >= x.screen_w:
-            Enemies.basic_enemy.dir_right = False
-            return 1
-        elif x.pos.x <= 0:
-            Enemies.basic_enemy.dir_right = True
-            return 1
-        else:
-            return 0
+def range_range(value, left_min, left_max, right_min, right_max):
+    left_span = left_max - left_min
+    right_span = right_max - right_min
+    scaled_value = float(value - left_min) / float(left_span)
+    return right_min + (scaled_value * right_span)
 
 enemies = creating_enemies(num_of_enemies, 100)
 
@@ -101,12 +94,13 @@ while running:
         user.walk(universal_speed + 2)
     if keys[pygame.K_LEFT] and user.pos.x > 0:
         user.walk(-universal_speed - 2)
-
-    # Enemies init
+        
+    # Enemies Method Init
     if len(enemies) != 0:
         for x in enemies:
-            x.collision_test(ball1, universal_speed)
-            if precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir):
+            hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
+            if hits_an_enemy:
+                ball1.dir = hits_an_enemy * ball1.speed
                 enemies.remove(x)
             else:
                 if x.pos.x + x.w >= x.screen_w:
@@ -120,18 +114,24 @@ while running:
                 x.update()
                 x.draw(screen)
 
-                            
     else:
         print("Congatulton! YU WÅN!")
-        if ball1.dead == True:
-            ball1.dead = False
+        pygame.quit()
+        quit()
+        
+    if ball1.dead == True:
+        print("You've lost")
+        pygame.quit()
+        quit()
 
+    
+
+    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+        user.ball_hit(ball1, universal_speed)
 
     # Renderer
-    user.ball_hit(ball1, universal_speed)
     ball1.update()
     ball1.draw(screen)
     user.draw(screen)
     pygame.display.update()
 
-pygame.quit()

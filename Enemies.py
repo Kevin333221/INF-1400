@@ -13,17 +13,11 @@ class basic_enemy:
         self.w = width
         self.h = 40
         self.color = color
-        self.xspeed = 0.7
+        self.xspeed = 0.5
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
 
-    def collision_test(self, ball: Ball.basic_ball, universal_speed):
-        impulse = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
-    
-        if impulse:
-            ball.dir = impulse * universal_speed
-    
     def update(self):
         if self.dir_right:
             self.pos.x += self.xspeed

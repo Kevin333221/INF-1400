@@ -18,15 +18,16 @@ class player:
         self.xspeed = direction
         self.pos.x += self.xspeed
 
-    def ball_hit(self, ball, universal_speed):
-        amount_of_force = ((self.pos.x + self.w/2) - ball.pos.x)/10
-        if precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir):
-            dir = precode.intersect_rectangle_circle(self.pos, self.w, self.h, ball.pos, ball.r, ball.dir)
-            ball.dir.y = -ball.dir.y
-            if ball.pos.x <= self.pos.x + self.w/2:
-                ball.dir.x = -amount_of_force
-            if ball.pos.x > self.pos.x + self.w/2:
-                ball.dir.x = abs(amount_of_force)
+    def ball_hit(self, ball, speed):
+        where_it_hits = ((self.pos.x + self.w/2) - ball.pos.x)/(self.w/2)
+        amount_of_force = speed * where_it_hits
+        if ball.dir.y < speed:
+            ball.dir.y = speed
+        ball.dir.y = -ball.dir.y
+        if ball.pos.x <= self.pos.x + self.w/2:
+            ball.dir.x += -amount_of_force
+        else:
+             ball.dir.x += abs(amount_of_force)
 
 
     def draw(self, surface):

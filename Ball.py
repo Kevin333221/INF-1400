@@ -11,13 +11,13 @@ class basic_ball:
         self.pos = math.Vector2((screen_w - (3*self.screen_w)/5), screen_h - 200)
         self.r = 10
         self.dir = math.Vector2(random.randint(-speed, speed), -speed)
+        self.dead = False
+        self.speed = speed
 
     def draw(self, surface):
         pygame.draw.circle(surface, (255, 255, 255), self.pos, self.r)
 
     def update(self):
-        self.dead = False
-        self.ded = False
         if self.pos.x - self.r < 0:
             self.pos.x = self.r
             self.dir.x *= -1
@@ -30,10 +30,7 @@ class basic_ball:
             self.pos.y = self.r
             self.dir.y *= -1
         
-        if self.pos.y - self.r > self.screen_h and self.dead == False and self.ded == False:
+        if self.pos.y - self.r > self.screen_h and self.dead == False:
             self.dead = True
-            self.ded = True
-            print("Game Over")
-            pygame.quit()
-            quit()
+
         self.pos += self.dir
