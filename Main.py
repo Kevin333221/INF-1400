@@ -59,14 +59,14 @@ def creating_enemies(num_of_enemies, enemy_width):
 
     enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
     bots = []
-    enemy_ypos = 40
+    enemy_ypos = 100
 
     # Creating enemies
     for x in range(num_of_enemies):
         enemy_color = ((random.randint(0,255)), (random.randint(0,255)), (random.randint(0,255)))
         enemy_xpos = counter*distance_between_other_enemies
         enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, enemy_color)
-        if enemy.pos.y + 50 < screen_h - 300:
+        if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
             if enemy.pos.x + enemy.w < screen_w:
                 counter += 1
             else:
@@ -91,13 +91,7 @@ def dead():
         screen.blit(loser_text, (screen_w/2, screen_h/2))
         pygame.display.update()
 
-clock = pygame.time.Clock()
-running = True
-screen.fill((40,40,40))
-
-while running:
-    clock.tick(60)
-
+def game():
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
     user.walk(keys, universal_speed)
@@ -139,6 +133,15 @@ while running:
     
     screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
     pygame.display.update()
+
+clock = pygame.time.Clock()
+running = True
+screen.fill((40,40,40))
+
+while running:
+    clock.tick(60)
+
+    game()
 
     # Handling the events
     for event in pygame.event.get():
