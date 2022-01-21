@@ -34,7 +34,8 @@ alpha_surface.fill((40, 40, 40))
 mario = pygame.mixer.Sound('Mario.mp3')
 rick = pygame.mixer.Sound('RickRoll.mp3')
 somebody = pygame.mixer.Sound('Somebody.mp3')
-ball_bounce = pygame.mixer.Sound('Ball_bounce.mp3')
+ball_bounce = pygame.mixer.Sound('pop.mp3')
+sang = pygame.mixer.Sound('sang.mp3')
 
 # User, Enemies
 user = Player.player(screen_w, screen_h)
@@ -131,16 +132,19 @@ def game():
     else:
         print("Congatulton! YU WÅN!")
     
-    screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
+    #screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
     pygame.display.update()
 
 clock = pygame.time.Clock()
 running = True
 screen.fill((40,40,40))
 
+sang.play()
+
 while running:
     clock.tick(60)
 
+    screen.fill((40,40,40))
     game()
 
     # Handling the events
