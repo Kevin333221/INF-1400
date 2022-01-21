@@ -1,4 +1,4 @@
-from os import remove
+from os import remove, system
 import random
 import pygame
 import Player
@@ -17,15 +17,26 @@ enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randin
 
 pygame.init()
 pygame.mixer.init()
+pygame.font.init()
 
 screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
 logo = pygame.image.load('logo.png')
 pygame.display.set_icon(logo)
+my_font = pygame.font.SysFont('Times New Roman', 30)
+loser_text = my_font.render("You're a loser, go cry to your mama", False, (255, 255, 255))
+
+alpha_surface = pygame.Surface((screen_w, screen_h))
+alpha_surface.fill((40, 40, 40))
+alpha_surface.set_alpha(60)
+
+# Sounds
 mario = pygame.mixer.Sound('Mario.mp3')
 rick = pygame.mixer.Sound('RickRoll.mp3')
 somebody = pygame.mixer.Sound('Somebody.mp3')
+ball_bounce = pygame.mixer.Sound('Ball_bounce.mp3')
 
+# User, Enemies
 user = Player.player(screen_w, screen_h)
 ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
@@ -52,9 +63,8 @@ def creating_enemies(num_of_enemies, enemy_width):
 
     # Creating enemies
     for x in range(num_of_enemies):
-        enemy_color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
         enemy_xpos = counter*distance_between_other_enemies
-        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, enemy_color)
+        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, 0)
         if enemy.pos.y + 50 < screen_h - 300:
             if enemy.pos.x + enemy.w < screen_w:
                 counter += 1
@@ -69,35 +79,47 @@ def creating_enemies(num_of_enemies, enemy_width):
     return bots
 enemies = creating_enemies(num_of_enemies, 100)
 
+def dead():
+    while ball1.dead:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                ball1.dead = False
+                running = False
+                pygame.quit()
+
+        screen.blit(loser_text, (screen_w/2, screen_h/2))
+        pygame.display.update()
+
 clock = pygame.time.Clock()
 running = True
+screen.fill((40,40,40))
+
 while running:
     clock.tick(60)
-    screen.fill((40,40,40))
-
-    # Handling the events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
+    screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
 
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
     user.walk(keys, universal_speed)
 
     if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+        ball_bounce.play()
         user.ball_hit(ball1, universal_speed)
 
     # Renderer
     ball1.update()
     ball1.draw(screen)
     user.draw(screen)
+
+    if ball1.dead:
+        dead()
         
     # Enemies Method Init
     if len(enemies) != 0:
         for x in enemies:
             hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
             if hits_an_enemy:
+                ball_bounce.play()
                 ball1.dir = hits_an_enemy * ball1.speed
                 enemies.remove(x)
             else:
@@ -114,16 +136,14 @@ while running:
 
     else:
         print("Congatulton! YU WÅN!")
-        pygame.quit()
-        quit()
-        
-    if ball1.dead == True:
-        print("You've lost")
-        pygame.quit()
-        quit()
-    
     
     pygame.display.update()
+
+    # Handling the events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
 
 
 

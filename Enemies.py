@@ -16,10 +16,14 @@ class basic_enemy:
         self.xspeed = 0.5
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
+        #self.color = abs(self.screen_h - self.pos.y)
+        pygame.draw.rect(surface, (self.color,self.color,self.color), (self.pos.x, self.pos.y, self.w, self.h))
 
     def update(self):
         if self.dir_right:
             self.pos.x += self.xspeed
         else:
             self.pos.x -= self.xspeed
+
+    def color_picker(value, left_min, left_max, right_min, right_max):
+        pass

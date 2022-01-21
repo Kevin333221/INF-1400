@@ -30,7 +30,7 @@ class basic_ball:
             self.pos.y = self.r
             self.dir.y *= -1
         
-        if self.pos.y - self.r > self.screen_h and self.dead == False:
+        if self.pos.y - self.r > self.screen_h:
             self.dead = True
 
         self.pos += self.dir
