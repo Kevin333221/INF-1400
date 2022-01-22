@@ -1,5 +1,6 @@
 from os import remove, system
 import random
+from tracemalloc import start
 import pygame
 import Player
 import Enemies
@@ -23,8 +24,13 @@ screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
 logo = pygame.image.load('logo.png')
 pygame.display.set_icon(logo)
+
+mouse = pygame.mouse.get_pos()
+
+# Fonts and texts
 my_font = pygame.font.SysFont('Times New Roman', 30)
 loser_text = my_font.render("You're a loser, go cry to your mama", False, (255, 255, 255))
+play_again = my_font.render("Wanna Play again?", False, (255, 255, 255))
 
 alpha_surface = pygame.Surface((screen_w, screen_h))
 alpha_surface.set_alpha(40)
@@ -60,7 +66,7 @@ def creating_enemies(num_of_enemies, enemy_width):
 
     enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
     bots = []
-    enemy_ypos = 100
+    enemy_ypos = 40
 
     # Creating enemies
     for x in range(num_of_enemies):
@@ -88,10 +94,24 @@ def dead():
                 running = False
                 pygame.quit()
 
-        screen.blit(loser_text, (screen_w/2, screen_h/2))
+        screen.blit(loser_text, (screen_w/3, screen_h/2))
+        screen.blit(play_again, (screen_w/3, screen_h/3))
         pygame.display.update()
 
-def game():
+def level1():
+    start = False
+    while start != True:
+
+        if pygame.mouse.get_pressed()[0] and pygame.MOUSEBUTTONDOWN:
+            print("Hello")
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                exit()
+        
+
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed() 
     user.walk(keys, universal_speed)
@@ -144,13 +164,10 @@ while running:
     clock.tick(60)
 
     screen.fill((40,40,40))
-    game()
+    level1()
 
     # Handling the events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-
-
-
