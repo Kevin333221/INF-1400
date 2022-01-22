@@ -37,7 +37,7 @@ level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels/Level1.jpg'),
 
 # Blur Effect
 alpha_surface = pygame.Surface((screen_w, screen_h))
-alpha_surface.set_alpha(40)
+alpha_surface.set_alpha(100)
 alpha_surface.fill((40, 40, 40))
 
 # Sounds
@@ -101,15 +101,29 @@ def check_for_quit():
 def dead():
     while ball1.dead:
         screen.fill((40, 40, 40))
-        screen.blit(loser_text, (screen_w/3, screen_h/2))
-        screen.blit(play_again, (screen_w/3, screen_h/3))
+        screen.blit(loser_text, (screen_w/2 - loser_text.get_width()/2, screen_h/2))
+        screen.blit(play_again, (screen_w/2 - play_again.get_width()/2, screen_h/3))
+
+        pygame.draw.rect(screen, (80, 80, 80), (screen_w/2 - loser_text.get_width()/2, ))
+
         check_for_quit()
 
 def level1(level1_start):
-    while level1_start == False:
+    start_text = my_font.render("Start by pressing enter", False, (255, 255, 255))
+    winning_text = my_font.render("Congratulation, You Win!", False, (255, 255, 255))
 
-        if pygame.mouse.get_pressed()[0] and pygame.MOUSEBUTTONDOWN:
-            level1_start = True
+    while level1_start == False:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    level1_start = True
+        
+        # "Start by pressing enter" 
+        screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
+        
+        # Preview of player and ball
+        ball1.draw(screen)
+        user.draw(screen)
 
         while level1_start:
             clock.tick(60)
@@ -119,6 +133,7 @@ def level1(level1_start):
             keys = pygame.key.get_pressed()
             user.walk(keys, universal_speed)
 
+            # Checks if the ball hits the player
             if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
                 ball_bounce.play()
                 user.ball_hit(ball1, universal_speed)
@@ -128,6 +143,7 @@ def level1(level1_start):
             ball1.draw(screen)
             user.draw(screen)
 
+            # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 dead()
                 
@@ -151,8 +167,8 @@ def level1(level1_start):
                         x.update()
                         x.draw(screen)
             else:
-                print("Congatulton! YU WÅN!")
-            
+                screen.fill((40, 40, 40))
+                screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
             check_for_quit()
         check_for_quit()
     check_for_quit()
@@ -164,6 +180,6 @@ level1_start = False
 while running: 
     screen.fill((40,40,40))
     clock.tick(60)
-    
+
     level1(level1_start)
     check_for_quit()
