@@ -1,11 +1,12 @@
 from os import remove, system
 import random
-from tracemalloc import start
+from unicodedata import unidata_version
 import pygame
 import Player
 import Enemies
 import Ball
 import precode
+from pygame import Vector2
 
 screen_w = 1000
 screen_h = 600
@@ -25,12 +26,8 @@ pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
 logo = pygame.image.load('logo.png')
 pygame.display.set_icon(logo)
 
-mouse = pygame.mouse.get_pos()
-
 # Fonts and texts
 my_font = pygame.font.SysFont('Times New Roman', 30)
-loser_text = my_font.render("You're a loser, go cry to your mama", False, (255, 255, 255))
-play_again = my_font.render("Wanna Play again?", False, (255, 255, 255))
 
 # Levels
 level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels/Level1.jpg'), (screen_w, screen_w))
@@ -99,12 +96,24 @@ def check_for_quit():
     pygame.display.update()
 
 def dead():
-    while ball1.dead:
+    loser_text = my_font.render("Wanna play again?", False, (255, 255, 255))
+    play_again = my_font.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
+    again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
+
+    while ball1.dead:  
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_clicked = pygame.mouse.get_pressed()
         screen.fill((40, 40, 40))
         screen.blit(loser_text, (screen_w/2 - loser_text.get_width()/2, screen_h/2))
         screen.blit(play_again, (screen_w/2 - play_again.get_width()/2, screen_h/3))
 
-        pygame.draw.rect(screen, (80, 80, 80), (screen_w/2 - 50, screen_h/2 - 52, 100, 45))
+        if mouse_pos[0] > screen_w/2 - 50 and mouse_pos[0] < screen_w/2 - 50 + 100 and mouse_pos[1] > screen_h/2 - 52 and mouse_pos[1] < screen_h/2 - 52 + 45:
+            pygame.draw.rect(screen, (0, 80, 80), again_rect)
+            if mouse_clicked[0]:
+                # Star over Again
+                ball1.dead = False
+        else:
+            pygame.draw.rect(screen, (255, 80, 80), again_rect)
 
         check_for_quit()
 
@@ -146,7 +155,7 @@ def level1(level1_start):
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 dead()
-                
+
             # Enemies Method Init
             if len(enemies) != 0:
                 for x in enemies:
