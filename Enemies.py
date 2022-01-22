@@ -1,7 +1,6 @@
 from turtle import color
 from pygame import Vector2
 import pygame
-import random
 
 class basic_enemy:
     dir_right = True

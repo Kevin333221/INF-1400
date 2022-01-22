@@ -1,8 +1,5 @@
-import imp
 from pygame import Vector2
-import random
 import pygame
-import precode
 
 class player:
     def __init__(self, screen_w, screen_h):

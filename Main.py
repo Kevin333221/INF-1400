@@ -104,7 +104,7 @@ def dead():
         screen.blit(loser_text, (screen_w/2 - loser_text.get_width()/2, screen_h/2))
         screen.blit(play_again, (screen_w/2 - play_again.get_width()/2, screen_h/3))
 
-        pygame.draw.rect(screen, (80, 80, 80), (screen_w/2 - loser_text.get_width()/2, ))
+        pygame.draw.rect(screen, (80, 80, 80), (screen_w/2 - 50, screen_h/2 - 52, 100, 45))
 
         check_for_quit()
 
