@@ -20,7 +20,7 @@ class basic_enemy:
 
     def draw(self, surface):
         self.colorR = basic_enemy.color_picker(self.screen_w - self.pos.x, 0, self.screen_w, 0, 255)
-        self.colorG = basic_enemy.color_picker(self.screen_h - self.pos.y, 0, self.screen_h - 50, 0, 255)
+        self.colorG = basic_enemy.color_picker(self.screen_h - self.pos.y, 0, self.screen_h - 20, 0, 255)
         pygame.draw.rect(surface, (self.colorR, self.colorG/2, self.colorG), (self.pos.x, self.pos.y, self.w, self.h))
         surface.blit(self.IMG, (self.pos.x, self.pos.y))
         pygame.draw.rect(surface, (255, 0, 0), (0, self.screen_h - self.line_of_death, self.screen_w, 10))

@@ -101,12 +101,10 @@ def dead():
         screen.blit(play_again, (screen_w/3, screen_h/3))
         pygame.display.update()
 
-def level1():
-    start = False
-    while start != True:
-
+def level1(level1_start):
+    while level1_start == False:
         if pygame.mouse.get_pressed()[0] and pygame.MOUSEBUTTONDOWN:
-            print("Hello")
+            level1_start = True
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -162,12 +160,12 @@ screen.fill((40,40,40))
 
 #sang.play()
 
-level1_start = True
+level1_start = False
 
 while running:
     clock.tick(60)
     screen.fill((40,40,40))
-    level1()
+    level1(level1_start)
 
     # Handling the events
     for event in pygame.event.get():
