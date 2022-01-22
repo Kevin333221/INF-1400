@@ -64,9 +64,8 @@ def creating_enemies(num_of_enemies, enemy_width):
 
     # Creating enemies
     for x in range(num_of_enemies):
-        enemy_color = ((random.randint(0,255)), (random.randint(0,255)), (random.randint(0,255)))
         enemy_xpos = counter*distance_between_other_enemies
-        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, enemy_color)
+        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, 0)
         if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
             if enemy.pos.x + enemy.w < screen_w:
                 counter += 1

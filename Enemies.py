@@ -1,5 +1,6 @@
 from pygame import Vector2
 import pygame
+import random
 
 class basic_enemy:
     dir_right = True
@@ -14,10 +15,11 @@ class basic_enemy:
         self.xspeed = 0.5
         self.IMG = pygame.transform.smoothscale(pygame.image.load('logo.png'), (50, 40))
         self.line_of_death = 150
+        self.color = ((random.randint(0,255)), (random.randint(0,255)), (random.randint(0,255)))
 
     def draw(self, surface):
         #self.color = abs(self.screen_h - self.pos.y)
-        pygame.draw.rect(surface, (50, 50, 50), (self.pos.x, self.pos.y, self.w, self.h))
+        pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
         surface.blit(self.IMG, (self.pos.x, self.pos.y))
         pygame.draw.rect(surface, (255, 0, 0), (0, self.screen_h - self.line_of_death, self.screen_w, 10))
 
