@@ -1,6 +1,5 @@
 from os import remove, system
 import random
-from tracemalloc import start
 import pygame
 import Player
 import Enemies
