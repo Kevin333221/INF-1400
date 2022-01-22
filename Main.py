@@ -139,7 +139,7 @@ clock = pygame.time.Clock()
 running = True
 screen.fill((40,40,40))
 
-sang.play()
+#sang.play()
 
 while running:
     clock.tick(60)
