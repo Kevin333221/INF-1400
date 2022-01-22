@@ -1,6 +1,5 @@
 from os import remove, system
 import random
-from unicodedata import unidata_version
 import pygame
 import Player
 import Enemies

@@ -1,4 +1,3 @@
-from turtle import color
 from pygame import Vector2
 import pygame
 
