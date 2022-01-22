@@ -35,6 +35,7 @@ play_again = my_font.render("Wanna Play again?", False, (255, 255, 255))
 # Levels
 level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels/Level1.jpg'), (screen_w, screen_w))
 
+# Blur Effect
 alpha_surface = pygame.Surface((screen_w, screen_h))
 alpha_surface.set_alpha(40)
 alpha_surface.fill((40, 40, 40))
@@ -89,86 +90,80 @@ def creating_enemies(num_of_enemies, enemy_width):
     return bots
 enemies = creating_enemies(num_of_enemies, 100)
 
-def dead():
-    while ball1.dead:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                ball1.dead = False
-                running = False
-                pygame.quit()
-
-        screen.blit(loser_text, (screen_w/3, screen_h/2))
-        screen.blit(play_again, (screen_w/3, screen_h/3))
-        pygame.display.update()
-
-def level1(level1_start):
-    while level1_start == False:
-        if pygame.mouse.get_pressed()[0] and pygame.MOUSEBUTTONDOWN:
-            level1_start = True
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                exit()
-        
-
-    # Checks if the user presses Right-key og the Left-key
-    keys = pygame.key.get_pressed() 
-    user.walk(keys, universal_speed)
-
-    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
-        ball_bounce.play()
-        user.ball_hit(ball1, universal_speed)
-
-    # Renderer
-    ball1.update()
-    ball1.draw(screen)
-    user.draw(screen)
-
-    if ball1.dead:
-        dead()
-        
-    # Enemies Method Init
-    if len(enemies) != 0:
-        for x in enemies:
-            hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
-            if hits_an_enemy:
-                ball_bounce.play()
-                ball1.dir = hits_an_enemy * ball1.speed
-                enemies.remove(x)
-            else:
-                if x.pos.x + x.w >= x.screen_w:
-                    Enemies.basic_enemy.dir_right = False
-                    for y in enemies:
-                        y.pos.y += 5
-                if x.pos.x <= 0:
-                    Enemies.basic_enemy.dir_right = True                
-                    for y in enemies:
-                        y.pos.y += 5
-                x.update()
-                x.draw(screen)
-        else:
-            print("Congatulton! YU WÅN!")
-
-        #screen.blit(alpha_surface, (0, 0, screen_w, screen_h))
-        pygame.display.update()
-
-clock = pygame.time.Clock()
-running = True
-screen.fill((40,40,40))
-
-#sang.play()
-
-level1_start = False
-
-while running:
-    clock.tick(60)
-    screen.fill((40,40,40))
-    level1(level1_start)
-
-    # Handling the events
+def check_for_quit():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+            exit()
+    pygame.display.update()
+
+def dead():
+    while ball1.dead:
+        screen.fill((40, 40, 40))
+        screen.blit(loser_text, (screen_w/3, screen_h/2))
+        screen.blit(play_again, (screen_w/3, screen_h/3))
+        check_for_quit()
+
+def level1(level1_start):
+    while level1_start == False:
+
+        if pygame.mouse.get_pressed()[0] and pygame.MOUSEBUTTONDOWN:
+            level1_start = True
+
+        while level1_start:
+            clock.tick(60)
+            screen.blit(alpha_surface, (0, 0))
+
+            # Checks if the user presses Right-key og the Left-key
+            keys = pygame.key.get_pressed()
+            user.walk(keys, universal_speed)
+
+            if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+                ball_bounce.play()
+                user.ball_hit(ball1, universal_speed)
+
+            # Renderer
+            ball1.update()
+            ball1.draw(screen)
+            user.draw(screen)
+
+            if ball1.dead:
+                dead()
+                
+            # Enemies Method Init
+            if len(enemies) != 0:
+                for x in enemies:
+                    hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
+                    if hits_an_enemy:
+                        ball_bounce.play()
+                        ball1.dir = hits_an_enemy * ball1.speed
+                        enemies.remove(x)
+                    else:
+                        if x.pos.x + x.w >= x.screen_w:
+                            Enemies.basic_enemy.dir_right = False
+                            for y in enemies:
+                                y.pos.y += 5
+                        if x.pos.x <= 0:
+                            Enemies.basic_enemy.dir_right = True                
+                            for y in enemies:
+                                y.pos.y += 5
+                        x.update()
+                        x.draw(screen)
+            else:
+                print("Congatulton! YU WÅN!")
+            
+            check_for_quit()
+        check_for_quit()
+    check_for_quit()
+
+clock = pygame.time.Clock()
+running = True
+level1_start = False
+
+while running: 
+    screen.fill((40,40,40))
+    clock.tick(60)
+    
+    level1(level1_start)
+    check_for_quit()

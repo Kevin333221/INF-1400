@@ -18,6 +18,7 @@ class player:
         if keys[pygame.K_RIGHT] and self.pos.x + self.w < self.screen_w:
             self.xspeed = direction
             self.pos.x += self.xspeed
+            print("RIGHT")
         if keys[pygame.K_LEFT] and self.pos.x > 0:
             self.xspeed = direction
             self.pos.x -= self.xspeed
