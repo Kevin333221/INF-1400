@@ -98,6 +98,7 @@ def dead():
     loser_text = my_font.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
+    rick.play()
 
     while ball1.dead:  
         mouse_pos = pygame.mouse.get_pos()
@@ -154,6 +155,10 @@ def level1(level1_start):
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 dead()
+                rick.stop()
+                ball1.pos.y = screen_h - 110
+                ball1.dir = (0, -universal_speed)
+                ball1.dead = False
 
             # Enemies Method Init
             if len(enemies) != 0:
