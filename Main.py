@@ -31,11 +31,11 @@ alpha_surface.set_alpha(40)
 alpha_surface.fill((40, 40, 40))
 
 # Sounds
-mario = pygame.mixer.Sound('Mario.mp3')
-rick = pygame.mixer.Sound('RickRoll.mp3')
-somebody = pygame.mixer.Sound('Somebody.mp3')
-ball_bounce = pygame.mixer.Sound('pop.mp3')
-sang = pygame.mixer.Sound('sang.mp3')
+mario = pygame.mixer.Sound('Sounds/Mario.mp3')
+rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
+somebody = pygame.mixer.Sound('Sounds/Somebody.mp3')
+ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
+sang = pygame.mixer.Sound('Sounds/sang.mp3')
 
 # User, Enemies
 user = Player.player(screen_w, screen_h)
