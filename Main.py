@@ -1,6 +1,5 @@
 from os import remove, system
 import random
-from tkinter import Y
 import pygame
 import Player
 import Enemies
@@ -26,6 +25,7 @@ pygame.display.set_icon(logo)
 
 # Fonts and texts
 my_font = pygame.font.SysFont('Times New Roman', 30)
+main_title = my_font.render("Welcome to this game!", False, (255, 255, 255))
 
 # Levels
 level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
@@ -122,8 +122,8 @@ def dead():
         check_for_quit()
     check_for_quit()
 
-def level1(level1_start):
-    level1_selected = True
+def level1(level1_selected):
+    level1_start = False
     enemies = creating_enemies(num_of_enemies, 100)
     while level1_selected:  
         start_text = my_font.render("Start by pressing enter", False, (255, 255, 255))
@@ -199,10 +199,22 @@ def level1(level1_start):
 
 clock = pygame.time.Clock()
 running = True
-level1_start = False
+level1_init = False
 
-while running: 
+while running:
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_pressed = pygame.mouse.get_pressed()
     screen.fill((40,40,40))
     clock.tick(60)
-    level1(level1_start)    
+
+    screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
+
+    if mouse_pressed[0]:
+        print("Pressed")
+        level1_init = True
+
+    # Init levels
+    if level1_init:
+        level1(level1_init)
+
     check_for_quit()
