@@ -84,7 +84,6 @@ def creating_enemies(num_of_enemies, enemy_width):
         else:
             num_of_enemies -= 1
     return bots
-enemies = creating_enemies(num_of_enemies, 100)
 
 def check_for_quit():
     for event in pygame.event.get():
@@ -94,11 +93,17 @@ def check_for_quit():
             exit()
     pygame.display.update()
 
+def restart_level1(ball1, user):
+    ball1.dead = False
+    ball1.pos.x = screen_w/2
+    ball1.pos.y = screen_h - 110
+    ball1.dir = pygame.Vector2(random.randint(-universal_speed, universal_speed), -universal_speed)
+
+
 def dead():
     loser_text = my_font.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
-    rick.play()
 
     while ball1.dead:  
         mouse_pos = pygame.mouse.get_pos()
@@ -114,12 +119,13 @@ def dead():
                 ball1.dead = False
         else:
             pygame.draw.rect(screen, (255, 80, 80), again_rect)
-
         check_for_quit()
 
 def level1(level1_start):
     start_text = my_font.render("Start by pressing enter", False, (255, 255, 255))
     winning_text = my_font.render("Congratulation, You Win!", False, (255, 255, 255))
+    
+    enemies = creating_enemies(num_of_enemies, 100)
 
     while level1_start == False:
         for event in pygame.event.get():
@@ -133,6 +139,8 @@ def level1(level1_start):
         # Preview of player and ball
         ball1.draw(screen)
         user.draw(screen)
+        for x in enemies:
+            x.draw(screen)
 
         while level1_start:
             clock.tick(60)
@@ -154,11 +162,10 @@ def level1(level1_start):
 
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
+                enemies.clear()
                 dead()
-                rick.stop()
-                ball1.pos.y = screen_h - 110
-                ball1.dir = (0, -universal_speed)
-                ball1.dead = False
+                restart_level1(ball1, user)
+                level1_start = False
 
             # Enemies Method Init
             if len(enemies) != 0:
@@ -182,6 +189,7 @@ def level1(level1_start):
             else:
                 screen.fill((40, 40, 40))
                 screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
+
             check_for_quit()
         check_for_quit()
     check_for_quit()
@@ -194,5 +202,5 @@ while running:
     screen.fill((40,40,40))
     clock.tick(60)
 
-    level1(level1_start)
+    level1(level1_start)    
     check_for_quit()
