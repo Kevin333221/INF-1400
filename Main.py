@@ -128,6 +128,7 @@ def level1():
     enemies = creating_enemies(num_of_enemies, 100)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
+    level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
 
     while level1_start == False:
         for event in pygame.event.get():
@@ -136,6 +137,7 @@ def level1():
                     level1_start = True
         
         screen.blit(level1_BG, (0,0))
+        screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
         
         # "Start by pressing enter" 
         screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
@@ -207,7 +209,9 @@ def exit_menu():
 clock = pygame.time.Clock()
 running = True
 level1_init = False
-alpha_screen = pygame.Surface((main_title.get_width(), screen_h), pygame.SRCALPHA)
+levels_init = False
+options_init = False
+exit_init = False
 
 # Game Loop
 while running:
@@ -229,8 +233,20 @@ while running:
             level1_init = True
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
-
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
+
+    # Levels Button
+    pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
+
+    # Option Button
+    if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 + 200 and mouse_pos[1] < screen_h/3 + 200 + main_start.get_height():
+        pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 200, main_title.get_width(), main_start.get_height()))    
+        if mouse_pressed[1]:
+            options_init = True
+    pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 200, main_title.get_width(), main_start.get_height()))
+    
+    # Exit Button
+    pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
 
     # Init levels
     if level1_init:
