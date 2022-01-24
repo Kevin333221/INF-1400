@@ -14,14 +14,20 @@ num_of_enemies = 45
 universal_speed = 6
 distance_between_other_enemies = 100
 
+# Pygame init
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 
+# Screen init
 screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
-logo = pygame.image.load('logo.png')
+logo = pygame.image.load('Sprites/logo.png')
 pygame.display.set_icon(logo)
+
+# Sprites
+main_hub_button = pygame.image.load('Sprites/Button.png')
+#main_hub_button = pygame.transform.smoothscale(pygame.image.load('Sprites/main_hub_button'), ())
 
 # Fonts and texts
 my_font = pygame.font.SysFont('Times New Roman', 30)
@@ -35,7 +41,6 @@ level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg
 # Sounds
 mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
-somebody = pygame.mixer.Sound('Sounds/Somebody.mp3')
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
 
@@ -208,6 +213,8 @@ while running:
 
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
+
+    screen.blit(main_hub_button, (screen_w/2 - main_title.get_width()/2, screen_h/4))
 
     if mouse_pressed[0]:
         level1_init = True
