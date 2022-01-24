@@ -1,5 +1,7 @@
 from os import remove, system
 import random
+from tracemalloc import start
+from turtle import st
 import pygame
 import Player
 import Enemies
@@ -29,8 +31,10 @@ pygame.display.set_icon(logo)
 
 
 # Fonts and texts
-my_font = pygame.font.SysFont('Times New Roman', 30)
-main_title = my_font.render("Welcome to this game!", False, (255, 255, 255))
+my_font_30 = pygame.font.SysFont('Times New Roman', 30)
+my_font_60 = pygame.font.SysFont('Times New Roman', 60)
+main_title = my_font_60.render("Welcome to this game!", False, (255, 255, 255))
+main_start = my_font_60.render("Start", False, (255, 255, 255))
 
 # Levels Background 
 main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg'), (screen_w, screen_h))
@@ -101,8 +105,8 @@ def restart_level1(ball1, user):
     check_for_quit()
 
 def dead():
-    loser_text = my_font.render("Wanna play again?", False, (255, 255, 255))
-    play_again = my_font.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
+    loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
+    play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
 
     while ball1.dead:  
@@ -125,8 +129,8 @@ def dead():
 def level1():
     level1_start = False
     enemies = creating_enemies(num_of_enemies, 100)
-    start_text = my_font.render("Start by pressing enter", False, (255, 255, 255))
-    winning_text = my_font.render("Congratulation, You Win!", False, (255, 255, 255))
+    start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
+    winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
 
     while level1_start == False:
         for event in pygame.event.get():
@@ -146,7 +150,6 @@ def level1():
         while level1_start:
             screen.blit(level1_BG, (0,0))
             clock.tick(60)
-            enemies.clear()
 
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
@@ -197,7 +200,6 @@ def level1():
 
             check_for_quit()
         check_for_quit()
-    check_for_quit()
 
 def exit_menu():
     pass
@@ -205,6 +207,7 @@ def exit_menu():
 clock = pygame.time.Clock()
 running = True
 level1_init = False
+alpha_screen = pygame.Surface((main_title.get_width(), screen_h), pygame.SRCALPHA)
 
 # Game Loop
 while running:
@@ -214,12 +217,16 @@ while running:
 
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
+    
+    screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
+    pygame.draw.rect(alpha_screen, (0,0,0,155), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 21)
 
     # Lines
     pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
     pygame.draw.line(screen, (0,0,0), (0, screen_h/2), (screen_w, screen_h/2))
 
-    pygame.draw.rect(screen, (0,0,0), (screen_w/2 - 200, screen_h/3, 400, 75))
+
+    #pygame.draw.rect(screen, (0,0,0), (screen_w/2 - 200, screen_h/3, 400, 75))
 
     if mouse_pressed[0]:
         level1_init = True
