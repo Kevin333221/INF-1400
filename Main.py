@@ -219,7 +219,7 @@ while running:
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
     
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
-    pygame.draw.rect(alpha_screen, (0,0,0,155), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 21)
+    pygame.draw.rect(screen, (0, 0, 0, 20), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 2)
 
     # Lines
     pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
