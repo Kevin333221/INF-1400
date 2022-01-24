@@ -32,7 +32,7 @@ pygame.display.set_icon(logo)
 my_font = pygame.font.SysFont('Times New Roman', 30)
 main_title = my_font.render("Welcome to this game!", False, (255, 255, 255))
 
-# Levels Background
+# Levels Background 
 main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg'), (screen_w, screen_h))
 level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
 level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
@@ -90,7 +90,6 @@ def check_for_quit():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-            exit()
     pygame.display.update()
 
 def restart_level1(ball1, user):
