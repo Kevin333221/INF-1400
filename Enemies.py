@@ -12,7 +12,7 @@ class basic_enemy:
         self.h = 40
         self.color = color
         self.xspeed = 0.5
-        self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites/logo.png'), (50, 40))
+        self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites\logo.png'), (50, 40))
         self.line_of_death = 150
         #self.color = ((random.randint(0,255)), (random.randint(0,255)), (random.randint(0,255)))
 

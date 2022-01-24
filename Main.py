@@ -26,7 +26,7 @@ logo = pygame.image.load('Sprites/logo.png')
 pygame.display.set_icon(logo)
 
 # Sprites
-main_hub_button = pygame.image.load('Sprites/Button.png')
+button = pygame.image.load('Sprites\Button.png')
 #main_hub_button = pygame.transform.smoothscale(pygame.image.load('Sprites/main_hub_button'), ())
 
 # Fonts and texts
@@ -214,7 +214,7 @@ while running:
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
 
-    screen.blit(main_hub_button, (screen_w/2 - main_title.get_width()/2, screen_h/4))
+    screen.blit(button, (screen_w/2 - button.get_width()/2, screen_h/4))
 
     if mouse_pressed[0]:
         level1_init = True

@@ -7,9 +7,7 @@ class player:
         self.h = 15
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.pos = Vector2((screen_w/2 - self.w/2), self.screen_h - 100)
-        self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites/player.png'),(self.w, 50))
-        
+        self.pos = Vector2((screen_w/2 - self.w/2), self.screen_h - 100)        
 
     def walk(self, keys, direction):
         if keys[pygame.K_RIGHT] and self.pos.x + self.w < self.screen_w:
