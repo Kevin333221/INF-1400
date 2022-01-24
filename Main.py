@@ -1,7 +1,5 @@
-from os import remove, system
+from os import remove
 import random
-from tracemalloc import start
-from turtle import st
 import pygame
 import Player
 import Enemies
@@ -45,10 +43,6 @@ mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
-
-# User, Enemies
-user = Player.player(screen_w, screen_h)
-ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
 def creating_enemies(num_of_enemies, enemy_width):
     counter = 0
@@ -127,10 +121,14 @@ def dead():
 
 def level1():
     level1_start = False
-    enemies = creating_enemies(num_of_enemies, 100)
+    enemies = creating_enemies(26, 100)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
+    
+    # User, Enemies
+    user = Player.player(screen_w, screen_h)
+    ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
     while level1_start == False:
         for event in pygame.event.get():
@@ -210,8 +208,14 @@ def exit_menu():
 
 def options():
     options_running = True
+    options_screen_size = my_font_60.render("Change screen size", False, (255, 255, 255))
     while options_running:
         screen.fill((40, 40, 40))
+
+
+
+
+        
         check_for_quit()
 
 clock = pygame.time.Clock()
