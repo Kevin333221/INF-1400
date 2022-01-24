@@ -209,7 +209,10 @@ def exit_menu():
     pass
 
 def options():
-    pass
+    options_running = True
+    while options_running:
+        screen.fill((40, 40, 40))
+        check_for_quit()
 
 clock = pygame.time.Clock()
 running = True
@@ -269,7 +272,7 @@ while running:
     if levels_init:
         pass
     if options_init:
-        pass
+        options()
     if exit_init:
         running = False
     check_for_quit()
