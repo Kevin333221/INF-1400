@@ -27,9 +27,6 @@ pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
 logo = pygame.image.load('Sprites/logo.png')
 pygame.display.set_icon(logo)
 
-# Sprites
-
-
 # Fonts and texts
 my_font_30 = pygame.font.SysFont('Times New Roman', 30)
 my_font_60 = pygame.font.SysFont('Times New Roman', 60)
@@ -177,13 +174,16 @@ def level1():
                         if x.pos.x + x.w >= x.screen_w:
                             Enemies.basic_enemy.dir_right = False
                             for y in enemies:
-                                y.pos.y += 5
+                                y.pos.y += y.h_change
                         if x.pos.x <= 0:
                             Enemies.basic_enemy.dir_right = True                
                             for y in enemies:
-                                y.pos.y += 5
+                                y.pos.y += y.h_change
                         x.update()
                         x.draw(screen)
+
+                    if x.pos.y + 5 >= screen_h - x.line_of_death:
+                        ball1.dead = True
             else:
                 screen.fill((40, 40, 40))
                 screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
@@ -217,19 +217,20 @@ while running:
 
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
-    
-    screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
-    pygame.draw.rect(screen, (0, 0, 0, 20), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 2)
 
     # Lines
     #pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
     #pygame.draw.line(screen, (0,0,0), (0, screen_h/2), (screen_w, screen_h/2))
 
+    # Start Button
+    if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 and mouse_pos[1] < screen_h/3 + main_start.get_height():
+        pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
+        if mouse_pressed[0]:
+            level1_init = True
+    else:
+        pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
 
-    #pygame.draw.rect(screen, (0,0,0), (screen_w/2 - 200, screen_h/3, 400, 75))
-
-    if mouse_pressed[0]:
-        level1_init = True
+    screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
 
     # Init levels
     if level1_init:
