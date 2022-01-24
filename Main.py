@@ -146,6 +146,7 @@ def level1():
         while level1_start:
             screen.blit(level1_BG, (0,0))
             clock.tick(60)
+            enemies.clear()
 
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
@@ -183,6 +184,8 @@ def level1():
             else:
                 screen.fill((40, 40, 40))
                 screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
+                ball1.dir.x = 0
+                ball1.dir.y = 0
             
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
