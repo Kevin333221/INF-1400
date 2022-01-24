@@ -222,8 +222,8 @@ while running:
     pygame.draw.rect(screen, (0, 0, 0, 20), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 2)
 
     # Lines
-    pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
-    pygame.draw.line(screen, (0,0,0), (0, screen_h/2), (screen_w, screen_h/2))
+    #pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
+    #pygame.draw.line(screen, (0,0,0), (0, screen_h/2), (screen_w, screen_h/2))
 
 
     #pygame.draw.rect(screen, (0,0,0), (screen_w/2 - 200, screen_h/3, 400, 75))
