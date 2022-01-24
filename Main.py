@@ -26,14 +26,13 @@ logo = pygame.image.load('Sprites/logo.png')
 pygame.display.set_icon(logo)
 
 # Sprites
-button = pygame.image.load('Sprites\Button.png')
-#main_hub_button = pygame.transform.smoothscale(pygame.image.load('Sprites/main_hub_button'), ())
+
 
 # Fonts and texts
 my_font = pygame.font.SysFont('Times New Roman', 30)
 main_title = my_font.render("Welcome to this game!", False, (255, 255, 255))
 
-# Levels
+# Levels Background
 main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg'), (screen_w, screen_h))
 level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
 level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
@@ -214,7 +213,11 @@ while running:
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
 
-    screen.blit(button, (screen_w/2 - button.get_width()/2, screen_h/4))
+    # Lines
+    pygame.draw.line(screen, (0,0,0), (screen_w/2, 0), (screen_w/2, screen_h))
+    pygame.draw.line(screen, (0,0,0), (0, screen_h/2), (screen_w, screen_h/2))
+
+    pygame.draw.rect(screen, (0,0,0), (screen_w/2 - 200, screen_h/3, 400, 75))
 
     if mouse_pressed[0]:
         level1_init = True
