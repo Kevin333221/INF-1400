@@ -7,7 +7,7 @@ import Ball
 import precode
 from pygame import Vector2
 
-screen_w = 800
+screen_w = 1000
 screen_h = 600
 
 num_of_enemies = 45
