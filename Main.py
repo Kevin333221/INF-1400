@@ -7,8 +7,8 @@ import Ball
 import precode
 from pygame import Vector2
 
-screen_w = 1400
-screen_h = 800
+screen_w = 800
+screen_h = 600
 
 num_of_enemies = 45
 universal_speed = 6
@@ -97,12 +97,12 @@ def restart_level1(ball1, user):
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
     check_for_quit()
 
-def dead():
+def dead(ball):
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
 
-    while ball1.dead:  
+    while ball.dead:  
         mouse_pos = pygame.mouse.get_pos()
         mouse_clicked = pygame.mouse.get_pressed()
         screen.fill((40, 40, 40))
@@ -113,7 +113,7 @@ def dead():
             pygame.draw.rect(screen, (0, 80, 80), again_rect)
             if mouse_clicked[0]:
                 # Star over Again
-                ball1.dead = False
+                ball.dead = False
         else:
             pygame.draw.rect(screen, (255, 80, 80), again_rect)
         check_for_quit()
@@ -195,7 +195,7 @@ def level1():
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 enemies.clear()
-                dead()
+                dead(ball1.dead)
                 restart_level1(ball1, user)
                 enemies = creating_enemies(num_of_enemies, 100)
                 level1_start = False
