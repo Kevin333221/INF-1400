@@ -1,5 +1,6 @@
 from os import remove
 import random
+from tkinter import Y
 import pygame
 import Player
 import Enemies
@@ -27,6 +28,7 @@ pygame.display.set_icon(logo)
 
 # Fonts and texts
 my_font_60 = pygame.font.SysFont('Times New Roman', 60)
+my_font_30 = pygame.font.SysFont('Times New Roman', 30)
 main_title = my_font_60.render("Welcome to this game!", False, (255, 255, 255))
 main_start = my_font_60.render("Start", False, (255, 255, 255))
 main_levels = my_font_60.render("Levels", False, (255, 255, 255))
@@ -208,11 +210,25 @@ def exit_menu():
 
 def options():
     options_running = True
-    options_screen_size = my_font_60.render("Change screen size", False, (255, 255, 255))
+    options_screen_size = my_font_30.render("Change screen size: ", False, (255, 255, 255))
+    screen_size = False
+    
     while options_running:
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pressed = pygame.mouse.get_pressed()
         screen.fill((40, 40, 40))
 
+        # Options Title
+        screen.blit(main_options, (screen_w/2 - main_options.get_width()/2, screen_h/6))
 
+        # Screen size picker
+        pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
+        screen.blit(options_screen_size, (screen_w/2 - main_title.get_width()/2 + 10, screen_h/3 + options_screen_size.get_height()/2))
+        pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 3)
+        if (mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height() - 10) or screen_size:
+            pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
+        else:
+            pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
 
 
         
@@ -242,7 +258,8 @@ while running:
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
-
+    pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 3)
+    
     # Levels Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 + 100 and mouse_pos[1] < screen_h/3 + 100 + main_start.get_height():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
@@ -251,6 +268,7 @@ while running:
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
     screen.blit(main_levels, (screen_w/2 - main_levels.get_width()/2, screen_h/3 + 100))
+    pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()), 3)
 
     # Option Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 + 200 and mouse_pos[1] < screen_h/3 + 200 + main_start.get_height():
@@ -260,6 +278,7 @@ while running:
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 200, main_title.get_width(), main_start.get_height()))
     screen.blit(main_options, (screen_w/2 - main_options.get_width()/2, screen_h/3 + 200))
+    pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 200, main_title.get_width(), main_start.get_height()), 3)
 
     # Exit Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 + 300 and mouse_pos[1] < screen_h/3 + 300 + main_start.get_height():
@@ -269,6 +288,7 @@ while running:
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
     screen.blit(main_exit, (screen_w/2 - main_exit.get_width()/2, screen_h/3 + 300))
+    pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()), 3)
 
     # Init levels
     if level1_init:
