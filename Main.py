@@ -8,8 +8,8 @@ import Ball
 import precode
 from pygame import Vector2
 
-screen_w = 1000
-screen_h = 600
+screen_w = 1400
+screen_h = 800
 
 num_of_enemies = 45
 universal_speed = 6
@@ -211,6 +211,11 @@ def exit_menu():
 def options():
     options_running = True
     options_screen_size = my_font_30.render("Change screen size: ", False, (255, 255, 255))
+    size_800x600 = my_font_30.render("800x600", False, (255, 255, 255))
+    size_1200x800 = my_font_30.render("1200x800", False, (255, 255, 255))
+    size_1600x800 = my_font_30.render("1600x800", False, (255, 255, 255))
+    size_1600x1000 = my_font_30.render("1600x1000", False, (255, 255, 255))
+
     screen_size = False
     
     while options_running:
@@ -226,12 +231,31 @@ def options():
         screen.blit(options_screen_size, (screen_w/2 - main_title.get_width()/2 + 10, screen_h/3 + options_screen_size.get_height()/2))
         pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 3)
         if (mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height() - 10) or screen_size:
-            pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height()*4:
+                screen_size = True
+            else:
+                screen_size = False
+                
+            pygame.draw.rect(screen, (50, 80, 80),   (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*4))
+            pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*4), 2)
+            
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height():
+                pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() + 2), 2)
+            screen.blit(size_800x600, (screen_w/2 + 100, screen_h/3 + 10))
+
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 + main_start.get_height() and mouse_pos[1] < screen_h/3 + main_start.get_height()*2:
+                pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10 + main_start.get_height(), main_title.get_width()/2 - 10, main_start.get_height() + 2), 2)
+            
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 + main_start.get_height()*2 and mouse_pos[1] < screen_h/3 + main_start.get_height()*3:
+                pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10 + main_start.get_height()*2, main_title.get_width()/2 - 10, main_start.get_height() + 2), 2)
+            
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 + main_start.get_height()*3 and mouse_pos[1] < screen_h/3 + main_start.get_height()*4:
+                pygame.draw.rect(screen, (60, 255, 255), (screen_w/2, screen_h/3 + 10 + main_start.get_height()*3, main_title.get_width()/2 - 10, main_start.get_height()), 2)
+            
         else:
+            pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
-
-
-        
+            
         check_for_quit()
 
 clock = pygame.time.Clock()
