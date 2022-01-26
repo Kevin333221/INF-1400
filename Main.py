@@ -228,7 +228,6 @@ def exit_menu():
     exit_text = my_font_30.render("Exit", False, (255, 255, 255))
 
     while runs:
-
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
 
