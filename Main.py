@@ -216,8 +216,9 @@ def options(options_init):
     size_1200x800 = my_font_30.render("1200x800", False, (255, 255, 255))
     size_1600x800 = my_font_30.render("1600x800", False, (255, 255, 255))
     size_1600x1000 = my_font_30.render("1600x1000", False, (255, 255, 255))
-    #screen_w = 1400
-    #screen_h = 800
+    
+    global screen_w
+    global screen_h
 
     screen_size = False
     
