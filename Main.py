@@ -123,6 +123,7 @@ def dead(ball):
     check_for_quit()
 
 def level1():
+    level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     level1_start = False
     enemies = creating_enemies(26, 100)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
@@ -198,16 +199,16 @@ def level1():
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 enemies.clear()
-                dead(ball1.dead)
+                dead(ball1)
                 restart_level1(ball1, user)
-                enemies = creating_enemies(num_of_enemies, 100)
+                enemies = creating_enemies(26, 100)
                 level1_start = False
 
             check_for_quit()
         check_for_quit()
 
 def exit_menu():
-    
+
     pass
 
 def options(options_init):
