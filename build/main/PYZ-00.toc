@@ -999,37 +999,9 @@
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\__init__.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.appdirs',
+  ('pkg_resources._vendor',
    'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\appdirs.py',
-   'PYMODULE'),
-  ('win32com.shell.shellcon',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\win32comext\\shell\\shellcon.py',
-   'PYMODULE'),
-  ('win32com.shell',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\win32comext\\shell\\__init__.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging._structures',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.pyparsing',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\pyparsing.py',
-   'PYMODULE'),
-  ('uuid',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\uuid.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.__about__',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.version',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\__init__.py',
    'PYMODULE'),
   ('pkg_resources._vendor.packaging.tags',
    'C:\\Users\\Kevin Mathias '
@@ -1095,37 +1067,65 @@
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\distutils\\fancy_getopt.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.utils',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
-   'PYMODULE'),
   ('pkg_resources._vendor.packaging._typing',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_typing.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.requirements',
+  ('pkg_resources._vendor.packaging.utils',
    'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._structures',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
    'PYMODULE'),
   ('pkg_resources._vendor.packaging._compat',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_compat.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
-   'PYMODULE'),
   ('pkg_resources._vendor.packaging.specifiers',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\specifiers.py',
    'PYMODULE'),
+  ('pkg_resources._vendor.packaging.requirements',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.appdirs',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\appdirs.py',
+   'PYMODULE'),
+  ('win32com.shell.shellcon',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\win32comext\\shell\\shellcon.py',
+   'PYMODULE'),
+  ('win32com.shell',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\win32comext\\shell\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.version',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.__about__',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\pyparsing.py',
+   'PYMODULE'),
+  ('uuid',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\uuid.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
   ('pkg_resources._vendor.packaging.markers',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\packaging\\markers.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\pkg_resources\\_vendor\\__init__.py',
    'PYMODULE'),
   ('pkg_resources.extern',
    'C:\\Users\\Kevin Mathias '
@@ -1135,10 +1135,6 @@
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\imp.py',
    'PYMODULE'),
-  ('stringprep',
-   'C:\\Users\\Kevin Mathias '
-   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\stringprep.py',
-   'PYMODULE'),
   ('_py_abc',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\_py_abc.py',
@@ -1146,6 +1142,10 @@
   ('tracemalloc',
    'C:\\Users\\Kevin Mathias '
    'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('stringprep',
+   'C:\\Users\\Kevin Mathias '
+   'Bergan\\AppData\\Local\\Programs\\Python\\Python310\\lib\\stringprep.py',
    'PYMODULE'),
   ('precode', 'C:\\Python UiT\\Assignment 1\\INF-1400\\precode.py', 'PYMODULE'),
   ('Ball', 'C:\\Python UiT\\Assignment 1\\INF-1400\\Ball.py', 'PYMODULE'),
