@@ -207,7 +207,7 @@ def level1():
         check_for_quit()
 
 def exit_menu():
-
+    
     pass
 
 def options(options_init):
@@ -300,8 +300,6 @@ def options(options_init):
         else:
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
-
-        exit_menu()
         pygame.display.update()
         check_for_quit()
 
@@ -321,6 +319,7 @@ while running:
     mouse_pressed = pygame.mouse.get_pressed()
     clock.tick(60)
 
+    main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
     
