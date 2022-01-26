@@ -217,6 +217,7 @@ def options(options_init):
     size_1200x800 = my_font_30.render("1200x800", False, (255, 255, 255))
     size_1600x800 = my_font_30.render("1600x800", False, (255, 255, 255))
     size_1600x1000 = my_font_30.render("1600x1000", False, (255, 255, 255))
+    size_fullscreen = my_font_30.render('Fullscreen', False, (255, 255, 255))
     
     global screen_w
     global screen_h
@@ -245,18 +246,20 @@ def options(options_init):
         else:
             pygame.draw.rect(screen, (50, 80, 80), (50, 50, 50, 50))
 
+        # Back Button
         pygame.draw.rect(screen, (255, 255, 255), (50, 50, 50, 50) , 2)
         pygame.draw.line(screen, (255, 255, 255), (60, 60), (90, 90), 3)
         pygame.draw.line(screen, (255, 255, 255), (60, 90), (90, 60), 3)
 
+
         if (mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height() - 10) or screen_size:
-            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height()*4:
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height()*5:
                 screen_size = True
             else:
                 screen_size = False
                 
-            pygame.draw.rect(screen, (50, 80, 80),   (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*4))
-            pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*4), 2)
+            pygame.draw.rect(screen, (50, 80, 80),   (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*5))
+            pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height()*5), 2)
     
             if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height():
                 rect_800x600 = pygame.Rect(screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() + 2)
@@ -297,6 +300,17 @@ def options(options_init):
                     screen_h = 1000
                     pygame.display.set_mode((screen_w, screen_h))
             screen.blit(size_1600x1000, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_1600x1000.get_width()/2), screen_h/3 + 10 + size_1600x1000.get_height()/2 + main_start.get_height()*3))
+
+            if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 + main_start.get_height()*4 and mouse_pos[1] < screen_h/3 + main_start.get_height()*5:
+                rect_fullscreen = pygame.Rect(screen_w/2, screen_h/3 + 10 + main_start.get_height()*4, main_title.get_width()/2 - 10, main_start.get_height())
+                pygame.draw.rect(screen, (60, 255, 255), rect_fullscreen, 2)
+                if mouse_pressed[0]:
+                    click.play()
+                    pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+                    size = pygame.display.get_window_size()
+                    screen_w = size[0]
+                    screen_h = size[1]
+            screen.blit(size_fullscreen, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_fullscreen.get_width()/2), screen_h/3 + 10 + size_fullscreen.get_height()/2 + main_start.get_height()*4))
 
         else:
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
