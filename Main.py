@@ -304,26 +304,12 @@ def options(options_init):
         pygame.display.update()
         check_for_quit()
 
-clock = pygame.time.Clock()
-running = True
-level1_init = False
-levels_init = False
-options_init = False
-exit_init = False
-click.set_volume(0.5)
-main_song.set_volume(0.5)
-main_song.play()
+def buttons():
+    global level1_init
+    global options_init
+    global levels_init
+    global exit_init
 
-# Game Loop
-while running:
-    mouse_pos = pygame.mouse.get_pos()
-    mouse_pressed = pygame.mouse.get_pressed()
-    clock.tick(60)
-
-    main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
-    screen.blit(main_hub_BG, (0,0))
-    screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
-    
     # Start Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 and mouse_pos[1] < screen_h/3 + main_start.get_height():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
@@ -367,6 +353,28 @@ while running:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
     screen.blit(main_exit, (screen_w/2 - main_exit.get_width()/2, screen_h/3 + 300))
     pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()), 3)
+
+clock = pygame.time.Clock()
+running = True
+level1_init = False
+levels_init = False
+options_init = False
+exit_init = False
+click.set_volume(0.5)
+main_song.set_volume(0.5)
+main_song.play()
+
+# Game Loop
+while running:
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_pressed = pygame.mouse.get_pressed()
+    clock.tick(60)
+
+    main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
+    screen.blit(main_hub_BG, (0,0))
+    screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
+    
+    buttons()
 
     # Init levels
     if level1_init:
