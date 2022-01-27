@@ -7,8 +7,8 @@ import Ball
 import precode
 from pygame import K_ESCAPE, Vector2
 
-screen_w = 1400
-screen_h = 800
+screen_w = 1200
+screen_h = 600
 
 num_of_enemies = 45
 universal_speed = 6
