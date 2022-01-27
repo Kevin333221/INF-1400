@@ -134,7 +134,9 @@ def dead(ball):
     check_for_quit()
 
 def level1():
+
     global level1_start
+    global level1_init
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = creating_enemies(26, 100)
@@ -145,11 +147,14 @@ def level1():
     # User, Enemies
     user = Player.player(screen_w, screen_h)
     ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
+    print("Display")
 
-    while level1_start == False:
+    while level1_init:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                print("Pressed Something")
                 if event.key == pygame.K_SPACE:
+                    print("Pressed Space")
                     level1_start = True
         
         screen.blit(level1_BG, (0,0))
@@ -300,7 +305,7 @@ def exit_menu():
                     runs = False
         pygame.display.update()
 
-def options(options_init):
+def options():
     options_screen_size = my_font_30.render("Change screen size: ", False, (255, 255, 255))
     size_800x600 = my_font_30.render("800x600", False, (255, 255, 255))
     size_1200x800 = my_font_30.render("1200x800", False, (255, 255, 255))
@@ -310,6 +315,7 @@ def options(options_init):
     
     global screen_w
     global screen_h
+    global options_init
 
     screen_size = False
     
@@ -331,6 +337,7 @@ def options(options_init):
              pygame.draw.rect(screen, (255, 80, 80), (50, 50, 50, 50))
              if mouse_pressed[0]:
                 click.play()
+                options_init = False
                 pygame.display.update()
                 return 0
         else:
@@ -494,7 +501,7 @@ while running:
     if levels_init:
         pass
     if options_init:
-        options_init = options(options_init)
+        options()
     if exit_init:
         running = False
     check_for_quit()
