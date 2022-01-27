@@ -134,8 +134,9 @@ def dead(ball):
     check_for_quit()
 
 def level1():
+    global level1_start
+
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
-    level1_start = False
     enemies = creating_enemies(26, 100)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
@@ -221,6 +222,8 @@ def exit_menu():
     runs = True
     global running
     global options_init
+    global level1_init
+    global level1_start
 
     resume_text = my_font_30.render("Resume", False, (255, 255, 255))
     options_text = my_font_30.render("Options", False, (255, 255, 255))
@@ -250,18 +253,20 @@ def exit_menu():
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40,  screen_w/3 - 80, block_height - 20), 2)
         
-        # Second Block
+        # Options Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20))
         screen.blit(options_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - options_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - options_text.get_height()/4 + block_height))
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height and mouse_pos[1] < screen_h/4 + 40 + block_height*2 - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
-                runs = False
+                level1_start = False
+                level1_init = False
                 options_init = True
+                runs = False
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
 
-        # Third Block
+        # Rick Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20))
         screen.blit(rick_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - rick_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - rick_text.get_height()/4 + block_height*2))
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*2 and mouse_pos[1] < screen_h/4 + 40 + block_height*3 - 20:
@@ -273,7 +278,7 @@ def exit_menu():
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
 
-        # Forth Block
+        # Exit Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20))
         screen.blit(exit_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - exit_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - exit_text.get_height()/4 + block_height*3))
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*3 and mouse_pos[1] < screen_h/4 + 40 + block_height*4 - 20:
@@ -463,6 +468,7 @@ def buttons():
 clock = pygame.time.Clock()
 running = True
 level1_init = False
+level1_start = False
 levels_init = False
 options_init = False
 exit_init = False
