@@ -1,7 +1,5 @@
 from os import remove
-import os
 import random
-from turtle import screensize
 import pygame
 import Player
 import Enemies
@@ -11,8 +9,6 @@ from pygame import K_ESCAPE, Vector2
 
 screen_w = 1400
 screen_h = 800
-
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100, 100)
 
 num_of_enemies = 45
 universal_speed = 6
@@ -133,6 +129,14 @@ def dead(ball):
         check_for_quit()
     check_for_quit()
 
+def winning_screen(ball):
+    winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
+    screen.fill((40, 40, 40))
+    screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
+    ball.dir.x = 0
+    ball.dir.y = 0
+    exit_menu()
+
 def level1():
 
     global level1_start
@@ -141,20 +145,21 @@ def level1():
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = creating_enemies(26, 100)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
-    winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
-    print("Display")
+    if screen_w >= 1600:
+        ball1 = Ball.basic_ball(screen_w, screen_h, 10)
+    elif screen_w == 1200:
+        ball1 = Ball.basic_ball(screen_w, screen_h, 8)
+    else:
+        ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
 
     while level1_init:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                print("Pressed Something")
                 if event.key == pygame.K_SPACE:
-                    print("Pressed Space")
                     level1_start = True
         
         screen.blit(level1_BG, (0,0))
@@ -208,10 +213,7 @@ def level1():
                     if x.pos.y + 5 >= screen_h - x.line_of_death:
                         ball1.dead = True
             else:
-                screen.fill((40, 40, 40))
-                screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
-                ball1.dir.x = 0
-                ball1.dir.y = 0
+                winning_screen(ball1)
             
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
