@@ -9,6 +9,7 @@ from pygame import K_ESCAPE, Vector2
 
 screen_w = 1200
 screen_h = 600
+scale = screen_w/13
 
 universal_speed = 6
 distance_between_other_enemies = 110
@@ -46,12 +47,13 @@ sang = pygame.mixer.Sound('Sounds/sang.mp3')
 main_song = pygame.mixer.Sound('Sounds/game_song.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
-
-
 def color_picker(value, left_min, left_max, right_min, right_max):
     return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
 
 def enemies_create(array_with_enemies):
+
+    global running
+
     counter = 0
     all_enemies_length = distance_between_other_enemies*len(array_with_enemies)
     enemy_messuring_unit = 0
@@ -84,7 +86,7 @@ def enemies_create(array_with_enemies):
             colorG = color_picker(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
             enemy.color = (colorR, colorG/2, colorG)
             bots.append(enemy)
-        if x == 1:
+        elif x == 1:
             enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, 100, 0)
             if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
                 if enemy.pos.x + enemy.w < screen_w:
@@ -97,40 +99,7 @@ def enemies_create(array_with_enemies):
             bots.append(enemy)
         else:
             print("Invalid ID")
-    return bots
-
-def creating_enemies(num_of_enemies, enemy_width):
-    counter = 0
-    all_enemies_length = distance_between_other_enemies*num_of_enemies
-    enemy_messuring_unit = 0
-
-    # Calculating the total width of x number of enemies on the screen
-    if all_enemies_length > screen_w:
-        while enemy_messuring_unit + distance_between_other_enemies < screen_w:
-            enemy_messuring_unit += distance_between_other_enemies
-    else:
-        while enemy_messuring_unit + distance_between_other_enemies < all_enemies_length:
-            enemy_messuring_unit += distance_between_other_enemies
-
-    enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
-    bots = []
-    enemy_ypos = 40
-
-    # Creating enemies
-    for x in range(num_of_enemies):
-        enemy_xpos = counter*distance_between_other_enemies
-        enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width, 0)
-        if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
-            if enemy.pos.x + enemy.w < screen_w:
-                counter += 1
-            else:
-                enemy.pos.x = enemy_spawn_shift
-                enemy.pos.y += 50
-                enemy_ypos += 50
-                counter = 1
-            bots.append(enemy)
-        else:
-            num_of_enemies -= 1
+            running = False
     return bots
 
 def check_for_quit():
