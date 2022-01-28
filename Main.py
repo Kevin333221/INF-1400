@@ -10,9 +10,8 @@ from pygame import K_ESCAPE, Vector2
 screen_w = 1200
 screen_h = 600
 
-num_of_enemies = 45
 universal_speed = 6
-distance_between_other_enemies = 100
+distance_between_other_enemies = 110
 
 # Pygame init
 pygame.init()
@@ -37,8 +36,6 @@ main_exit = my_font_60.render("Exit", False, (255, 255, 255))
 
 # Levels Background 
 main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg'), (screen_w, screen_h))
-level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
-level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
 
 # Sounds
 mario = pygame.mixer.Sound('Sounds/Mario.mp3')
@@ -48,6 +45,58 @@ ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
 main_song = pygame.mixer.Sound('Sounds/game_song.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
+
+
+def color_picker(value, left_min, left_max, right_min, right_max):
+    return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
+
+def enemies_create(array_with_enemies):
+    counter = 0
+    all_enemies_length = distance_between_other_enemies*len(array_with_enemies)
+    enemy_messuring_unit = 0
+
+    # Calculating the total width of x number of enemies on the screen
+    if all_enemies_length > screen_w:
+        while enemy_messuring_unit + distance_between_other_enemies < screen_w:
+            enemy_messuring_unit += distance_between_other_enemies
+    else:
+        while enemy_messuring_unit + distance_between_other_enemies < all_enemies_length:
+            enemy_messuring_unit += distance_between_other_enemies
+
+    enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
+    bots = []
+    enemy_ypos = 40
+
+    for x in array_with_enemies:
+        enemy_xpos = counter*distance_between_other_enemies
+        if x == 0:
+            enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, 100, 0)
+            if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
+                if enemy.pos.x + enemy.w < screen_w:
+                    counter += 1
+                else:
+                    enemy.pos.x = enemy_spawn_shift
+                    enemy.pos.y += 50
+                    enemy_ypos += 50
+                    counter = 1
+            colorR = color_picker(screen_w - enemy.pos.x, 0, screen_w, 0, 255)
+            colorG = color_picker(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
+            enemy.color = (colorR, colorG/2, colorG)
+            bots.append(enemy)
+        if x == 1:
+            enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, 100, 0)
+            if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
+                if enemy.pos.x + enemy.w < screen_w:
+                    counter += 1
+                else:
+                    enemy.pos.x = enemy_spawn_shift
+                    enemy.pos.y += 50
+                    enemy_ypos += 50
+                    counter = 1
+            bots.append(enemy)
+        else:
+            print("Invalid ID")
+    return bots
 
 def creating_enemies(num_of_enemies, enemy_width):
     counter = 0
@@ -61,10 +110,6 @@ def creating_enemies(num_of_enemies, enemy_width):
     else:
         while enemy_messuring_unit + distance_between_other_enemies < all_enemies_length:
             enemy_messuring_unit += distance_between_other_enemies
-
-    # Calculating the width of the enemies depending on the screen size
-    if enemy_width >= distance_between_other_enemies:
-        enemy_width = distance_between_other_enemies - 10
 
     enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
     bots = []
@@ -131,19 +176,27 @@ def dead(ball):
 
 def winning_screen(ball):
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
+    next_level_text = my_font_60.render("Wanna go to next level?", False, (255, 255, 255))
+    press_space_text = my_font_60.render("Just press space", False, (255, 255, 255))
     screen.fill((40, 40, 40))
-    screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/2))
+    screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/4))
+    screen.blit(next_level_text, (screen_w/2 - next_level_text.get_width()/2, screen_h/3))
+    screen.blit(press_space_text, (screen_w/2 - press_space_text.get_width()/2, screen_h/2))
     ball.dir.x = 0
     ball.dir.y = 0
-    exit_menu()
+    check_for_quit()
 
 def level1():
 
     global level1_start
     global level1_init
+    global level2_init
+
+    arr_enemies = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
-    enemies = creating_enemies(26, 100)
+    enemies = enemies_create(arr_enemies)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
     
@@ -194,6 +247,100 @@ def level1():
             if len(enemies) != 0:
                 for x in enemies:
                     hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
+                    if hits_an_enemy and x.health == 1:
+                        ball_bounce.play()
+                        ball1.dir = hits_an_enemy * ball1.speed
+                        enemies.remove(x)
+                    elif hits_an_enemy and x.health == 2:
+                        ball_bounce.play()
+                        ball1.dir = hits_an_enemy * ball1.speed
+                        x.color = (100, 100, 100)
+                    else:
+                        if x.pos.x + x.w >= x.screen_w:
+                            Enemies.basic_enemy.dir_right = False
+                            for y in enemies:
+                                y.pos.y += y.h_change
+                        if x.pos.x <= 0:
+                            Enemies.basic_enemy.dir_right = True                
+                            for y in enemies:
+                                y.pos.y += y.h_change
+                    x.update()
+                    x.draw(screen)
+
+                    if x.pos.y + 5 >= screen_h - x.line_of_death:
+                        ball1.dead = True
+            else:
+                level1_init = False
+                level1_start = False
+                level2_init = True
+            
+            # Checks if the ball is out of bottom of the screen
+            if ball1.dead:
+                enemies.clear()
+                dead(ball1)
+                restart_level1(ball1, user)
+                enemies = enemies_create(arr_enemies)
+                level1_start = False
+            check_for_quit()
+        check_for_quit()
+
+def level2():
+    
+    global level2_start
+    global level2_init
+
+    level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
+    enemies = creating_enemies(1, 100)
+    start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
+    level1_title = my_font_60.render("Level 2 - Solid State", False, (255, 255, 255))
+    
+    # User, Enemies
+    user = Player.player(screen_w, screen_h)
+    if screen_w >= 1600:
+        ball1 = Ball.basic_ball(screen_w, screen_h, 10)
+    elif screen_w == 1200:
+        ball1 = Ball.basic_ball(screen_w, screen_h, 8)
+    else:
+        ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
+
+    while level2_init:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    level2_start = True
+        
+        screen.blit(level2_BG, (0,0))
+        screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
+        
+        # "Start by pressing enter" 
+        screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
+        
+        # Preview of player and ball
+        ball1.draw(screen)
+        user.draw(screen)
+
+        while level2_start:
+            screen.blit(level2_BG, (0,0))
+            clock.tick(60)
+
+            # Checks if the user presses Right-key og the Left-key
+            keys = pygame.key.get_pressed()
+            user.walk(keys, universal_speed)
+
+            # Checks if the ball hits the player
+            if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+                ball_bounce.play()
+                user.ball_hit(ball1, universal_speed)
+
+            # Renderer
+            ball1.update()
+            ball1.draw(screen)
+            user.draw(screen)
+
+            # Enemies Method Init
+            if len(enemies) != 0:
+                for x in enemies:
+                    hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
                     if hits_an_enemy:
                         ball_bounce.play()
                         ball1.dir = hits_an_enemy * ball1.speed
@@ -220,11 +367,11 @@ def level1():
                 enemies.clear()
                 dead(ball1)
                 restart_level1(ball1, user)
-                enemies = creating_enemies(26, 100)
-                level1_start = False
+                enemies = creating_enemies(num_of_enemies, 100)
+                level2_start = False
             check_for_quit()
         check_for_quit()
-
+    
 def exit_menu():
     runs = True
     global running
@@ -478,6 +625,8 @@ clock = pygame.time.Clock()
 running = True
 level1_init = False
 level1_start = False
+level2_init = False
+level2_start = False
 levels_init = False
 options_init = False
 exit_init = False
@@ -500,6 +649,10 @@ while running:
     # Init levels
     if level1_init:
         level1()
+
+    if level2_init:
+        level2()
+    
     if levels_init:
         pass
     if options_init:
