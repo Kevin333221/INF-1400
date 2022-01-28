@@ -47,6 +47,7 @@ main_song = pygame.mixer.Sound('Sounds/game_song.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
 
+
 def color_picker(value, left_min, left_max, right_min, right_max):
     return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
 
