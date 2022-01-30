@@ -3,7 +3,7 @@ import pygame
 
 class player:
     def __init__(self, screen_w, screen_h):
-        self.w = 200
+        self.w = screen_w/8
         self.h = 15
         self.screen_w = screen_w
         self.screen_h = screen_h

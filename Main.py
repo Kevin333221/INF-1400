@@ -212,7 +212,7 @@ def level1():
             
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
-            user.walk(keys, universal_speed)
+            user.walk(keys, ball_speed)
 
             # Checks if the ball hits the player
             if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
