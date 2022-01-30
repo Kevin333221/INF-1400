@@ -11,7 +11,6 @@ from pygame import K_ESCAPE, Vector2
 screen_w = 1200
 screen_h = 600
 
-universal_speed = 6
 clock_tick = 60
 
 # Pygame init
@@ -185,9 +184,9 @@ def level1():
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    ball_speed = int(screen_h/100)
-    ball1 = Ball.basic_ball(screen_w, screen_h, ball_speed)
-
+    object_speed = int(screen_h/120)
+    ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
+    
     while level1_init:
         clock.tick(clock_tick)
         for event in pygame.event.get():
@@ -212,12 +211,12 @@ def level1():
             
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
-            user.walk(keys, ball_speed)
+            user.walk(keys, object_speed)
 
             # Checks if the ball hits the player
             if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
                 ball_bounce.play()
-                user.ball_hit(ball1, ball_speed)
+                user.ball_hit(ball1, object_speed)
 
             # Renderer
             ball1.update()
@@ -283,7 +282,7 @@ def level2():
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
     enemies = enemies_create(arr)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
-    level1_title = my_font_60.render("Level 2 - Solid State", False, (255, 255, 255))
+    level1_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
@@ -292,7 +291,7 @@ def level2():
     elif screen_w == 1200:
         ball1 = Ball.basic_ball(screen_w, screen_h, 8)
     else:
-        ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
+        ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
 
     while level2_init:
         for event in pygame.event.get():
@@ -318,12 +317,12 @@ def level2():
 
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
-            user.walk(keys, universal_speed)
+            user.walk(keys, object_speed)
 
             # Checks if the ball hits the player
             if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
                 ball_bounce.play()
-                user.ball_hit(ball1, universal_speed)
+                user.ball_hit(ball1, object_speed)
 
             # Renderer
             ball1.update()
