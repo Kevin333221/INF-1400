@@ -1,5 +1,6 @@
 from os import remove
 import random
+import sys
 import pygame
 import Player
 import Enemies
@@ -9,10 +10,9 @@ from pygame import K_ESCAPE, Vector2
 
 screen_w = 1200
 screen_h = 600
-scale = screen_w/13
 
 universal_speed = 6
-distance_between_other_enemies = 110
+clock_tick = 60
 
 # Pygame init
 pygame.init()
@@ -51,50 +51,56 @@ def color_picker(value, left_min, left_max, right_min, right_max):
     return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
 
 def enemies_create(array_with_enemies):
-
     global running
 
     counter = 0
-    all_enemies_length = distance_between_other_enemies*len(array_with_enemies)
+    enemy_width = 110
+    all_enemies_length = enemy_width*len(array_with_enemies)
     enemy_messuring_unit = 0
+
+    scale = screen_w/14
+    enemy_width = scale
+    enemy_height = screen_h/14
 
     # Calculating the total width of x number of enemies on the screen
     if all_enemies_length > screen_w:
-        while enemy_messuring_unit + distance_between_other_enemies < screen_w:
-            enemy_messuring_unit += distance_between_other_enemies
+        while enemy_messuring_unit + enemy_width < screen_w:
+            enemy_messuring_unit += enemy_width
     else:
-        while enemy_messuring_unit + distance_between_other_enemies < all_enemies_length:
-            enemy_messuring_unit += distance_between_other_enemies
+        while enemy_messuring_unit + enemy_width < all_enemies_length:
+            enemy_messuring_unit += enemy_width
 
-    enemy_spawn_shift = (screen_w - enemy_messuring_unit)/2 + 5
+    enemy_spawn_shift = scale
     bots = []
     enemy_ypos = 40
 
     for x in array_with_enemies:
-        enemy_xpos = counter*distance_between_other_enemies
+        enemy_xpos = counter*enemy_width
         if x == 0:
-            enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, 100, 0)
+            counter += 1
+        elif x == 1:
+            enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height, 0)
             if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
-                if enemy.pos.x + enemy.w < screen_w:
+                if enemy.pos.x + enemy.w + scale < screen_w:
                     counter += 1
                 else:
                     enemy.pos.x = enemy_spawn_shift
-                    enemy.pos.y += 50
-                    enemy_ypos += 50
-                    counter = 1
+                    enemy.pos.y += enemy_height + 10
+                    enemy_ypos += enemy_height + 10
+                    counter = 1  
             colorR = color_picker(screen_w - enemy.pos.x, 0, screen_w, 0, 255)
             colorG = color_picker(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
             enemy.color = (colorR, colorG/2, colorG)
             bots.append(enemy)
-        elif x == 1:
-            enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, 100, 0)
+        elif x == 2:
+            enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height, 0)
             if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
-                if enemy.pos.x + enemy.w < screen_w:
+                if enemy.pos.x + enemy.w + scale < screen_w:
                     counter += 1
                 else:
                     enemy.pos.x = enemy_spawn_shift
-                    enemy.pos.y += 50
-                    enemy_ypos += 50
+                    enemy.pos.y += enemy_height + 10
+                    enemy_ypos += enemy_height + 10
                     counter = 1
             bots.append(enemy)
         else:
@@ -102,17 +108,17 @@ def enemies_create(array_with_enemies):
             running = False
     return bots
 
-def check_for_quit():
+def check_for_quit(event):
     global running
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_ESCAPE:
-                exit_menu()
-    pygame.display.update()
+    if event.type == pygame.QUIT:
+        running = False
+        pygame.quit()
+        sys.exit()
+
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_ESCAPE:
+            exit_menu()
  
 def restart_level1(ball1, user):
     ball1.dead = False
@@ -120,7 +126,8 @@ def restart_level1(ball1, user):
     ball1.pos.y = screen_h - 110
     ball1.dir = pygame.Vector2(random.randint(-universal_speed, universal_speed), -universal_speed)
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
-    check_for_quit()
+    for event in pygame.event.get():
+        check_for_quit(event)
 
 def dead(ball):
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
@@ -141,8 +148,12 @@ def dead(ball):
                 ball.dead = False
         else:
             pygame.draw.rect(screen, (255, 80, 80), again_rect)
-        check_for_quit()
-    check_for_quit()
+        for event in pygame.event.get():
+            check_for_quit(event)
+        pygame.display.update()
+    
+    for event in pygame.event.get():
+        check_for_quit(event)
 
 def winning_screen(ball):
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
@@ -157,37 +168,37 @@ def winning_screen(ball):
     check_for_quit()
 
 def level1():
-
     global level1_start
     global level1_init
     global level2_init
-
-    arr_enemies = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                   0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    global clock_tick
+    global running
+    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = enemies_create(arr_enemies)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
+
+    clock.tick(clock_tick)
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    if screen_w >= 1600:
-        ball1 = Ball.basic_ball(screen_w, screen_h, 10)
-    elif screen_w == 1200:
-        ball1 = Ball.basic_ball(screen_w, screen_h, 8)
-    else:
-        ball1 = Ball.basic_ball(screen_w, screen_h, universal_speed)
+    ball_speed = int(screen_h/100)
+    ball1 = Ball.basic_ball(screen_w, screen_h, ball_speed)
 
     while level1_init:
+        clock.tick(clock_tick)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level1_start = True
+            check_for_quit(event)
         
         screen.blit(level1_BG, (0,0))
         screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
-        
+
         # "Start by pressing enter" 
         screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
         
@@ -197,8 +208,8 @@ def level1():
 
         while level1_start:
             screen.blit(level1_BG, (0,0))
-            clock.tick(60)
-
+            clock.tick(clock_tick)
+            
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
             user.walk(keys, universal_speed)
@@ -206,7 +217,7 @@ def level1():
             # Checks if the ball hits the player
             if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
                 ball_bounce.play()
-                user.ball_hit(ball1, universal_speed)
+                user.ball_hit(ball1, ball_speed)
 
             # Renderer
             ball1.update()
@@ -225,6 +236,7 @@ def level1():
                         ball_bounce.play()
                         ball1.dir = hits_an_enemy * ball1.speed
                         x.color = (100, 100, 100)
+                        x.health -= 1
                     else:
                         if x.pos.x + x.w >= x.screen_w:
                             Enemies.basic_enemy.dir_right = False
@@ -251,16 +263,25 @@ def level1():
                 restart_level1(ball1, user)
                 enemies = enemies_create(arr_enemies)
                 level1_start = False
-            check_for_quit()
-        check_for_quit()
+
+            for event in pygame.event.get():
+                check_for_quit(event)
+            pygame.display.update()  
+
+        for event in pygame.event.get():
+            check_for_quit(event)
+        pygame.display.update()
 
 def level2():
     
     global level2_start
     global level2_init
 
+    arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
-    enemies = creating_enemies(1, 100)
+    enemies = enemies_create(arr)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 2 - Solid State", False, (255, 255, 255))
     
@@ -278,6 +299,8 @@ def level2():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level2_start = True
+            check_for_quit(event)
+        pygame.display.update()
         
         screen.blit(level2_BG, (0,0))
         screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
@@ -291,7 +314,7 @@ def level2():
 
         while level2_start:
             screen.blit(level2_BG, (0,0))
-            clock.tick(60)
+            clock.tick(clock_tick)
 
             # Checks if the user presses Right-key og the Left-key
             keys = pygame.key.get_pressed()
@@ -337,10 +360,16 @@ def level2():
                 enemies.clear()
                 dead(ball1)
                 restart_level1(ball1, user)
-                enemies = creating_enemies(num_of_enemies, 100)
+                enemies = enemies_create(arr)
                 level2_start = False
-            check_for_quit()
-        check_for_quit()
+                
+            for event in pygame.event.get():
+                check_for_quit(event)
+            pygame.display.update()        
+        
+        for event in pygame.event.get():
+            check_for_quit(event)
+        pygame.display.update()
     
 def exit_menu():
     runs = True
@@ -351,7 +380,7 @@ def exit_menu():
 
     resume_text = my_font_30.render("Resume", False, (255, 255, 255))
     options_text = my_font_30.render("Options", False, (255, 255, 255))
-    rick_text = my_font_30.render("Rick Roll", False, (255, 255, 255))
+    rick_text = my_font_30.render("Free Money", False, (255, 255, 255))
     exit_text = my_font_30.render("Exit", False, (255, 255, 255))
 
     while runs:
@@ -398,7 +427,10 @@ def exit_menu():
             if mouse_pressed[0]:
                 if main_song.play():
                     main_song.stop()
-                rick.play()
+                if rick.play():
+                    pass
+                else:
+                    rick.play()
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
 
@@ -415,13 +447,10 @@ def exit_menu():
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                runs = False
-                running = False
-             
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     runs = False
+            check_for_quit(event)
         pygame.display.update()
 
 def options():
@@ -435,6 +464,7 @@ def options():
     global screen_w
     global screen_h
     global options_init
+    global clock_tick
 
     screen_size = False
     
@@ -484,6 +514,7 @@ def options():
                     screen_h = 600
                     pygame.display.set_mode((screen_w, screen_h))
                     pygame.mouse.set_pos(screen_w/2, screen_h/4)
+                    
             screen.blit(size_800x600, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_800x600.get_width()/2), screen_h/3 + 10 + size_800x600.get_height()/2))
 
             # 1200x800 Button
@@ -539,7 +570,9 @@ def options():
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
         pygame.display.update()
-        check_for_quit()
+
+        for event in pygame.event.get():
+            check_for_quit(event)
 
 def buttons():
     global level1_init
@@ -590,6 +623,8 @@ def buttons():
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
     screen.blit(main_exit, (screen_w/2 - main_exit.get_width()/2, screen_h/3 + 300))
     pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()), 3)
+    
+    pygame.display.update()
 
 clock = pygame.time.Clock()
 running = True
@@ -608,25 +643,27 @@ main_song.play()
 while running:
     mouse_pos = pygame.mouse.get_pos()
     mouse_pressed = pygame.mouse.get_pressed()
-    clock.tick(60)
+
+    clock.tick(clock_tick)
 
     main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
     screen.blit(main_hub_BG, (0,0))
     screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
-    
+
     buttons()
 
     # Init levels
     if level1_init:
         level1()
-
     if level2_init:
         level2()
-    
     if levels_init:
         pass
     if options_init:
         options()
     if exit_init:
         running = False
-    check_for_quit()
+
+    for event in pygame.event.get():
+        check_for_quit(event)
+    pygame.display.update()
