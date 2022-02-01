@@ -122,8 +122,9 @@ def check_for_quit(event):
 def restart_level1(ball1, user):
     ball1.dead = False
     ball1.pos.x = screen_w/2
-    ball1.pos.y = screen_h - 110
-    ball1.dir = pygame.Vector2(random.randint(-universal_speed, universal_speed), -universal_speed)
+    ball1.pos.y = screen_h - 110 
+    object_speed = int(screen_h/120)
+    ball1.dir = pygame.Vector2(random.randint(-object_speed, object_speed), -object_speed)
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
     for event in pygame.event.get():
         check_for_quit(event)
@@ -172,8 +173,9 @@ def level1():
     global level2_init
     global clock_tick
     global running
-    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = enemies_create(arr_enemies)
@@ -275,9 +277,11 @@ def level2():
     
     global level2_start
     global level2_init
+    
+    object_speed = int(screen_h/120)
 
-    arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
     enemies = enemies_create(arr)
@@ -376,6 +380,9 @@ def exit_menu():
     global options_init
     global level1_init
     global level1_start
+    global level2_init
+    global level2_start
+    global levels_init
 
     resume_text = my_font_30.render("Resume", False, (255, 255, 255))
     options_text = my_font_30.render("Options", False, (255, 255, 255))
@@ -411,8 +418,12 @@ def exit_menu():
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height and mouse_pos[1] < screen_h/4 + 40 + block_height*2 - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
+                pygame.mouse.set_pos(screen_w/2, screen_h/4)
                 level1_start = False
                 level1_init = False
+                level2_start = False
+                level2_init = False
+                levels_init = False
                 options_init = True
                 runs = False
         else:
@@ -573,6 +584,37 @@ def options():
         for event in pygame.event.get():
             check_for_quit(event)
 
+def levels():
+
+    global levels_init
+
+    scale_w = screen_w/3 - 20 - 20
+    levels_level1 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level1.png'), (screen_w/5, screen_h/5))
+    levels_level2 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level2.png'), (screen_w/5, screen_h/5))
+
+    levels_level1_text = my_font_30.render("Level 1", False, (255, 255, 255))
+    levels_level2_text = my_font_30.render("Level 2", False, (255, 255, 255))
+
+    while levels_init:
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pressed = pygame.mouse.get_pressed()
+
+        screen.fill((40, 40, 40))
+
+        shift = 40
+
+        # Level Images
+        screen.blit(levels_level1, (shift + scale_w*0, shift))
+        screen.blit(levels_level2, (shift + scale_w*1, shift))
+
+        # Level Texts
+        screen.blit(levels_level1_text, (shift + scale_w*0 + levels_level1.get_width()/2 - levels_level1_text.get_width()/2, levels_level1.get_height() + shift))
+        screen.blit(levels_level2_text, (shift + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + shift))
+
+        for event in pygame.event.get():
+            check_for_quit(event)
+        pygame.display.update()
+
 def buttons():
     global level1_init
     global options_init
@@ -657,7 +699,7 @@ while running:
     if level2_init:
         level2()
     if levels_init:
-        pass
+        levels()
     if options_init:
         options()
     if exit_init:
