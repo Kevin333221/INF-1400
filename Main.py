@@ -129,14 +129,6 @@ def restart_level1(ball1, user):
     for event in pygame.event.get():
         check_for_quit(event)
 
-def ball_check(ball, user, enemies, arr_enemies, level_init):
-    if ball.dead:
-        enemies.clear()
-        dead(ball)
-        enemies = enemies_create(arr_enemies)
-        restart_level1(ball, user)
-        level_init = False
-
 def dead(ball):
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
@@ -220,7 +212,7 @@ def enemies_mechanics(enemies, ball):
         x.draw(screen)
 
         if x.pos.y + 5 >= screen_h - x.line_of_death:
-            ball1.dead = True
+            ball.dead = True
 
 def level1():
     global level1_init
@@ -235,7 +227,7 @@ def level1():
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = enemies_create(arr_enemies)
-    start_text = my_font_60.render("Start by pressing space, Use your arrow-keys", False, (255, 255, 255))
+    start_text = my_font_60.render("Start by pressing space, Use your arrow keys", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
 
     clock.tick(clock_tick)
@@ -277,7 +269,12 @@ def level1():
                 level2_init = True
             
             # Checks if the ball is out of bottom of the screen
-            ball_check(ball1, user, enemies, arr_enemies, level1_init)
+            if ball1.dead:
+                enemies.clear()
+                dead(ball1)
+                restart_level1(ball1, user)
+                enemies = enemies_create(arr_enemies)
+                level1_start = False
 
             for event in pygame.event.get():
                 check_for_quit(event)
@@ -442,6 +439,8 @@ def options():
     size_1600x1000 = my_font_30.render("1600x1000", False, (255, 255, 255))
     size_fullscreen = my_font_30.render('Fullscreen', False, (255, 255, 255))
     
+    audio_title = my_font_30.render("Master Volume", False, (255, 255, 255))
+
     global screen_w
     global screen_h
     global options_init
@@ -458,9 +457,11 @@ def options():
         screen.blit(main_options, (screen_w/2 - main_options.get_width()/2, screen_h/6))
 
         # Screen size picker
-        pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
+        base_unit = pygame.Rect(screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height())
+        base_unit_height = main_start.get_height()
+        pygame.draw.rect(screen, (50, 80, 80), base_unit)
         screen.blit(options_screen_size, (screen_w/2 - main_title.get_width()/2 + 10, screen_h/3 + options_screen_size.get_height()/2))
-        pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 3)
+        pygame.draw.rect(screen, (255, 255, 255), base_unit, 3)
 
         # Back Button
         if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > 50 and mouse_pos[1] < 100:
@@ -476,6 +477,14 @@ def options():
         pygame.draw.line(screen, (255, 255, 255), (60, 60), (90, 90), 3)
         pygame.draw.line(screen, (255, 255, 255), (60, 90), (90, 60), 3)
 
+        # Audio Picker
+        base_unit.y += base_unit_height
+        pygame.draw.rect(screen, (50, 80, 80), base_unit)
+        screen.blit(audio_title, (base_unit.x + 10, base_unit.y + audio_title.get_height()/2))
+        pygame.draw.rect(screen, (255, 255, 255), base_unit, 3)
+
+
+        # Screen Size Picker
         if (mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height() - 10) or screen_size:
             if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height()*5:
                 screen_size = True
