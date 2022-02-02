@@ -235,7 +235,7 @@ def level1():
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = enemies_create(arr_enemies)
-    start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
+    start_text = my_font_60.render("Start by pressing space, Use your arrow-keys", False, (255, 255, 255))
     level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
 
     clock.tick(clock_tick)
