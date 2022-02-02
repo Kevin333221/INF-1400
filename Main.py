@@ -168,7 +168,6 @@ def winning_screen(ball):
     check_for_quit()
 
 def level1():
-    global level1_start
     global level1_init
     global level2_init
     global clock_tick
@@ -190,6 +189,7 @@ def level1():
     ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
     
     while level1_init:
+        level1_start = False
         clock.tick(clock_tick)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -274,8 +274,6 @@ def level1():
         pygame.display.update()
 
 def level2():
-    
-    global level2_start
     global level2_init
     
     object_speed = int(screen_h/120)
@@ -298,6 +296,7 @@ def level2():
         ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
 
     while level2_init:
+        level2_start = False
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -453,6 +452,7 @@ def exit_menu():
                 runs = False
                 running = False
                 pygame.quit()
+                sys.exit()
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
 
@@ -670,11 +670,10 @@ def buttons():
 clock = pygame.time.Clock()
 running = True
 level1_init = False
-level1_start = False
 level2_init = False
-level2_start = False
 levels_init = False
 options_init = False
+current_level = level1_init
 exit_init = False
 click.set_volume(0.5)
 main_song.set_volume(0.5)
