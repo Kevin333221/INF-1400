@@ -167,11 +167,57 @@ def winning_screen(ball):
     ball.dir.y = 0
     check_for_quit()
 
+def level_mechanics(user, ball1, object_speed):
+    clock.tick(clock_tick)
+            
+    # Checks if the user presses Right-key og the Left-key
+    keys = pygame.key.get_pressed()
+    user.walk(keys, object_speed)
+
+    # Checks if the ball hits the player
+    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
+        ball_bounce.play()
+        user.ball_hit(ball1, object_speed)
+
+    # Renderer
+    ball1.update()
+    ball1.draw(screen)
+    user.draw(screen)
+
+def enemies_mechanics(enemies, ball):
+    for x in enemies:
+        hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball.pos, ball.r, ball.dir)
+        if hits_an_enemy and x.health == 1:
+            ball_bounce.play()
+            ball.dir = hits_an_enemy * ball.speed
+            enemies.remove(x)
+        elif hits_an_enemy and x.health == 2:
+            ball_bounce.play()
+            ball.dir = hits_an_enemy * ball.speed
+            x.color = (100, 100, 100)
+            x.health -= 1
+        else:
+            if x.pos.x + x.w >= x.screen_w:
+                Enemies.basic_enemy.dir_right = False
+                for y in enemies:
+                    y.pos.y += y.h_change
+            if x.pos.x <= 0:
+                Enemies.basic_enemy.dir_right = True                
+                for y in enemies:
+                    y.pos.y += y.h_change
+        x.update()
+        x.draw(screen)
+
+        if x.pos.y + 5 >= screen_h - x.line_of_death:
+            ball1.dead = True
+
 def level1():
     global level1_init
     global level2_init
     global clock_tick
     global running
+    
+    object_speed = int(screen_h/120)
 
     arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -185,7 +231,6 @@ def level1():
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    object_speed = int(screen_h/120)
     ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
     
     while level1_init:
@@ -209,49 +254,12 @@ def level1():
 
         while level1_start:
             screen.blit(level1_BG, (0,0))
-            clock.tick(clock_tick)
             
-            # Checks if the user presses Right-key og the Left-key
-            keys = pygame.key.get_pressed()
-            user.walk(keys, object_speed)
-
-            # Checks if the ball hits the player
-            if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
-                ball_bounce.play()
-                user.ball_hit(ball1, object_speed)
-
-            # Renderer
-            ball1.update()
-            ball1.draw(screen)
-            user.draw(screen)
+            level_mechanics(user, ball1, object_speed)
 
             # Enemies Method Init
             if len(enemies) != 0:
-                for x in enemies:
-                    hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
-                    if hits_an_enemy and x.health == 1:
-                        ball_bounce.play()
-                        ball1.dir = hits_an_enemy * ball1.speed
-                        enemies.remove(x)
-                    elif hits_an_enemy and x.health == 2:
-                        ball_bounce.play()
-                        ball1.dir = hits_an_enemy * ball1.speed
-                        x.color = (100, 100, 100)
-                        x.health -= 1
-                    else:
-                        if x.pos.x + x.w >= x.screen_w:
-                            Enemies.basic_enemy.dir_right = False
-                            for y in enemies:
-                                y.pos.y += y.h_change
-                        if x.pos.x <= 0:
-                            Enemies.basic_enemy.dir_right = True                
-                            for y in enemies:
-                                y.pos.y += y.h_change
-                    x.update()
-                    x.draw(screen)
-
-                    if x.pos.y + 5 >= screen_h - x.line_of_death:
-                        ball1.dead = True
+                enemies_mechanics(enemies, ball1)
             else:
                 level1_init = False
                 level1_start = False
@@ -284,20 +292,15 @@ def level2():
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
     enemies = enemies_create(arr)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
-    level1_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
+    level2_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    if screen_w >= 1600:
-        ball1 = Ball.basic_ball(screen_w, screen_h, 10)
-    elif screen_w == 1200:
-        ball1 = Ball.basic_ball(screen_w, screen_h, 8)
-    else:
-        ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
+    ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
 
     while level2_init:
         level2_start = False
-        for event in pygame.event.get():
+        for event in pygame.event.get(): 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level2_start = True
@@ -305,7 +308,7 @@ def level2():
         pygame.display.update()
         
         screen.blit(level2_BG, (0,0))
-        screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
+        screen.blit(level2_title, (screen_w/2 - level2_title.get_width()/2, 10))
         
         # "Start by pressing enter" 
         screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
@@ -316,44 +319,12 @@ def level2():
 
         while level2_start:
             screen.blit(level2_BG, (0,0))
-            clock.tick(clock_tick)
-
-            # Checks if the user presses Right-key og the Left-key
-            keys = pygame.key.get_pressed()
-            user.walk(keys, object_speed)
-
-            # Checks if the ball hits the player
-            if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
-                ball_bounce.play()
-                user.ball_hit(ball1, object_speed)
-
-            # Renderer
-            ball1.update()
-            ball1.draw(screen)
-            user.draw(screen)
+            
+            level_mechanics(user, ball1, object_speed)
 
             # Enemies Method Init
             if len(enemies) != 0:
-                for x in enemies:
-                    hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball1.pos, ball1.r, ball1.dir)
-                    if hits_an_enemy:
-                        ball_bounce.play()
-                        ball1.dir = hits_an_enemy * ball1.speed
-                        enemies.remove(x)
-                    else:
-                        if x.pos.x + x.w >= x.screen_w:
-                            Enemies.basic_enemy.dir_right = False
-                            for y in enemies:
-                                y.pos.y += y.h_change
-                        if x.pos.x <= 0:
-                            Enemies.basic_enemy.dir_right = True                
-                            for y in enemies:
-                                y.pos.y += y.h_change
-                        x.update()
-                        x.draw(screen)
-
-                    if x.pos.y + 5 >= screen_h - x.line_of_death:
-                        ball1.dead = True
+                enemies_mechanics(enemies, ball1)
             else:
                 winning_screen(ball1)
             
@@ -696,6 +667,7 @@ while running:
     if level1_init:
         level1()
     if level2_init:
+        current_level = level2_init
         level2()
     if levels_init:
         levels()
