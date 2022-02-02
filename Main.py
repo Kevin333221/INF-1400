@@ -129,6 +129,14 @@ def restart_level1(ball1, user):
     for event in pygame.event.get():
         check_for_quit(event)
 
+def ball_check(ball, user, enemies, arr_enemies, level_init):
+    if ball.dead:
+        enemies.clear()
+        dead(ball)
+        enemies = enemies_create(arr_enemies)
+        restart_level1(ball, user)
+        level_init = False
+
 def dead(ball):
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
@@ -165,7 +173,10 @@ def winning_screen(ball):
     screen.blit(press_space_text, (screen_w/2 - press_space_text.get_width()/2, screen_h/2))
     ball.dir.x = 0
     ball.dir.y = 0
-    check_for_quit()
+
+    for event in pygame.event.get():
+        check_for_quit(event)
+    pygame.display.update()
 
 def level_mechanics(user, ball1, object_speed):
     clock.tick(clock_tick)
@@ -266,19 +277,11 @@ def level1():
                 level2_init = True
             
             # Checks if the ball is out of bottom of the screen
-            if ball1.dead:
-                enemies.clear()
-                dead(ball1)
-                restart_level1(ball1, user)
-                enemies = enemies_create(arr_enemies)
-                level1_start = False
+            ball_check(ball1, user, enemies, arr_enemies, level1_init)
 
             for event in pygame.event.get():
                 check_for_quit(event)
             pygame.display.update()  
-
-        for event in pygame.event.get():
-            check_for_quit(event)
         pygame.display.update()
 
 def level2():
@@ -300,7 +303,7 @@ def level2():
 
     while level2_init:
         level2_start = False
-        for event in pygame.event.get(): 
+        for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level2_start = True
@@ -338,11 +341,8 @@ def level2():
                 
             for event in pygame.event.get():
                 check_for_quit(event)
-            pygame.display.update()        
-        
-        for event in pygame.event.get():
-            check_for_quit(event)
-        pygame.display.update()
+            pygame.display.update()      
+        pygame.display.update()  
     
 def exit_menu():
     runs = True
@@ -639,6 +639,7 @@ def buttons():
     pygame.display.update()
 
 clock = pygame.time.Clock()
+level_arr = []
 running = True
 level1_init = False
 level2_init = False
