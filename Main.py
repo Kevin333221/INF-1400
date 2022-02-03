@@ -21,6 +21,8 @@ pygame.mixer.init()
 pygame.font.init()
 pygame.display.init()
 
+pygame.mixer.set_num_channels(8)
+
 # Screen init
 screen = pygame.display.set_mode((screen_w, screen_h))
 pygame.display.set_caption('Atari Breakout, The Game, idk, or whatever, jerk')
@@ -40,12 +42,15 @@ main_exit = my_font_60.render("Exit", False, (255, 255, 255))
 main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg'), (screen_w, screen_h))
 
 # Sounds
+level_sounds = pygame.mixer.Channel(1)
+
 mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 rick.set_volume(0.1)
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
-main_song = pygame.mixer.Sound('Sounds/game_song.mp3')
+level1_song = pygame.mixer.Sound('Sounds/game_song.mp3')
+level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
 def map(value, left_min, left_max, right_min, right_max):
@@ -108,20 +113,10 @@ def enemies_create(array_with_enemies):
             print("Invalid ID")
             running = False
     return bots
-
-def check_for_quit(event):
-    global running
-
-    if event.type == pygame.QUIT:
-        running = False
-        pygame.quit()
-        sys.exit()
-
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_ESCAPE:
-            exit_menu()
  
 def restart_level1(ball1, user):
+    global running
+
     ball1.dead = False
     ball1.pos.x = screen_w/2
     ball1.pos.y = screen_h - 110 
@@ -129,9 +124,17 @@ def restart_level1(ball1, user):
     ball1.dir = pygame.Vector2(random.randint(-object_speed, object_speed), -object_speed)
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
     for event in pygame.event.get():
-        check_for_quit(event)
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                exit_menu()
 
 def dead(ball):
+    global running
+
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
@@ -150,14 +153,30 @@ def dead(ball):
                 ball.dead = False
         else:
             pygame.draw.rect(screen, (255, 80, 80), again_rect)
+        
         for event in pygame.event.get():
-            check_for_quit(event)
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    exit_menu()
         pygame.display.update()
     
     for event in pygame.event.get():
-        check_for_quit(event)
-
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                exit_menu()
+    pygame.display.update()
+    
 def winning_screen(ball):
+    global running
+
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
     next_level_text = my_font_60.render("Wanna go to next level?", False, (255, 255, 255))
     press_space_text = my_font_60.render("Just press space", False, (255, 255, 255))
@@ -169,7 +188,13 @@ def winning_screen(ball):
     ball.dir.y = 0
 
     for event in pygame.event.get():
-        check_for_quit(event)
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                exit_menu()
     pygame.display.update()
 
 def level_mechanics(user, ball1, object_speed):
@@ -177,7 +202,7 @@ def level_mechanics(user, ball1, object_speed):
             
     # Checks if the user presses Right-key og the Left-key
     keys = pygame.key.get_pressed()
-    user.walk(keys, object_speed)
+    user.walk(keys, object_speed + 2)
 
     # Checks if the ball hits the player
     if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
@@ -221,6 +246,9 @@ def level1():
     global level2_init
     global clock_tick
     global running
+    global level_sounds
+
+    level_sounds.play(level1_song)
     
     object_speed = int(screen_h/120)
 
@@ -241,11 +269,20 @@ def level1():
     while level1_init:
         level1_start = False
         clock.tick(clock_tick)
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level1_start = True
-            check_for_quit(event)
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    exit_menu()
+        pygame.display.update()
+    
         
         screen.blit(level1_BG, (0,0))
         screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
@@ -259,6 +296,9 @@ def level1():
 
         while level1_start:
             screen.blit(level1_BG, (0,0))
+
+            if level_sounds.get_busy() == False:
+                level_sounds.play(level1_song)
             
             level_mechanics(user, ball1, object_speed)
 
@@ -279,14 +319,25 @@ def level1():
                 level1_start = False
 
             for event in pygame.event.get():
-                check_for_quit(event)
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_ESCAPE:
+                        level1_start = False
+                        exit_menu()
             pygame.display.update()  
         pygame.display.update()
+    pygame.display.update()
 
 def level2():
     global level2_init
+    global running
     
     object_speed = int(screen_h/120)
+
+    level_sounds.play(level2_song)
 
     arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -306,7 +357,13 @@ def level2():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     level2_start = True
-            check_for_quit(event)
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    exit_menu()
         pygame.display.update()
         
         screen.blit(level2_BG, (0,0))
@@ -321,6 +378,9 @@ def level2():
 
         while level2_start:
             screen.blit(level2_BG, (0,0))
+
+            if level_sounds.get_busy() == False:
+                level_sounds.play(level2_song)
             
             level_mechanics(user, ball1, object_speed)
 
@@ -339,7 +399,13 @@ def level2():
                 level2_start = False
                 
             for event in pygame.event.get():
-                check_for_quit(event)
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_ESCAPE:
+                        exit_menu()
             pygame.display.update()      
         pygame.display.update()  
     
@@ -348,9 +414,7 @@ def exit_menu():
     global running
     global options_init
     global level1_init
-    global level1_start
     global level2_init
-    global level2_start
     global levels_init
 
     resume_text = my_font_30.render("Resume", False, (255, 255, 255))
@@ -388,9 +452,7 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 pygame.mouse.set_pos(screen_w/2, screen_h/4)
-                level1_start = False
                 level1_init = False
-                level2_start = False
                 level2_init = False
                 levels_init = False
                 options_init = True
@@ -404,8 +466,6 @@ def exit_menu():
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*2 and mouse_pos[1] < screen_h/4 + 40 + block_height*3 - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
-                if main_song.play():
-                    main_song.stop()
                 if rick.play():
                     pass
                 else:
@@ -427,10 +487,14 @@ def exit_menu():
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
 
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
-                    runs = False
-            check_for_quit(event)
+                    exit_menu()
+            pygame.display.update()  
         pygame.display.update()
 
 def options():
@@ -443,6 +507,7 @@ def options():
     
     audio_title = my_font_30.render("Master Volume", False, (255, 255, 255))
 
+    global running
     global screen_w
     global screen_h
     global options_init
@@ -499,7 +564,9 @@ def options():
                 if mouse_pos[0] > screen_w/2 + 20 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 - 20:
                     node_x = mouse_pos[0]
                     node_y = mouse_pos[1]
-                    main_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    level1_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    level2_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    rick.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
             else:
                 node_chosen = False
         else:
@@ -583,10 +650,16 @@ def options():
         else:
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
-        pygame.display.update()
 
         for event in pygame.event.get():
-            check_for_quit(event)
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    exit_menu()
+        pygame.display.update()  
 
 def levels():
 
@@ -681,7 +754,6 @@ options_init = False
 current_level = level1_init
 exit_init = False
 click.set_volume(0.5)
-main_song.set_volume(0.5)
 
 # Game Loop
 while running:
@@ -710,5 +782,11 @@ while running:
         running = False
 
     for event in pygame.event.get():
-        check_for_quit(event)
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                exit_menu()  
     pygame.display.update()
