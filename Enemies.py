@@ -32,4 +32,3 @@ class harder_enemy(basic_enemy):
         super().__init__(screen_w, screen_h, xpos, ypos, width, height, color)
         self.color = color
         self.health = 2
-        

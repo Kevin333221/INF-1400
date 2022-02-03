@@ -30,7 +30,7 @@ pygame.display.set_icon(logo)
 # Fonts and texts
 my_font_60 = pygame.font.SysFont('Times New Roman', 60)
 my_font_30 = pygame.font.SysFont('Times New Roman', 30)
-main_title = my_font_60.render("Welcome to this game!", False, (255, 255, 255))
+main_title = my_font_60.render("Welcome to Breakout!", False, (255, 255, 255))
 main_start = my_font_60.render("Start", False, (255, 255, 255))
 main_levels = my_font_60.render("Levels", False, (255, 255, 255))
 main_options = my_font_60.render("Options", False, (255, 255, 255))
@@ -682,7 +682,6 @@ current_level = level1_init
 exit_init = False
 click.set_volume(0.5)
 main_song.set_volume(0.5)
-main_song.play()
 
 # Game Loop
 while running:
