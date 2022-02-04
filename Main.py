@@ -1,5 +1,3 @@
-from email.mime import base
-from fcntl import F_SEAL_SHRINK
 from math import sqrt
 from os import remove
 import random
@@ -84,7 +82,12 @@ def enemies_create(array_with_enemies):
     for x in array_with_enemies:
         enemy_xpos = counter*enemy_width
         if x == 0:
-            counter += 1
+            if enemy_xpos + enemy_width + scale < screen_w:
+                counter += 1
+            else:
+                enemy_xpos = enemy_spawn_shift
+                enemy_ypos += enemy_height + 10
+                counter = 1
         elif x == 1:
             enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height, 0)
             if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
@@ -217,30 +220,31 @@ def level_mechanics(user, ball1, object_speed):
 
 def enemies_mechanics(enemies, ball):
     for x in enemies:
-        hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball.pos, ball.r, ball.dir)
-        if hits_an_enemy and x.health == 1:
-            ball_bounce.play()
-            ball.dir = hits_an_enemy * ball.speed
-            enemies.remove(x)
-        elif hits_an_enemy and x.health == 2:
-            ball_bounce.play()
-            ball.dir = hits_an_enemy * ball.speed
-            x.color = (100, 100, 100)
-            x.health -= 1
-        else:
-            if x.pos.x + x.w >= x.screen_w:
-                Enemies.basic_enemy.dir_right = False
-                for y in enemies:
-                    y.pos.y += y.h_change
-            if x.pos.x <= 0:
-                Enemies.basic_enemy.dir_right = True                
-                for y in enemies:
-                    y.pos.y += y.h_change
-        x.update()
-        x.draw(screen)
+        if x != 0:
+            hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball.pos, ball.r, ball.dir)
+            if hits_an_enemy and x.health == 1:
+                ball_bounce.play()
+                ball.dir = hits_an_enemy * ball.speed
+                enemies.remove(x)
+            elif hits_an_enemy and x.health == 2:
+                ball_bounce.play()
+                ball.dir = hits_an_enemy * ball.speed
+                x.color = (100, 100, 100)
+                x.health -= 1
+            else:
+                if x.pos.x + x.w >= x.screen_w:
+                    Enemies.basic_enemy.dir_right = False
+                    for y in enemies:
+                        y.pos.y += y.h_change
+                if x.pos.x <= 0:
+                    Enemies.basic_enemy.dir_right = True                
+                    for y in enemies:
+                        y.pos.y += y.h_change
+            x.update()
+            x.draw(screen)
 
-        if x.pos.y + 5 >= screen_h - x.line_of_death:
-            ball.dead = True
+            if x.pos.y + 5 >= screen_h - x.line_of_death:
+                ball.dead = True
 
 def level1():
     global level1_init
@@ -253,8 +257,7 @@ def level1():
     
     object_speed = int(screen_h/120)
 
-    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
     enemies = enemies_create(arr_enemies)
@@ -511,9 +514,9 @@ def options():
     global running
     global screen_w
     global screen_h
-    global options_init
     global clock_tick
-
+    global options_init
+    
     screen_size = False
 
     node_chosen = False
@@ -541,7 +544,6 @@ def options():
                 click.play()
                 options_init = False
                 pygame.display.update()
-                return 0
         else:
             pygame.draw.rect(screen, (50, 80, 80), (50, 50, 50, 50))
         pygame.draw.rect(screen, (255, 255, 255), (50, 50, 50, 50) , 2)
@@ -663,7 +665,7 @@ def options():
         pygame.display.update()  
 
 def levels():
-
+    global running
     global levels_init
 
     scale_w = screen_w/3 - 20 - 20
@@ -690,7 +692,14 @@ def levels():
         screen.blit(levels_level2_text, (shift + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + shift))
 
         for event in pygame.event.get():
-            check_for_quit(event)
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    levels_init = False
+                    exit_menu()
         pygame.display.update()
 
 def buttons():
@@ -698,6 +707,8 @@ def buttons():
     global options_init
     global levels_init
     global exit_init
+
+    global running
 
     # Start Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 and mouse_pos[1] < screen_h/3 + main_start.get_height():
@@ -737,12 +748,13 @@ def buttons():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
         if mouse_pressed[0]:
             click.play()
-            exit_init = True
+            running = False
+            pygame.quit()
+            sys.exit()
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()))
     screen.blit(main_exit, (screen_w/2 - main_exit.get_width()/2, screen_h/3 + 300))
     pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()), 3)
-    
     pygame.display.update()
 
 clock = pygame.time.Clock()
