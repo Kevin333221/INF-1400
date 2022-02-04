@@ -1,4 +1,5 @@
 from email.mime import base
+from fcntl import F_SEAL_SHRINK
 from math import sqrt
 from os import remove
 import random
