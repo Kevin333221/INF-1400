@@ -79,6 +79,7 @@ def enemies_create(array_with_enemies):
     bots = []
     enemy_ypos = 40
 
+
     for x in array_with_enemies:
         enemy_xpos = counter*enemy_width
         if x == 0:
@@ -253,9 +254,9 @@ def level1():
     global running
     global level_sounds
 
-    level_sounds.play(level1_song)
-    
     object_speed = int(screen_h/120)
+    
+    level_sounds.play(level1_song) 
 
     arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
@@ -273,7 +274,6 @@ def level1():
     while level1_init:
         level1_start = False
         clock.tick(clock_tick)
-
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -338,25 +338,29 @@ def level1():
 def level2():
     global level2_init
     global running
+    global clock_tick
     
     object_speed = int(screen_h/120)
 
     level_sounds.play(level2_song)
 
-    arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
-    enemies = enemies_create(arr)
+    enemies = enemies_create(arr_enemies)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     level2_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
     
+    clock.tick(clock_tick)
+
     # User, Enemies
     user = Player.player(screen_w, screen_h)
     ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
 
     while level2_init:
         level2_start = False
+        clock.tick(clock_tick)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -399,7 +403,7 @@ def level2():
                 enemies.clear()
                 dead(ball1)
                 restart_level1(ball1, user)
-                enemies = enemies_create(arr)
+                enemies = enemies_create(arr_enemies)
                 level2_start = False
                 
             for event in pygame.event.get():
@@ -411,7 +415,8 @@ def level2():
                     if event.key == pygame.K_ESCAPE:
                         exit_menu()
             pygame.display.update()      
-        pygame.display.update()  
+        pygame.display.update()
+    pygame.display.update()
     
 def exit_menu():
     runs = True
@@ -495,10 +500,6 @@ def exit_menu():
                 running = False
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE:
-                    exit_menu()
-            pygame.display.update()  
         pygame.display.update()
 
 def options():
@@ -704,6 +705,7 @@ def levels():
 
 def buttons():
     global level1_init
+    global level2_init
     global options_init
     global levels_init
     global exit_init
