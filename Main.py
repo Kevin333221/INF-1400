@@ -705,7 +705,6 @@ def levels():
 
 def buttons():
     global level1_init
-    global level2_init
     global options_init
     global levels_init
     global exit_init
