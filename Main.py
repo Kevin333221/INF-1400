@@ -52,15 +52,20 @@ level1_song = pygame.mixer.Sound('Sounds/game_song.mp3')
 level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
+# Just a helping function that does the same as the "map()" function from C++
 def map(value, left_min, left_max, right_min, right_max):
     return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
 
+# As the name suggests, here is where the "enemies_create" algorithm is 
 def enemies_create(array_with_enemies):
     global running
 
     counter = 0
     enemy_width = 110
+
+    # Finds the total length that the "enemies" span across the screen
     all_enemies_length = enemy_width*len(array_with_enemies)
+
     enemy_messuring_unit = 0
 
     scale = screen_w/14
@@ -78,8 +83,7 @@ def enemies_create(array_with_enemies):
     enemy_spawn_shift = scale
     bots = []
     enemy_ypos = 40
-
-
+    
     for x in array_with_enemies:
         enemy_xpos = counter*enemy_width
         if x == 0:
