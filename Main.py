@@ -52,15 +52,20 @@ level1_song = pygame.mixer.Sound('Sounds/game_song.mp3')
 level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
+# Just a helping function that does the same as the "map()" function from C++
 def map(value, left_min, left_max, right_min, right_max):
     return right_min + ((right_max - right_min) / (left_max - left_min)) * (value - left_min)
 
+# As the name suggests, here is where the "enemies_create" algorithm is 
 def enemies_create(array_with_enemies):
     global running
 
     counter = 0
     enemy_width = 110
+
+    # Finds the total length that the "enemies" span across the screen
     all_enemies_length = enemy_width*len(array_with_enemies)
+
     enemy_messuring_unit = 0
 
     scale = screen_w/14
@@ -78,7 +83,7 @@ def enemies_create(array_with_enemies):
     enemy_spawn_shift = scale
     bots = []
     enemy_ypos = 40
-
+    
     for x in array_with_enemies:
         enemy_xpos = counter*enemy_width
         if x == 0:
@@ -253,9 +258,9 @@ def level1():
     global running
     global level_sounds
 
-    level_sounds.play(level1_song)
-    
     object_speed = int(screen_h/120)
+    
+    level_sounds.play(level1_song) 
 
     arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
@@ -273,7 +278,6 @@ def level1():
     while level1_init:
         level1_start = False
         clock.tick(clock_tick)
-
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -338,25 +342,29 @@ def level1():
 def level2():
     global level2_init
     global running
+    global clock_tick
     
     object_speed = int(screen_h/120)
 
     level_sounds.play(level2_song)
 
-    arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_h))
-    enemies = enemies_create(arr)
+    enemies = enemies_create(arr_enemies)
     start_text = my_font_60.render("Start by pressing space", False, (255, 255, 255))
     level2_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
     
+    clock.tick(clock_tick)
+
     # User, Enemies
     user = Player.player(screen_w, screen_h)
     ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
 
     while level2_init:
         level2_start = False
+        clock.tick(clock_tick)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -399,7 +407,7 @@ def level2():
                 enemies.clear()
                 dead(ball1)
                 restart_level1(ball1, user)
-                enemies = enemies_create(arr)
+                enemies = enemies_create(arr_enemies)
                 level2_start = False
                 
             for event in pygame.event.get():
@@ -411,7 +419,8 @@ def level2():
                     if event.key == pygame.K_ESCAPE:
                         exit_menu()
             pygame.display.update()      
-        pygame.display.update()  
+        pygame.display.update()
+    pygame.display.update()
     
 def exit_menu():
     runs = True
@@ -495,10 +504,6 @@ def exit_menu():
                 running = False
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE:
-                    exit_menu()
-            pygame.display.update()  
         pygame.display.update()
 
 def options():
