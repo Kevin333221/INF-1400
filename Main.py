@@ -123,7 +123,7 @@ def enemies_create(array_with_enemies):
             running = False
     return bots
  
-def restart_level1(ball1, user):
+def restart_level(ball1, user):
     global running
 
     ball1.dead = False
@@ -132,6 +132,7 @@ def restart_level1(ball1, user):
     object_speed = int(screen_h/120)
     ball1.dir = pygame.Vector2(random.randint(-object_speed, object_speed), -object_speed)
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -322,7 +323,7 @@ def level1():
             if ball1.dead:
                 enemies.clear()
                 dead(ball1)
-                restart_level1(ball1, user)
+                restart_level(ball1, user)
                 enemies = enemies_create(arr_enemies)
                 level1_start = False
 
@@ -406,7 +407,7 @@ def level2():
             if ball1.dead:
                 enemies.clear()
                 dead(ball1)
-                restart_level1(ball1, user)
+                restart_level(ball1, user)
                 enemies = enemies_create(arr_enemies)
                 level2_start = False
                 
