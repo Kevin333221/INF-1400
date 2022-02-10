@@ -333,7 +333,6 @@ def level1():
                     sys.exit()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
-                        level1_start = False
                         exit_menu()
             pygame.display.update()  
         pygame.display.update()
@@ -421,7 +420,7 @@ def level2():
             pygame.display.update()      
         pygame.display.update()
     pygame.display.update()
-    
+   
 def exit_menu():
     runs = True
     global running
@@ -465,10 +464,7 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 pygame.mouse.set_pos(screen_w/2, screen_h/4)
-                level1_init = False
-                level2_init = False
-                levels_init = False
-                options_init = True
+                options()
                 runs = False
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
@@ -520,7 +516,8 @@ def options():
     global screen_w
     global screen_h
     global clock_tick
-    global options_init
+    
+    options_init = True
     
     screen_size = False
 
