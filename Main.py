@@ -125,7 +125,7 @@ def enemies_create(array_with_enemies):
             sys.exit()
     return bots
  
-def restart_level1(ball1, user):
+def restart_level(ball1, user):
     global running
 
     ball1.dead = False
@@ -134,6 +134,7 @@ def restart_level1(ball1, user):
     object_speed = int(screen_h/120)
     ball1.dir = pygame.Vector2(random.randint(-object_speed, object_speed), -object_speed)
     user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -189,12 +190,8 @@ def winning_screen(ball):
     global running
 
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
-    next_level_text = my_font_60.render("Wanna go to next level?", False, (255, 255, 255))
-    press_space_text = my_font_60.render("Just press space", False, (255, 255, 255))
     screen.fill((40, 40, 40))
     screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/4))
-    screen.blit(next_level_text, (screen_w/2 - next_level_text.get_width()/2, screen_h/3))
-    screen.blit(press_space_text, (screen_w/2 - press_space_text.get_width()/2, screen_h/2))
     ball.dir.x = 0
     ball.dir.y = 0
 
@@ -325,7 +322,7 @@ def level1():
             if ball1.dead:
                 enemies.clear()
                 dead(ball1)
-                restart_level1(ball1, user)
+                restart_level(ball1, user)
                 enemies = enemies_create(arr_enemies)
                 level1_start = False
 
@@ -409,7 +406,7 @@ def level2():
             if ball1.dead:
                 enemies.clear()
                 dead(ball1)
-                restart_level1(ball1, user)
+                restart_level(ball1, user)
                 enemies = enemies_create(arr_enemies)
                 level2_start = False
                 
@@ -630,6 +627,7 @@ def options():
                     screen_h = 800
                     pygame.display.set_mode((screen_w, screen_h))
                     pygame.mouse.set_pos(screen_w/2, screen_h/4)
+                    node_x = ((screen_w/2 + 20) + (screen_w/2 + main_title.get_width()/2 - 10 - 20))/2
             screen.blit(size_1600x800, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_1600x800.get_width()/2), screen_h/3 + 10 + size_1600x800.get_height()/2 + main_start.get_height()*2))
 
             # 1600x1000 Button
