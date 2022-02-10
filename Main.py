@@ -121,6 +121,8 @@ def enemies_create(array_with_enemies):
         else:
             print("Invalid ID")
             running = False
+            pygame.quit()
+            sys.exit()
     return bots
  
 def restart_level1(ball1, user):
@@ -273,7 +275,8 @@ def level1():
     
     # User, Enemies
     user = Player.player(screen_w, screen_h)
-    ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
+    radius = screen_w/100
+    ball1 = Ball.basic_ball(screen_w, screen_h, radius, object_speed)
     
     while level1_init:
         level1_start = False

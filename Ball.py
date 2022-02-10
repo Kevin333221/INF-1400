@@ -5,11 +5,11 @@ from pygame import Vector2
 import pygame
 
 class basic_ball:
-    def __init__(self, screen_w, screen_h, speed):
+    def __init__(self, screen_w, screen_h, radius, speed):
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.pos = pygame.Vector2(screen_w/2, screen_h - 110)
-        self.r = 10
+        self.pos = pygame.Vector2(screen_w/2, self.screen_h - 140)
+        self.r = radius
         self.dir = pygame.Vector2(random.randint(-speed, speed), -speed)
         self.dead = False
         self.speed = speed
