@@ -40,4 +40,5 @@ class basic_ball:
         self.r = screen_w/100
         self.speed = int(screen_w/150)
 
+    def moves(self):
         self.pos += self.dir

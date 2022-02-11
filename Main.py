@@ -43,10 +43,8 @@ main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg
 
 # Sounds
 level_sounds = pygame.mixer.Channel(1)
-mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 rick.set_volume(0.1)
-sang = pygame.mixer.Sound('Sounds/sang.mp3')
 main_song = pygame.mixer.Sound('Sounds/main_song.mp3')
 level1_song = pygame.mixer.Sound('Sounds/Level1.mp3')
 level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
@@ -120,7 +118,10 @@ def enemies_create(array_with_enemies):
                     enemy.pos.x = enemy_spawn_shift
                     enemy.pos.y += enemy_height + 10
                     enemy_ypos += enemy_height + 10
-                    counter = 1
+                    counter = 1    
+            colorR = map(screen_w - enemy.pos.x, 0, screen_w, 0, 255)
+            colorG = map(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
+            enemy.color = (colorR, colorG/3, colorG/2)
             bots.append(enemy)
         else:
             print("Invalid ID")
@@ -132,6 +133,8 @@ def enemies_create(array_with_enemies):
 # As the name suggests again, here is where i restart a level
 def restart_level(ball1, user):
     global running
+
+    dead()
 
     ball1.dead = False
     ball1.pos.x = screen_w/2
@@ -149,14 +152,16 @@ def restart_level(ball1, user):
             if event.key == pygame.K_ESCAPE:
                 exit_menu()
 
-def dead(ball):
+def dead():
     global running
 
     loser_text = my_font_60.render("Wanna play again?", False, (255, 255, 255))
     play_again = my_font_60.render("Oh no, you lost, maybe try again", False, (255, 255, 255))
     again_rect = pygame.Rect(screen_w/2 - 50, screen_h/2 - 52, 100, 45)
 
-    while ball.dead:  
+    dead = True
+
+    while dead:  
         mouse_pos = pygame.mouse.get_pos()
         mouse_clicked = pygame.mouse.get_pressed()
         screen.fill((40, 40, 40))
@@ -167,7 +172,7 @@ def dead(ball):
             pygame.draw.rect(screen, (0, 80, 80), again_rect)
             if mouse_clicked[0]:
                 # Star over Again
-                ball.dead = False
+                dead = False
         else:
             pygame.draw.rect(screen, (255, 80, 80), again_rect)
         
@@ -180,16 +185,6 @@ def dead(ball):
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
         pygame.display.update()
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_ESCAPE:
-                exit_menu()
-    pygame.display.update()
     
 def winning_screen():
     global running
@@ -220,7 +215,9 @@ def enemies_mechanics(enemies, ball):
             elif hits_an_enemy and x.health == 2:
                 ball_bounce.play()
                 ball.dir = hits_an_enemy * ball.speed
-                x.color = (100, 100, 100)
+                colorR = map(screen_w - x.pos.x, 0, screen_w, 0, 255)
+                colorG = map(screen_h - x.pos.y, 0, screen_h - 20, 0, 255)
+                x.color = (colorR, colorG/2, colorG)
                 x.health -= 1
             else:
                 if x.pos.x + x.w >= x.screen_w:
@@ -258,15 +255,19 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
 
     level_init = True
     while level_init:
+        clock.tick(clock_tick)
+
+        # Checking if the screensize has changed
         if enemies[0].screen_w != screen_w:
             enemies.clear()
             enemies = enemies_create(arr_of_enemies)
 
         level_BG = pygame.transform.smoothscale(pygame.image.load(background), (screen_w, screen_w))
+
         user.update_screen_size(screen_w, screen_h)
+        ball1.update(screen_w, screen_h)
         
         level_start = False
-        clock.tick(clock_tick)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -278,6 +279,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
+
         pygame.display.update()
         
         screen.blit(level_BG, (0,0))
@@ -299,6 +301,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
             
             # Renderer
             ball1.update(screen_w, screen_h)
+            ball1.moves()
             ball1.draw(screen)
             user.update(screen_w, ball1)
             user.draw(screen)
@@ -315,7 +318,6 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 enemies.clear()
-                dead(ball1)
                 restart_level(ball1, user)
                 enemies = enemies_create(arr_of_enemies)
                 level_start = False
@@ -338,7 +340,7 @@ def next_level(x):
     if x == 1:
         level1_BG = ('Levels_BG/Level1.jpg')
         level1_title = ("Level 1 - The Beginning")
-        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
+        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
     
     elif x == 2:
         level2_BG = ('Levels_BG/Level2.jpg')
@@ -527,6 +529,10 @@ def options():
                     node_y = mouse_pos[1]
                     level1_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
                     level2_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    level3_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    level4_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    level5_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    main_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
                     rick.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
             else:
                 node_chosen = False
@@ -674,14 +680,12 @@ def buttons():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
         if mouse_pressed[0]:
             click.play()
-            level1_BG = ('Levels_BG/Level1.jpg')
-            level1_title = ("Level 1 - The Beginning")
-            init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
+            next_level(1)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
     pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()), 3)
-    
+     
     # Levels Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 + 100 and mouse_pos[1] < screen_h/3 + 100 + main_start.get_height():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
