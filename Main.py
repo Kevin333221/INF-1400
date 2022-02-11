@@ -355,6 +355,13 @@ def next_level(x):
         level4_title = ("Level 4 - Why so strange?")
         init_level_of_your_choice(level4_BG, level4_title, level4_song, [0, 1, 0, 1, 0, 2, 2, 0, 1, 0, 1, 0,
                                                                          1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1], 5)
+    elif x == 5:
+        level5_BG = ('Levels_BG/Level5.jpg')
+        level5_title = ("Level 5 - Stygging")
+        init_level_of_your_choice(level5_BG, level5_title, level5_song, [1, 1, 0, 0, 2, 0, 0, 2, 0, 0, 1, 1,
+                                                                         0, 0, 1, 1, 0, 2, 2, 0, 1, 1, 0, 0,
+                                                                         0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0], 0)                                                                    
+                                                                        
     else:
         winning_screen()
 
