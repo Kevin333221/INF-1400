@@ -48,8 +48,11 @@ rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 rick.set_volume(0.1)
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
-level1_song = pygame.mixer.Sound('Sounds/game_song.mp3')
+level1_song = pygame.mixer.Sound('Sounds/Level1.mp3')
 level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
+level3_song = pygame.mixer.Sound('Sounds/Level3.mp3')
+level4_song = pygame.mixer.Sound('Sounds/Level4.mp3')
+level5_song = pygame.mixer.Sound('Sounds/Level5.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
 # Just a helping function that does the same as the "map()" function from C++
@@ -322,7 +325,6 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 level_start = False
                 next_level(nextlevel)
 
-            
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
                 enemies.clear()
@@ -339,8 +341,6 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         exit_menu()
-                        enemies.clear()
-                        enemies = enemies_create(arr_of_enemies)
                         level_start = False
             pygame.display.update()  
         pygame.display.update()
@@ -352,11 +352,22 @@ def next_level(x):
         level1_BG = ('Levels_BG/Level1.jpg')
         level1_title = ("Level 1 - The Beginning")
         init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
+    
     elif x == 2:
-        level2_BG = ('Levels_BG/level2.jpg')
+        level2_BG = ('Levels_BG/Level2.jpg')
         level2_title = ("Level 2 - Double Up")
         init_level_of_your_choice(level2_BG, level2_title, level2_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                                                                          1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 3)
+    elif x == 3:
+        level3_BG = ('Levels_BG/Level3.jpg')
+        level3_title = ("Level 3 - It's getting harder")
+        init_level_of_your_choice(level3_BG, level3_title, level3_song, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 4)
+    elif x == 4:
+        level4_BG = ('Levels_BG/Level4.jpg')
+        level4_title = ("Level 4 - Why so strange?")
+        init_level_of_your_choice(level4_BG, level4_title, level4_song, [0, 1, 0, 1, 0, 2, 2, 0, 1, 0, 1, 0,
+                                                                         1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1], 5)
     else:
         winning_screen()
 
@@ -439,7 +450,7 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*4,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
-                running = False
+                running = Falsed
                 pygame.quit()
                 sys.exit()
         else:
