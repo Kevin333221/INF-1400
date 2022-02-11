@@ -186,14 +186,12 @@ def dead(ball):
                 exit_menu()
     pygame.display.update()
     
-def winning_screen(ball):
+def winning_screen():
     global running
 
     winning_text = my_font_60.render("Congratulation, You Win!", False, (255, 255, 255))
     screen.fill((40, 40, 40))
     screen.blit(winning_text, (screen_w/2 - winning_text.get_width()/2, screen_h/4))
-    ball.dir.x = 0
-    ball.dir.y = 0
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -250,7 +248,7 @@ def enemies_mechanics(enemies, ball):
             if x.pos.y + 5 >= screen_h - x.line_of_death:
                 ball.dead = True
 
-def init_level_of_your_choice(background, title, music, arr_of_enemies, next_level):
+def init_level_of_your_choice(background, title, music, arr_of_enemies, nextlevel):
 
     global clock_tick
     global running
@@ -315,9 +313,11 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, next_lev
             if len(enemies) != 0:
                 enemies_mechanics(enemies, ball1)
             else:
+                # When Winnning
                 level_init = False
                 level_start = False
-                next_level()
+                next_level(nextlevel)
+
             
             # Checks if the ball is out of bottom of the screen
             if ball1.dead:
@@ -342,190 +342,18 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, next_lev
         pygame.display.update()
     pygame.display.update()
 
-def level1():
-    global clock_tick
-    global running
-    global level_sounds
-
-    object_speed = int(screen_h/120)
-    
-    level_sounds.play(level1_song) 
-
-    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-
-    level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
-    start_text = my_font_60.render("Start by pressing space, Use your arrow keys", False, (255, 255, 255))
-    level1_title = my_font_60.render("Level 1 - The Beginning", False, (255, 255, 255))
-
-    clock.tick(clock_tick)
-    
-    # User, Ball
-    user = Player.player(screen_w, screen_h)
-    radius = screen_w/100
-    ball1 = Ball.basic_ball(screen_w, screen_h, radius, object_speed)
-    enemies = enemies_create(arr_enemies)
-    
-    level1_init = True
-    while level1_init:
-        level1_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Level1.jpg'), (screen_w, screen_w))
-        ball1.update_screen_size(screen_w, screen_h)
-        user.update_screen_size(screen_w, screen_h)
-
-        level1_start = False
-        clock.tick(clock_tick)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    level1_start = True
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE:
-                    exit_menu()
-        pygame.display.update()
-        
-        screen.blit(level1_BG, (0,0))
-        screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
-
-        # "Start by pressing enter" 
-        screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
-        
-        # Preview of player and ball
-        ball1.draw(screen)
-        user.draw(screen)
-
-        while level1_start:
-            screen.blit(level1_BG, (0,0))
-
-            if level_sounds.get_busy() == False:
-                level_sounds.play(level1_song)
-            
-            level_mechanics(user, ball1, object_speed)
-
-            # Enemies Method Init
-            if len(enemies) != 0:
-                enemies_mechanics(enemies, ball1)
-            else:
-                level1_init = False
-                level1_start = False
-                level2()
-            
-            # Checks if the ball is out of bottom of the screen
-            if ball1.dead:
-                enemies.clear()
-                dead(ball1)
-                restart_level(ball1, user)
-                enemies = enemies_create(arr_enemies)
-                level1_start = False
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_ESCAPE:
-                        exit_menu()
-                        enemies.clear()
-                        enemies = enemies_create(arr_enemies)
-                        level1_start = False
-            pygame.display.update()  
-        pygame.display.update()
-    pygame.display.update()
-
-def level2():
-    global clock_tick
-    global running
-    global level_sounds
-
-    object_speed = int(screen_h/120)
-    
-    level_sounds.play(level2_song) 
-
-    arr_enemies = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-
-    level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_w))
-    start_text = my_font_60.render("Start by pressing space, Use your arrow keys", False, (255, 255, 255))
-    level2_title = my_font_60.render("Level 2 - Double Up", False, (255, 255, 255))
-
-    clock.tick(clock_tick)
-    
-    # User, Ball
-    user = Player.player(screen_w, screen_h)
-    radius = screen_w/100
-    ball1 = Ball.basic_ball(screen_w, screen_h, radius, object_speed)
-    enemies = enemies_create(arr_enemies)
-    
-    level2_init = True
-    while level2_init:
-        level2_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/level2.jpg'), (screen_w, screen_w))
-        ball1.update_screen_size(screen_w, screen_h)
-        user.update_screen_size(screen_w, screen_h)
-
-        level2_start = False
-        clock.tick(clock_tick)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    level2_start = True
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE:
-                    exit_menu()
-        pygame.display.update()
-        
-        screen.blit(level2_BG, (0,0))
-        screen.blit(level2_title, (screen_w/2 - level2_title.get_width()/2, 10))
-
-        # "Start by pressing enter" 
-        screen.blit(start_text, (screen_w/2 - start_text.get_width()/2, screen_h/2))
-        
-        # Preview of player and ball
-        ball1.draw(screen)
-        user.draw(screen)
-
-        while level2_start:
-            screen.blit(level2_BG, (0,0))
-
-            if level_sounds.get_busy() == False:
-                level_sounds.play(level1_song)
-            
-            level_mechanics(user, ball1, object_speed)
-
-            # Enemies Method Init
-            if len(enemies) != 0:
-                enemies_mechanics(enemies, ball1)
-            else:
-                ## INSERT LEVEL 3
-                pass
-            
-            # Checks if the ball is out of bottom of the screen
-            if ball1.dead:
-                enemies.clear()
-                dead(ball1)
-                restart_level(ball1, user)
-                enemies = enemies_create(arr_enemies)
-                level2_start = False
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_ESCAPE:
-                        exit_menu()
-                        enemies.clear()
-                        enemies = enemies_create(arr_enemies)
-                        level2_start = False
-            pygame.display.update()  
-        pygame.display.update()
-    pygame.display.update()
+def next_level(x):
+    if x == 1:
+        level1_BG = ('Levels_BG/Level1.jpg')
+        level1_title = ("Level 1 - The Beginning")
+        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
+    elif x == 2:
+        level2_BG = ('Levels_BG/level2.jpg')
+        level2_title = ("Level 2 - Double Up")
+        init_level_of_your_choice(level2_BG, level2_title, level2_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 3)
+    else:
+        winning_screen()
 
 def exit_menu():
     global running
@@ -533,6 +361,7 @@ def exit_menu():
     resume_text = my_font_30.render("Resume", False, (255, 255, 255))
     options_text = my_font_30.render("Options", False, (255, 255, 255))
     rick_text = my_font_30.render("Free Money", False, (255, 255, 255))
+    back_text = my_font_30.render("Back To Main", False, (255, 255, 255))
     exit_text = my_font_30.render("Exit", False, (255, 255, 255))
 
     runs = True
@@ -583,6 +412,8 @@ def exit_menu():
                     rick.play()
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
+
+        # Back to Main
 
         # Exit Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20))
@@ -771,7 +602,6 @@ def options():
 
 def levels():
     global running
-    global levels_init
 
     scale_w = screen_w/3 - 20 - 20
     levels_level1 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level1.png'), (screen_w/5, screen_h/5))
@@ -780,6 +610,7 @@ def levels():
     levels_level1_text = my_font_30.render("Level 1", False, (255, 255, 255))
     levels_level2_text = my_font_30.render("Level 2", False, (255, 255, 255))
 
+    levels_init = True
     while levels_init:
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
@@ -816,7 +647,9 @@ def buttons():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
         if mouse_pressed[0]:
             click.play()
-            level1()
+            level1_BG = ('Levels_BG/Level1.jpg')
+            level1_title = ("Level 1 - The Beginning")
+            init_level_of_your_choice(level1_BG, level1_title, level1_song, [1], 2)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
@@ -861,11 +694,6 @@ def buttons():
 clock = pygame.time.Clock()
 level_arr = []
 running = True
-level1_init = False
-level2_init = False
-levels_init = False
-options_init = False
-current_level = level1_init
 exit_init = False
 click.set_volume(0.5)
 
