@@ -12,9 +12,12 @@ class basic_enemy:
         self.health = 1
         self.color = color
         self.xspeed = 0.5
-        #self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites/logo.png'), (self.w - self.w/6, self.h))
         self.line_of_death = 200
         self.h_change = 10
+
+    def update_screen_size(self, screen_w, screen_h):
+        self.screen_w = screen_w
+        self.screen_h = screen_h
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))

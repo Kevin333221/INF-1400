@@ -7,7 +7,13 @@ class player:
         self.h = 15
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.pos = Vector2((screen_w/2 - self.w/2), self.screen_h - 100)        
+        self.pos = Vector2((screen_w/2 - self.w/2), self.screen_h - 100)     
+
+    def update_screen_size(self, screen_w, screen_h):
+        self.screen_w = screen_w
+        self.screen_h = screen_h
+        self.w = screen_w/8
+        self.pos = Vector2((screen_w/2 - self.w/2), self.screen_h - 100)     
 
     def walk(self, keys, direction):
         if keys[pygame.K_RIGHT] and self.pos.x + self.w < self.screen_w:
@@ -27,7 +33,6 @@ class player:
             ball.dir.x += -amount_of_force
         else:
              ball.dir.x += abs(amount_of_force)
-
 
     def draw(self, surface):
         itself = pygame.Rect(self.pos.x, self.pos.y, self.w, self.h)

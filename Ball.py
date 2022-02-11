@@ -17,6 +17,10 @@ class basic_ball:
     def draw(self, surface):
         pygame.draw.circle(surface, (255, 255, 255), self.pos, self.r)
 
+    def update_screen_size(self, screen_w, screen_h):
+        self.screen_w = screen_w
+        self.screen_h = screen_h
+
     def update(self):
         if self.pos.x - self.r < 0:
             self.pos.x = self.r
