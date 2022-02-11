@@ -290,7 +290,6 @@ def level1():
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
         pygame.display.update()
-    
         
         screen.blit(level1_BG, (0,0))
         screen.blit(level1_title, (screen_w/2 - level1_title.get_width()/2, 10))
