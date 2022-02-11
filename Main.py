@@ -46,7 +46,6 @@ level_sounds = pygame.mixer.Channel(1)
 mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 rick.set_volume(0.1)
-ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
 main_song = pygame.mixer.Sound('Sounds/main_song.mp3')
 level1_song = pygame.mixer.Sound('Sounds/Level1.mp3')
@@ -54,6 +53,7 @@ level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 level3_song = pygame.mixer.Sound('Sounds/Level3.mp3')
 level4_song = pygame.mixer.Sound('Sounds/Level4.mp3')
 level5_song = pygame.mixer.Sound('Sounds/Level5.mp3')
+ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
 # Just a helping function that does the same as the "map()" function from C++
@@ -208,24 +208,6 @@ def winning_screen():
                 exit_menu()
     pygame.display.update()
 
-# Here is where i check for inputs and drawing things
-def level_mechanics(user, ball1, object_speed):
-    clock.tick(clock_tick)
-            
-    # Checks if the user presses Right-key og the Left-key
-    keys = pygame.key.get_pressed()
-    user.walk(keys, object_speed + 2)
-
-    # Checks if the ball hits the player
-    if precode.intersect_rectangle_circle(user.pos, user.w, user.h, ball1.pos, ball1.r, ball1.dir):
-        ball_bounce.play()
-        user.ball_hit(ball1, object_speed)
-
-    # Renderer
-    ball1.update()
-    ball1.draw(screen)
-    user.draw(screen)
-
 # Here is where i check if the ball hits an enemy and also drawing them
 def enemies_mechanics(enemies, ball):
     for x in enemies:
@@ -261,8 +243,6 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
     global clock_tick
     global running
     global level_sounds
-
-    object_speed = int(screen_h/120)
     
     level_sounds.play(music) 
 
@@ -273,14 +253,17 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
     clock.tick(clock_tick)
     
     user = Player.player(screen_w, screen_h)
-    ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
+    ball1 = Ball.basic_ball(screen_w, screen_h)
     enemies = enemies_create(arr_of_enemies)
 
     level_init = True
     while level_init:
+        if enemies[0].screen_w != screen_w:
+            enemies.clear()
+            enemies = enemies_create(arr_of_enemies)
+
         level_BG = pygame.transform.smoothscale(pygame.image.load(background), (screen_w, screen_w))
         user.update_screen_size(screen_w, screen_h)
-        ball1.update_screen_size(screen_w, screen_h)
         
         level_start = False
         clock.tick(clock_tick)
@@ -307,13 +290,18 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
         ball1.draw(screen)
         user.draw(screen)
 
-        while level_start:
+        while level_start: 
+            clock.tick(clock_tick)
             screen.blit(level_BG, (0,0))
 
             if level_sounds.get_busy() == False:
                 level_sounds.play(music)
             
-            level_mechanics(user, ball1, object_speed)
+            # Renderer
+            ball1.update(screen_w, screen_h)
+            ball1.draw(screen)
+            user.update(screen_w, ball1)
+            user.draw(screen)
 
             # Enemies Method Init
             if len(enemies) != 0:
