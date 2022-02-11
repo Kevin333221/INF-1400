@@ -125,6 +125,7 @@ def enemies_create(array_with_enemies):
             sys.exit()
     return bots
  
+# As the name suggests again, here is where i restart a level
 def restart_level(ball1, user):
     global running
 
@@ -203,6 +204,7 @@ def winning_screen():
                 exit_menu()
     pygame.display.update()
 
+# Here is where i check for inputs and drawing things
 def level_mechanics(user, ball1, object_speed):
     clock.tick(clock_tick)
             
@@ -220,6 +222,7 @@ def level_mechanics(user, ball1, object_speed):
     ball1.draw(screen)
     user.draw(screen)
 
+# Here is where i check if the ball hits an enemy and also drawing them
 def enemies_mechanics(enemies, ball):
     for x in enemies:
         if x != 0:
@@ -248,6 +251,7 @@ def enemies_mechanics(enemies, ball):
             if x.pos.y + 5 >= screen_h - x.line_of_death:
                 ball.dead = True
 
+# The level creation
 def init_level_of_your_choice(background, title, music, arr_of_enemies, nextlevel):
 
     global clock_tick
@@ -342,6 +346,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
         pygame.display.update()
     pygame.display.update()
 
+# Keeps track of what level is playing next
 def next_level(x):
     if x == 1:
         level1_BG = ('Levels_BG/Level1.jpg')
@@ -355,6 +360,7 @@ def next_level(x):
     else:
         winning_screen()
 
+# The exit menu by pressing espace
 def exit_menu():
     global running
 
@@ -413,8 +419,6 @@ def exit_menu():
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
 
-        # Back to Main
-
         # Exit Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20))
         screen.blit(exit_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - exit_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - exit_text.get_height()/4 + block_height*3))
@@ -435,6 +439,7 @@ def exit_menu():
                 sys.exit()
         pygame.display.update()
 
+# The options menu
 def options():
     options_screen_size = my_font_30.render("Change screen size: ", False, (255, 255, 255))
     size_800x600 = my_font_30.render("800x600", False, (255, 255, 255))
@@ -600,6 +605,7 @@ def options():
                     exit_menu()
         pygame.display.update()  
 
+# Displaying the different levels
 def levels():
     global running
 
@@ -638,6 +644,7 @@ def levels():
                     exit_menu()
         pygame.display.update()
 
+# The buttons in "main hub"
 def buttons():
 
     global running
@@ -649,7 +656,7 @@ def buttons():
             click.play()
             level1_BG = ('Levels_BG/Level1.jpg')
             level1_title = ("Level 1 - The Beginning")
-            init_level_of_your_choice(level1_BG, level1_title, level1_song, [1], 2)
+            init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
