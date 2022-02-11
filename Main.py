@@ -42,12 +42,12 @@ main_hub_BG = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Main.jpg
 
 # Sounds
 level_sounds = pygame.mixer.Channel(1)
-
 mario = pygame.mixer.Sound('Sounds/Mario.mp3')
 rick = pygame.mixer.Sound('Sounds/RickRoll.mp3')
 rick.set_volume(0.1)
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 sang = pygame.mixer.Sound('Sounds/sang.mp3')
+main_song = pygame.mixer.Sound('Sounds/main_song.mp3')
 level1_song = pygame.mixer.Sound('Sounds/Level1.mp3')
 level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 level3_song = pygame.mixer.Sound('Sounds/Level3.mp3')
