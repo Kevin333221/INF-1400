@@ -2,6 +2,7 @@ from math import sqrt
 from os import remove
 import random
 import sys
+from turtle import screensize
 import pygame
 import Player
 import Enemies
@@ -271,18 +272,16 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
 
     clock.tick(clock_tick)
     
-    # User, Ball
     user = Player.player(screen_w, screen_h)
-    radius = screen_w/100
-    ball1 = Ball.basic_ball(screen_w, screen_h, radius, object_speed)
+    ball1 = Ball.basic_ball(screen_w, screen_h, object_speed)
     enemies = enemies_create(arr_of_enemies)
-    
+
     level_init = True
     while level_init:
         level_BG = pygame.transform.smoothscale(pygame.image.load(background), (screen_w, screen_w))
-        ball1.update_screen_size(screen_w, screen_h)
         user.update_screen_size(screen_w, screen_h)
-
+        ball1.update_screen_size(screen_w, screen_h)
+        
         level_start = False
         clock.tick(clock_tick)
         for event in pygame.event.get():
@@ -340,8 +339,8 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                     sys.exit()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
-                        exit_menu()
                         level_start = False
+                        exit_menu()
             pygame.display.update()  
         pygame.display.update()
     pygame.display.update()
@@ -450,7 +449,7 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*4,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
-                running = Falsed
+                running = False
                 pygame.quit()
                 sys.exit()
         else:

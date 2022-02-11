@@ -24,7 +24,7 @@ class player:
             self.pos.x -= self.xspeed
 
     def ball_hit(self, ball, speed):
-        where_it_hits = ((self.pos.x + self.w/2) - ball.pos.x)/(self.w/2)
+        where_it_hits = (((self.pos.x + self.w/2) - ball.pos.x)/(self.w/2))
         amount_of_force = speed * where_it_hits
         if ball.dir.y < speed:
             ball.dir.y = speed
@@ -37,4 +37,3 @@ class player:
     def draw(self, surface):
         itself = pygame.Rect(self.pos.x, self.pos.y, self.w, self.h)
         pygame.draw.rect(surface, (180, 0, 0), itself)
-        #surface.blit(self.IMG, (self.pos.x, self.pos.y))
