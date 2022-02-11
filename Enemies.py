@@ -13,7 +13,7 @@ class basic_enemy:
         self.color = color
         self.xspeed = 0.5
         self.line_of_death = 200
-        self.h_change = 10
+        self.h_change = screen_h/50
 
     def update_screen_size(self, screen_w, screen_h):
         self.screen_w = screen_w
