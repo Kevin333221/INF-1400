@@ -375,13 +375,13 @@ def exit_menu():
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
 
-        pygame.draw.rect(screen, (70, 70, 70),    (screen_w/3, screen_h/4, screen_w/3, screen_h/2))
-        pygame.draw.rect(screen, (255, 255, 255), (screen_w/3, screen_h/4, screen_w/3, screen_h/2), 2)
-
-        pygame.draw.rect(screen, (40, 40, 40), (screen_w/3 + 20, screen_h/4 + 20, screen_w/3 - 40, screen_h/2 - 40))
-        pygame.draw.rect(screen, ( 0,  0,  0), (screen_w/3 + 20, screen_h/4 + 20, screen_w/3 - 40, screen_h/2 - 40) , 2)
-
         block_height = (screen_h/2 - 60)/4
+
+        pygame.draw.rect(screen, (70, 70, 70),    (screen_w/3, screen_h/4, screen_w/3, screen_h/2 + block_height))
+        pygame.draw.rect(screen, (255, 255, 255), (screen_w/3, screen_h/4, screen_w/3, screen_h/2 + block_height), 2)
+
+        pygame.draw.rect(screen, (40, 40, 40), (screen_w/3 + 20, screen_h/4 + 20, screen_w/3 - 40, screen_h/2 - 40 + block_height))
+        pygame.draw.rect(screen, ( 0,  0,  0), (screen_w/3 + 20, screen_h/4 + 20, screen_w/3 - 40, screen_h/2 - 40 + block_height) , 2)
         
         # Resume Block
         pygame.draw.rect(screen, (70,  70, 70), (screen_w/3 + 40, screen_h/4 + 40,  screen_w/3 - 80, block_height - 20))
@@ -389,6 +389,7 @@ def exit_menu():
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 and mouse_pos[1] < screen_h/4 + 40 + block_height - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40, screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
+                click.play()
                 runs = False
                 pygame.mouse.set_pos(screen_w/2, screen_h/4)
         else:
@@ -400,6 +401,7 @@ def exit_menu():
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height and mouse_pos[1] < screen_h/4 + 40 + block_height*2 - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
+                click.play()
                 pygame.mouse.set_pos(screen_w/2, screen_h/4)
                 options()
                 runs = False
@@ -419,18 +421,29 @@ def exit_menu():
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
 
-        # Exit Block
+        # Back Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20))
-        screen.blit(exit_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - exit_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - exit_text.get_height()/4 + block_height*3))
+        screen.blit(back_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - back_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - back_text.get_height()/4 + block_height*3))
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*3 and mouse_pos[1] < screen_h/4 + 40 + block_height*4 - 20:
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
+            if mouse_pressed[0]:
+                runs = False
+
+        else:
+            pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
+
+        # Exit Block
+        pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*4,  screen_w/3 - 80, block_height - 20))
+        screen.blit(exit_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - exit_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - exit_text.get_height()/4 + block_height*4))
+        if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*4 and mouse_pos[1] < screen_h/4 + 40 + block_height*5 - 20:
+            pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*4,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
                 running = False
                 pygame.quit()
                 sys.exit()
         else:
-            pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
+            pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*4,  screen_w/3 - 80, block_height - 20), 2)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -648,6 +661,8 @@ def levels():
 def buttons():
 
     global running
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_pressed = pygame.mouse.get_pressed()
 
     # Start Button
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 and mouse_pos[1] < screen_h/3 + main_start.get_height():
@@ -698,16 +713,12 @@ def buttons():
     pygame.draw.rect(screen, (255, 255, 255), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 300, main_title.get_width(), main_start.get_height()), 3)
     pygame.display.update()
 
-clock = pygame.time.Clock()
-level_arr = []
-running = True
-exit_init = False
-click.set_volume(0.5)
+# Main Loop
+def main():
 
-# Game Loop
-while running:
-    mouse_pos = pygame.mouse.get_pos()
-    mouse_pressed = pygame.mouse.get_pressed()
+    global main_hub_BG
+    global main_title
+    global running
 
     clock.tick(clock_tick)
 
@@ -726,3 +737,11 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 exit_menu()  
     pygame.display.update()
+
+clock = pygame.time.Clock()
+running = True
+click.set_volume(0.5)
+
+# Game Loop
+while running:
+    main()
