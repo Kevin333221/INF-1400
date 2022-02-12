@@ -203,12 +203,12 @@ def winning_screen():
                 exit_menu()
     pygame.display.update()
 
-# Here is where i check if the ball hits an enemy and also drawing them
+# Here is where i check if the ball hits an enemy and also drawing them (including powerups)
 def enemies_mechanics(enemies, ball, powerups_list):
     
-    more_balls_powerup_odds = 10
-    stronger_ball_powerup_odds = 2
-    ghost_ball_powerup_odds = 1
+    more_balls_powerup_odds = 5
+    stronger_ball_powerup_odds = 7
+    ghost_ball_powerup_odds = 9
 
     for x in enemies:
         if x != 0:
@@ -216,14 +216,14 @@ def enemies_mechanics(enemies, ball, powerups_list):
             if hits_an_enemy and x.health == 1:
 
                 # Maybe a powerup will spawn
-                dice = random.randint(0, 10)
-                if more_balls_powerup_odds >= dice:
+                dice = random.randint(1, 100)
+                if dice % more_balls_powerup_odds == 0:
                     MB_powerup = More_Balls(screen_w, screen_h, x)
                     powerups_list.append(MB_powerup)
-                if stronger_ball_powerup_odds >= dice:
+                if dice % stronger_ball_powerup_odds == 0:
                     SB_powerup = Stronger_Ball(screen_w, screen_h, x)
                     powerups_list.append(SB_powerup)
-                if ghost_ball_powerup_odds >= dice:
+                if dice % ghost_ball_powerup_odds == 0:
                     GB_powerup = Ghost_Ball(screen_w, screen_h, x)
                     powerups_list.append(GB_powerup)
 
@@ -358,7 +358,9 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         level_start = False
+                        level_sounds.pause()
                         exit_menu()
+                        level_sounds.unpause()
             pygame.display.update()  
         pygame.display.update()
     pygame.display.update()
@@ -463,6 +465,9 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
+                main_song.play()
+                pygame.mouse.set_pos(screen_w/2, screen_h/4)
+                main()
 
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
@@ -707,6 +712,7 @@ def buttons():
     if mouse_pos[0] > screen_w/2 - main_title.get_width()/2 and mouse_pos[0] < screen_w/2 - main_title.get_width()/2 + main_title.get_width() and mouse_pos[1] > screen_h/3 and mouse_pos[1] < screen_h/3 + main_start.get_height():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
         if mouse_pressed[0]:
+            main_song.stop()
             click.play()
             next_level(1)
     else:
@@ -757,27 +763,30 @@ def main():
     global main_title
     global running
 
-    clock.tick(clock_tick)
+    runs = True
+    while runs:
+        clock.tick(clock_tick)
 
-    main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
-    screen.blit(main_hub_BG, (0,0))
-    screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
+        main_hub_BG = pygame.transform.smoothscale(main_hub_BG, (screen_w, screen_h))
+        screen.blit(main_hub_BG, (0,0))
+        screen.blit(main_title, (screen_w/2 - main_title.get_width()/2, screen_h/6))
 
-    buttons()
+        buttons()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_ESCAPE:
-                exit_menu()  
-    pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    exit_menu()  
+        pygame.display.update()
 
 clock = pygame.time.Clock()
 running = True
 click.set_volume(0.5)
+main_song.play()
 
 # Game Loop
 while running:
