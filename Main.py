@@ -210,10 +210,11 @@ def powerups(balls, powerups_list, user):
         if power.pos.x >= user.pos.x and power.pos.x <= user.pos.x + user.w and power.pos.y >= user.pos.y and power.pos.y <= user.pos.y + user.h:
             if isinstance(power, More_Balls):
                 for ball in balls:
-                    new_ball = Ball.Multiple_balls(screen_w, screen_h, ball.pos, (ball.dir.x  - random.randint(-2, 2), ball.dir.y))
+                    new_ball = Ball.Multiple_balls(screen_w, screen_h, (255, 255, 255), ball.pos, (ball.dir.x  - random.randint(-2, 2), ball.dir.y))
                 balls.append(new_ball)
             if isinstance(power, Stronger_Ball):
-                print("Stronger Balls")
+                for ball in balls:
+                    ball.color = (255, 100, 255)
             if isinstance(power, Ghost_Ball):
                 print("Ghost Ball")
             powerups_list.remove(power)
@@ -282,7 +283,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
     clock.tick(clock_tick)
     
     list_of_balls = []
-    ball1 = Ball.basic_ball(screen_w, screen_h)
+    ball1 = Ball.basic_ball(screen_w, screen_h, (255, 255, 255))
     list_of_balls.append(ball1)
 
     user = Player.player(screen_w, screen_h)
@@ -362,7 +363,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 enemies.clear()
                 restart_level(user)
                 user.pos = Vector2((screen_w/2 - user.w/2), user.screen_h - 100)
-                ball1 = Ball.basic_ball(screen_w, screen_h)
+                ball1 = Ball.basic_ball(screen_w, screen_h, (255, 255, 255))
                 list_of_balls.append(ball1)
                 enemies = enemies_create(arr_of_enemies)
                 level_start = False
