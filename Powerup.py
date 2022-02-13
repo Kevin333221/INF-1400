@@ -6,11 +6,11 @@ class Powerups:
         self.screen_w = screen_w
         self.screen_h = screen_h
         self.pos = Vector2(enemy.pos.x + enemy.w/2, enemy.pos.y + enemy.h)
-        self.speed = 2
+        self.speed = 4
         self.r = self.screen_w/150
 
     def draw(self, screen, IMG):
-        screen.blit(IMG, (self.pos.x, self.pos.y))
+        screen.blit(IMG, (self.pos.x - self.r, self.pos.y - self.r))
 
     def update(self):
         self.pos.y += self.speed

@@ -1,4 +1,3 @@
-from asyncio import sleep
 import random
 import pygame
 from pygame import Vector2
@@ -45,9 +44,9 @@ class basic_ball:
 
     def moves(self):
         self.pos += self.dir
-    
-    def upgrade_ball(self, powerup_list):
-        if len(powerup_list) != 0:
-            for power in powerup_list:
-                if type(power) == More_Balls:
-                    print("Yes")
+
+class Multiple_balls(basic_ball):
+    def __init__(self, screen_w, screen_h, pos, dir):
+        super().__init__(screen_w, screen_h)
+        self.dir = Vector2(dir)
+        self.pos = Vector2(pos)

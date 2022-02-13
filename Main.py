@@ -180,7 +180,7 @@ def dead():
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
         pygame.display.update()
-    
+
 def winning_screen():
     global running
 
@@ -198,8 +198,8 @@ def winning_screen():
                 exit_menu()
     pygame.display.update()
 
-def upgrade_ball(balls, powerups_list):
-
+# Powerups
+def powerups(balls, powerups_list, user):
     for power in powerups_list:
         power.draw(screen, power.IMG)
         power.update()
@@ -207,8 +207,16 @@ def upgrade_ball(balls, powerups_list):
         if power.pos.y > screen_h:
             powerups_list.remove(power)
     
-    for ball in balls:
-        ball.upgrade_ball(powerups_list)
+        if power.pos.x >= user.pos.x and power.pos.x <= user.pos.x + user.w and power.pos.y >= user.pos.y and power.pos.y <= user.pos.y + user.h:
+            if isinstance(power, More_Balls):
+                for ball in balls:
+                    new_ball = Ball.Multiple_balls(screen_w, screen_h, ball.pos, (ball.dir.x  - random.randint(-2, 2), ball.dir.y))
+                balls.append(new_ball)
+            if isinstance(power, Stronger_Ball):
+                print("Stronger Balls")
+            if isinstance(power, Ghost_Ball):
+                print("Ghost Ball")
+            powerups_list.remove(power)
 
 # Here is where i check if the ball hits an enemy and also drawing them (including powerups)
 def enemies_mechanics(enemies, balls, powerups_list):
@@ -217,47 +225,46 @@ def enemies_mechanics(enemies, balls, powerups_list):
     stronger_ball_powerup_odds = 7
     ghost_ball_powerup_odds = 9
 
-    for x in enemies:
-        if x != 0:
-            if len(balls) != 0:
-                for ball in balls:
-                    hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball.pos, ball.r, ball.dir)
+    for ball in balls:
+        for x in enemies:
+            hits_an_enemy = precode.intersect_rectangle_circle(x.pos, x.w, x.h, ball.pos, ball.r, ball.dir)
+            if hits_an_enemy and x.health == 1:
 
-                if hits_an_enemy and x.health == 1:
-                    # Maybe a powerup will spawn
-                    dice = random.randint(1, 100)
-                    if dice % more_balls_powerup_odds == 0:
-                        MB_powerup = More_Balls(screen_w, screen_h, x)
-                        powerups_list.append(MB_powerup)
-                    if dice % stronger_ball_powerup_odds == 0:
-                        SB_powerup = Stronger_Ball(screen_w, screen_h, x)
-                        powerups_list.append(SB_powerup)
-                    if dice % ghost_ball_powerup_odds == 0:
-                        GB_powerup = Ghost_Ball(screen_w, screen_h, x)
-                        powerups_list.append(GB_powerup)
+                # Maybe a powerup will spawn
+                dice = random.randint(1, 100)
+                if dice % more_balls_powerup_odds == 0:
+                    MB_powerup = More_Balls(screen_w, screen_h, x)
+                    powerups_list.append(MB_powerup)
+                if dice % stronger_ball_powerup_odds == 0:
+                    SB_powerup = Stronger_Ball(screen_w, screen_h, x)
+                    powerups_list.append(SB_powerup)
+                if dice % ghost_ball_powerup_odds == 0:
+                    GB_powerup = Ghost_Ball(screen_w, screen_h, x)
+                    powerups_list.append(GB_powerup)
 
-                    ball_bounce.play()
-                    ball.dir = hits_an_enemy * ball.speed
-                    enemies.remove(x)
-                elif hits_an_enemy and x.health == 2:
-                    ball_bounce.play()
-                    ball.dir = hits_an_enemy * ball.speed
-                    colorR = map(screen_w - x.pos.x, 0, screen_w, 0, 255)
-                    colorG = map(screen_h - x.pos.y, 0, screen_h - 20, 0, 255)
-                    x.color = (colorR, colorG/2, colorG)
-                    x.health -= 1
-                else:
-                    if x.pos.x + x.w >= x.screen_w:
-                        Enemies.basic_enemy.dir_right = False
-                        for y in enemies:
-                            y.pos.y += y.h_change
-                    if x.pos.x <= 0:
-                        Enemies.basic_enemy.dir_right = True                
-                        for y in enemies:
-                            y.pos.y += y.h_change
+                ball_bounce.play()
+                ball.dir = hits_an_enemy * ball.speed
+                enemies.remove(x)
+            
+            if hits_an_enemy and x.health == 2:
+                ball_bounce.play()
+                ball.dir = hits_an_enemy * ball.speed
+                colorR = map(screen_w - x.pos.x, 0, screen_w, 0, 255)
+                colorG = map(screen_h - x.pos.y, 0, screen_h - 20, 0, 255)
+                x.color = (colorR, colorG/2, colorG)
+                x.health -= 1
+            else:
+                if x.pos.x + x.w >= x.screen_w:
+                    Enemies.basic_enemy.dir_right = False
+                    for y in enemies:
+                        y.pos.y += y.h_change
+                if x.pos.x <= 0:
+                    Enemies.basic_enemy.dir_right = True                
+                    for y in enemies:
+                        y.pos.y += y.h_change
 
-                x.update()
-                x.draw(screen)
+            x.update()
+            x.draw(screen)
 
 # The level creation
 def init_level_of_your_choice(background, title, music, arr_of_enemies, nextlevel):
@@ -289,11 +296,10 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
         if enemies[0].screen_w != screen_w:
             enemies.clear()
             enemies = enemies_create(arr_of_enemies)
-
         level_BG = pygame.transform.smoothscale(pygame.image.load(background), (screen_w, screen_w))
-
         user.update_screen_size(screen_w, screen_h)
-        ball1.update(screen_w, screen_h)
+        for ball in list_of_balls:
+            ball.update(screen_w, screen_h)
         
         level_start = False
         for event in pygame.event.get():
@@ -338,13 +344,13 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 if ball.check_for_death():
                     list_of_balls.remove(ball)
 
-            user.update(screen_w, ball1)
+            user.update(screen_w, list_of_balls)
             user.draw(screen)
 
             # Enemies Method Init
             if len(enemies) != 0:
                 enemies_mechanics(enemies, list_of_balls, powerups_list)
-                upgrade_ball(list_of_balls, powerups_list)
+                powerups(list_of_balls, powerups_list, user)
             else:
                 # When Winnning
                 level_init = False
@@ -578,6 +584,7 @@ def options():
                     level5_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
                     main_song.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
                     rick.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
+                    click.set_volume(map((node_x - screen_w/2 + 20), 41, 268, 0, 1))
             else:
                 node_chosen = False
         else:
