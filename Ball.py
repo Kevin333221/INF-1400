@@ -17,6 +17,7 @@ class basic_ball:
         self.dead = False
         self.speed = self.speed
         self.color = color
+        self.toughness = 1
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.pos, self.r)

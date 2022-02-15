@@ -6,7 +6,7 @@ import pygame
 import Player
 import Enemies
 import Ball
-from Powerup import More_Balls, Stronger_Ball, Ghost_Ball
+from Powerup import More_Balls, Powerups, Stronger_Ball, Ghost_Ball
 import precode
 from pygame import K_ESCAPE, Vector2
 
@@ -62,6 +62,17 @@ def map(value, left_min, left_max, right_min, right_max):
 def enemies_create(array_with_enemies):
     global running
 
+    def enemy_check(enemy, enemy_ypos, counter):
+        if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
+            if enemy.pos.x + enemy.w + scale < screen_w:
+                counter += 1
+            else:
+                enemy.pos.x = enemy_spawn_shift
+                enemy.pos.y += enemy_height + 10
+                enemy_ypos += enemy_height + 10
+                counter = 1
+        return enemy, enemy_ypos, counter
+
     counter = 0
     enemy_width = 110
 
@@ -96,32 +107,16 @@ def enemies_create(array_with_enemies):
                 enemy_ypos += enemy_height + 10
                 counter = 1
         elif x == 1:
-            enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height, 0)
-            if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
-                if enemy.pos.x + enemy.w + scale < screen_w:
-                    counter += 1
-                else:
-                    enemy.pos.x = enemy_spawn_shift
-                    enemy.pos.y += enemy_height + 10
-                    enemy_ypos += enemy_height + 10
-                    counter = 1  
-            colorR = map(screen_w - enemy.pos.x, 0, screen_w, 0, 255)
-            colorG = map(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
-            enemy.color = (colorR, colorG/2, colorG)
+            enemy = Enemies.basic_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height)
+            enemy, enemy_ypos, counter = enemy_check(enemy, enemy_ypos, counter)
             bots.append(enemy)
         elif x == 2:
-            enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height, 0)
-            if enemy.pos.y + 50 < screen_h - enemy.line_of_death:
-                if enemy.pos.x + enemy.w + scale < screen_w:
-                    counter += 1
-                else:
-                    enemy.pos.x = enemy_spawn_shift
-                    enemy.pos.y += enemy_height + 10
-                    enemy_ypos += enemy_height + 10
-                    counter = 1    
-            colorR = map(screen_w - enemy.pos.x, 0, screen_w, 0, 255)
-            colorG = map(screen_h - enemy.pos.y, 0, screen_h - 20, 0, 255)
-            enemy.color = (colorR, colorG/3, colorG/2)
+            enemy = Enemies.harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height)
+            enemy, enemy_ypos, counter = enemy_check(enemy, enemy_ypos, counter)
+            bots.append(enemy)
+        elif x == 3:
+            enemy = Enemies.even_harder_enemy(screen_w, screen_h, enemy_xpos + enemy_spawn_shift, enemy_ypos, enemy_width - 10, enemy_height)
+            enemy, enemy_ypos, counter = enemy_check(enemy, enemy_ypos, counter)
             bots.append(enemy)
         else:
             print("Invalid ID")
@@ -200,6 +195,7 @@ def winning_screen():
 
 # Powerups
 def powerups(balls, powerups_list, user):
+
     for power in powerups_list:
         power.draw(screen, power.IMG)
         power.update()
@@ -208,17 +204,21 @@ def powerups(balls, powerups_list, user):
             powerups_list.remove(power)
     
         if power.pos.x >= user.pos.x and power.pos.x <= user.pos.x + user.w and power.pos.y >= user.pos.y and power.pos.y <= user.pos.y + user.h:
+            # If the user picks up, Add more balls
             if isinstance(power, More_Balls):
                 for ball in balls:
                     new_ball = Ball.Multiple_balls(screen_w, screen_h, (255, 255, 255), ball.pos, (ball.dir.x  - random.randint(-2, 2), ball.dir.y))
                 balls.append(new_ball)
+                # If user picks up, Make the ball stronger
             if isinstance(power, Stronger_Ball):
                 for ball in balls:
-                    ball.color = (255, 100, 255)
+                    ball.toughness += 1
+                    ball.color = (255, 255 - 50*ball.toughness, 255)
             if isinstance(power, Ghost_Ball):
+                # If the user picks up, make the ball a Ghost ball (Ignore bounce reflect for some time)
                 print("Ghost Ball")
             powerups_list.remove(power)
-
+    
 # Here is where i check if the ball hits an enemy and also drawing them (including powerups)
 def enemies_mechanics(enemies, balls, powerups_list):
     
@@ -245,24 +245,35 @@ def enemies_mechanics(enemies, balls, powerups_list):
 
                 ball_bounce.play()
                 ball.dir = hits_an_enemy * ball.speed
-                enemies.remove(x)
+                if x in enemies:
+                    enemies.remove(x)
+                else:
+                    print("Enemy is not in the list")
             
             if hits_an_enemy and x.health == 2:
                 ball_bounce.play()
                 ball.dir = hits_an_enemy * ball.speed
-                colorR = map(screen_w - x.pos.x, 0, screen_w, 0, 255)
-                colorG = map(screen_h - x.pos.y, 0, screen_h - 20, 0, 255)
-                x.color = (colorR, colorG/2, colorG)
-                x.health -= 1
-            else:
-                if x.pos.x + x.w >= x.screen_w:
-                    Enemies.basic_enemy.dir_right = False
-                    for y in enemies:
-                        y.pos.y += y.h_change
-                if x.pos.x <= 0:
-                    Enemies.basic_enemy.dir_right = True                
-                    for y in enemies:
-                        y.pos.y += y.h_change
+                x.color = Enemies.basic_enemy.color
+                x.health -= ball.toughness
+                if x.health <= 0:
+                    enemies.remove(x)
+
+            if hits_an_enemy and x.health == 3:
+                ball_bounce.play()
+                ball.dir = hits_an_enemy * ball.speed
+                x.color = Enemies.harder_enemy.color
+                x.health -= ball.toughness
+                if x.health <= 0:
+                    enemies.remove(x)
+                
+            if x.pos.x + x.w >= x.screen_w:
+                Enemies.basic_enemy.dir_right = False
+                for y in enemies:
+                    y.pos.y += y.h_change
+            if x.pos.x <= 0:
+                Enemies.basic_enemy.dir_right = True                
+                for y in enemies:
+                    y.pos.y += y.h_change
 
             x.update()
             x.draw(screen)
@@ -330,7 +341,7 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
         
         powerups_list = []
 
-        while level_start: 
+        while level_start:
             clock.tick(clock_tick)
             screen.blit(level_BG, (0,0))
 
@@ -388,7 +399,7 @@ def next_level(x):
     if x == 1:
         level1_BG = ('Levels_BG/Level1.jpg')
         level1_title = ("Level 1 - The Beginning")
-        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
+        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 2, 3, 2, 1, 2, 3, 2, 1, 2, 3, 2], 2)
     
     elif x == 2:
         level2_BG = ('Levels_BG/Level2.jpg')
@@ -407,11 +418,10 @@ def next_level(x):
                                                                          1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1], 5)
     elif x == 5:
         level5_BG = ('Levels_BG/Level5.jpg')
-        level5_title = ("Level 5 - Stygging")
+        level5_title = ("Level 5 - Formation")
         init_level_of_your_choice(level5_BG, level5_title, level5_song, [1, 1, 0, 0, 2, 0, 0, 2, 0, 0, 1, 1,
                                                                          0, 0, 1, 1, 0, 2, 2, 0, 1, 1, 0, 0,
-                                                                         0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0], 0)                                                                    
-                                                                        
+                                                                         0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0], 0)                  
     else:
         winning_screen()
 
@@ -802,6 +812,9 @@ def main():
                     exit_menu()  
         pygame.display.update()
 
+
+timer_event = pygame.USEREVENT+1
+pygame.time.set_timer(timer_event, 1000)
 clock = pygame.time.Clock()
 running = True
 click.set_volume(0.5)

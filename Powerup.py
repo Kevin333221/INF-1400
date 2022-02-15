@@ -26,6 +26,7 @@ class Stronger_Ball(Powerups):
         self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites/polygon.png'), (self.r*2, self.r*2))
 
 class Ghost_Ball(Powerups):
+    counter = 10
     def __init__(self, screen_w, screen_h, enemy_pos):
         super().__init__(screen_w, screen_h, enemy_pos)
         self.IMG = pygame.transform.smoothscale(pygame.image.load('Sprites/triangle.png'), (self.r*2, self.r*2))
