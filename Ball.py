@@ -18,9 +18,12 @@ class basic_ball:
         self.speed = self.speed
         self.color = color
         self.toughness = 1
+        self.ghost_mode = 0
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.pos, self.r)
+        if self.ghost_mode:
+            pygame.draw.circle(surface, (0, 255, 0), self.pos, self.r, 5)
 
     def check_for_death(self):
         if self.pos.y - self.r > self.screen_h:

@@ -214,10 +214,11 @@ def powerups(balls, powerups_list, user):
             if isinstance(power, Stronger_Ball):
                 for ball in balls:
                     ball.toughness += 1
-                    ball.color = (255, 255 - 50*ball.toughness, 255)
+                    ball.color = (ball.color[0], ball.color[1] - 50, ball.color[2] - 50)
             if isinstance(power, Ghost_Ball):
                 # If the user picks up, make the ball a Ghost ball (Ignore bounce reflect for some time)
-                print("Ghost Ball")
+                for ball in balls:
+                    ball.ghost_mode = 1
             powerups_list.remove(power)
     
 # Here is where i check if the ball hits an enemy and also drawing them (including powerups)
@@ -225,7 +226,7 @@ def enemies_mechanics(enemies, balls, powerups_list):
     
     more_balls_powerup_odds = 5
     stronger_ball_powerup_odds = 7
-    ghost_ball_powerup_odds = 9
+    ghost_ball_powerup_odds = 20
 
     for ball in balls:
         for x in enemies:
@@ -245,7 +246,8 @@ def enemies_mechanics(enemies, balls, powerups_list):
                     powerups_list.append(GB_powerup)
 
                 ball_bounce.play()
-                ball.dir = hits_an_enemy * ball.speed
+                if ball.ghost_mode == 0:
+                    ball.dir = hits_an_enemy * ball.speed
                 if x in enemies:
                     enemies.remove(x)
                 else:
@@ -253,7 +255,8 @@ def enemies_mechanics(enemies, balls, powerups_list):
             
             if hits_an_enemy and x.health == 2:
                 ball_bounce.play()
-                ball.dir = hits_an_enemy * ball.speed
+                if ball.ghost_mode == 0:
+                    ball.dir = hits_an_enemy * ball.speed
                 x.color = Enemies.basic_enemy.color
                 x.health -= ball.toughness
                 if x.health <= 0:
@@ -261,7 +264,8 @@ def enemies_mechanics(enemies, balls, powerups_list):
 
             if hits_an_enemy and x.health == 3:
                 ball_bounce.play()
-                ball.dir = hits_an_enemy * ball.speed
+                if ball.ghost_mode == 0:
+                    ball.dir = hits_an_enemy * ball.speed
                 x.color = Enemies.harder_enemy.color
                 x.health -= ball.toughness
                 if x.health <= 0:
@@ -688,6 +692,9 @@ def options():
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
 
+        # Dictonary
+        #if mouse_pos[0] < screen_w/2 and mouse_pos[0] > screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] <  
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -750,7 +757,7 @@ def buttons():
         if mouse_pressed[0]:
             main_song.stop()
             click.play()
-            next_level(6)
+            next_level(1)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
@@ -818,7 +825,6 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()  
         pygame.display.update()
-
 
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
