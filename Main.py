@@ -51,6 +51,7 @@ level2_song = pygame.mixer.Sound('Sounds/Level2.mp3')
 level3_song = pygame.mixer.Sound('Sounds/Level3.mp3')
 level4_song = pygame.mixer.Sound('Sounds/Level4.mp3')
 level5_song = pygame.mixer.Sound('Sounds/Level5.mp3')
+level6_song = pygame.mixer.Sound('Sounds/Level6.mp3')
 ball_bounce = pygame.mixer.Sound('Sounds/pop.mp3')
 click = pygame.mixer.Sound('Sounds/click.mp3')
 
@@ -399,7 +400,7 @@ def next_level(x):
     if x == 1:
         level1_BG = ('Levels_BG/Level1.jpg')
         level1_title = ("Level 1 - The Beginning")
-        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 2, 3, 2, 1, 2, 3, 2, 1, 2, 3, 2], 2)
+        init_level_of_your_choice(level1_BG, level1_title, level1_song, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 2)
     
     elif x == 2:
         level2_BG = ('Levels_BG/Level2.jpg')
@@ -415,13 +416,19 @@ def next_level(x):
         level4_BG = ('Levels_BG/Level4.jpg')
         level4_title = ("Level 4 - Why so strange?")
         init_level_of_your_choice(level4_BG, level4_title, level4_song, [0, 1, 0, 1, 0, 2, 2, 0, 1, 0, 1, 0,
-                                                                         1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1], 5)
+                                                                         1, 0, 3, 0, 3, 1, 1, 3, 0, 3, 0, 1], 5)
     elif x == 5:
         level5_BG = ('Levels_BG/Level5.jpg')
         level5_title = ("Level 5 - Formation")
         init_level_of_your_choice(level5_BG, level5_title, level5_song, [1, 1, 0, 0, 2, 0, 0, 2, 0, 0, 1, 1,
                                                                          0, 0, 1, 1, 0, 2, 2, 0, 1, 1, 0, 0,
-                                                                         0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0], 0)                  
+                                                                         0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0], 6)
+    elif x == 6:
+        level6_BG = ('Levels_BG/Level6.jpg')
+        level6_title = ("Level 6 - Chaos")
+        init_level_of_your_choice(level6_BG, level6_title, level6_song, [0, 1, 1, 2, 3, 3, 0, 0, 2, 0, 0, 3,
+                                                                         1, 0, 0, 2, 2, 3, 0, 1, 1, 1, 1, 0, 
+                                                                         2, 2, 0, 2, 2, 1, 1, 0, 0, 3, 2, 3], 0)                 
     else:
         winning_screen()
 
@@ -743,7 +750,7 @@ def buttons():
         if mouse_pressed[0]:
             main_song.stop()
             click.play()
-            next_level(1)
+            next_level(6)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
