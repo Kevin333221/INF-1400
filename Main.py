@@ -1,6 +1,7 @@
 from math import sqrt
 from os import remove
 import random
+from re import M
 import sys
 import pygame
 import Player
@@ -542,6 +543,8 @@ def options():
     
     audio_title = my_font_30.render("Master Volume", False, (255, 255, 255))
 
+    lore_title = my_font_30.render("Info Interface", False, (255, 255, 255))
+
     global running
     global screen_w
     global screen_h
@@ -554,6 +557,70 @@ def options():
     node_chosen = False
     node_x = ((screen_w/2 + 20) + (screen_w/2 + main_title.get_width()/2 - 10 - 20))/2
     
+    def lore():
+        runs = True
+        block_unit = pygame.Rect(screen_w*0.1, screen_h*0.1, screen_w*0.2, screen_h*0.2)
+        enemies_text = my_font_30.render("Enemies:", False, (255, 255, 255))
+        powerups_text = my_font_30.render("Powerups:", False, (255, 255, 255))
+        songs_text = my_font_30.render("Songs/Sounds:", False, (255, 255, 255))
+        credits_text = my_font_30.render("Credits:", False, (255, 255, 255))
+
+        while runs:
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            screen.fill((40, 40, 40))
+
+            # Left Collum
+            pygame.draw.rect(screen, (50, 80, 80),    (block_unit.x, block_unit.y, block_unit.w, block_unit.h*4))
+
+            # Left Collum Cells
+            # First Cell
+            if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
+            else:
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
+            screen.blit(enemies_text, (block_unit.x + block_unit.w/2 - enemies_text.get_width()/2, block_unit.y + block_unit.h/2 - enemies_text.get_height()/2))
+
+            # Second Cell
+            if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h*2:
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+            else:
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+            screen.blit(powerups_text, (block_unit.x + block_unit.w/2 - powerups_text.get_width()/2, block_unit.y + (block_unit.h/2)*2 - powerups_text.get_height()/2))
+
+            # Third Cell
+            if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h*3:
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+            else:
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+            screen.blit(songs_text, (block_unit.x + block_unit.w/2 - songs_text.get_width()/2, block_unit.y + (block_unit.h/2)*3 - songs_text.get_height()/2))
+            
+            # Fourth Cell
+            if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h*4:
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+            else:
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+            screen.blit(credits_text, (block_unit.x + block_unit.w/2 - credits_text.get_width()/2, block_unit.y + (block_unit.h/2)*4 - songs_text.get_height()/2))
+
+            # Back Button
+            if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h - 100 and mouse_pos[1] < screen_h - 50:
+                pygame.draw.rect(screen, (255, 80, 80), (50, screen_h - 100, 50, 50))
+                if mouse_pressed[0]:
+                    click.play()
+                    runs = False
+                    pygame.display.update()
+            else:
+                pygame.draw.rect(screen, (50, 80, 80), (50, screen_h - 100, 50, 50))
+            pygame.draw.rect(screen, (255, 255, 255), (50, screen_h - 100, 50, 50) , 2)
+            pygame.draw.line(screen, (255, 255, 255), (60, screen_h - 60), (90, screen_h - 90), 3)
+            pygame.draw.line(screen, (255, 255, 255), (60, screen_h - 90), (90, screen_h - 60), 3)
+        
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            pygame.display.update()
+
     while options_init:
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
@@ -612,6 +679,21 @@ def options():
         else:
             pygame.draw.circle(screen, (200, 200, 200), (node_x, node_y), 10)
             node_chosen = False
+
+        base_unit.y += base_unit_height
+        pygame.draw.rect(screen, (50, 80, 80), base_unit)
+        screen.blit(lore_title, (base_unit.x + 10, base_unit.y + lore_title.get_height()/2))
+        pygame.draw.rect(screen, (255, 255, 255), base_unit, 3)
+
+        # Dictionary
+        if mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] < base_unit.y + 10 + base_unit_height - 20 and mouse_pos[1] > base_unit.y + 10:
+            dictionary_rect = pygame.Rect(screen_w/2, base_unit.y + 10, main_title.get_width()/2 - 10, base_unit_height - 20)
+            pygame.draw.rect(screen, (60, 255, 255), dictionary_rect, 2)
+            if mouse_pressed[0]:
+                lore()
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, base_unit.y + 10, main_title.get_width()/2 - 10, base_unit_height - 20))
+            pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, base_unit.y + 10, main_title.get_width()/2 - 10, base_unit_height - 20), 2)
 
         # Screen Size Picker
         if ((mouse_pos[0] > screen_w/2 and mouse_pos[0] < screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] > screen_h/3 + 10 and mouse_pos[1] < screen_h/3 + main_start.get_height() - 10) or screen_size) and node_chosen != True:
@@ -691,9 +773,6 @@ def options():
         else:
             pygame.draw.rect(screen, (50, 80, 80), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20))
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
-
-        # Dictonary
-        # if mouse_pos[0] < screen_w/2 and mouse_pos[0] > screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] <  
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -826,8 +905,6 @@ def main():
                     exit_menu()  
         pygame.display.update()
 
-timer_event = pygame.USEREVENT+1
-pygame.time.set_timer(timer_event, 1000)
 clock = pygame.time.Clock()
 running = True
 click.set_volume(0.5)
