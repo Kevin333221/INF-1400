@@ -22,7 +22,6 @@ class basic_enemy:
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.pos.x, self.pos.y, self.w, self.h))
-        #surface.blit(self.IMG, (self.pos.x + self.w/2 - self.IMG.get_width()/2, self.pos.y))
         pygame.draw.rect(surface, (255, 0, 0), (0, self.screen_h - self.line_of_death, self.screen_w, 10))
 
     def update(self):

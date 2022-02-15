@@ -693,7 +693,7 @@ def options():
             pygame.draw.rect(screen, (255, 255, 255), (screen_w/2, screen_h/3 + 10, main_title.get_width()/2 - 10, main_start.get_height() - 20), 2)
 
         # Dictonary
-        #if mouse_pos[0] < screen_w/2 and mouse_pos[0] > screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] <  
+        # if mouse_pos[0] < screen_w/2 and mouse_pos[0] > screen_w/2 + main_title.get_width()/2 - 10 and mouse_pos[1] <  
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
