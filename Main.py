@@ -757,7 +757,7 @@ def buttons():
         if mouse_pressed[0]:
             main_song.stop()
             click.play()
-            next_level(1)
+            next_level(6)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
