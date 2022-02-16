@@ -330,7 +330,9 @@ def init_level_of_your_choice(background, title, music, arr_of_enemies, nextleve
                 sys.exit()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
+                    level_sounds.pause()
                     exit_menu()
+                    level_sounds.unpause()
 
         pygame.display.update()
         
@@ -480,8 +482,8 @@ def exit_menu():
             if mouse_pressed[0]:
                 click.play()
                 pygame.mouse.set_pos(screen_w/2, screen_h/4)
-                options()
                 runs = False
+                options()
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height,  screen_w/3 - 80, block_height - 20), 2)
 
@@ -498,7 +500,7 @@ def exit_menu():
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
 
-        # Back Block
+        # Back to main Block
         pygame.draw.rect(screen, (70,  70, 70),   (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20))
         screen.blit(back_text, (screen_w/3 + 40 + (screen_w/3 - 80)/2 - back_text.get_width()/2, screen_h/4 + 40 + block_height/2 - 20 - back_text.get_height()/4 + block_height*3))
         if mouse_pos[0] > screen_w/3 + 40 and mouse_pos[0] < screen_w/3 + 40 + screen_w/3 - 80 and mouse_pos[1] > screen_h/4 + 40 + block_height*3 and mouse_pos[1] < screen_h/4 + 40 + block_height*4 - 20:
@@ -571,7 +573,7 @@ def options():
             screen.fill((40, 40, 40))
 
             # Left Collum
-            pygame.draw.rect(screen, (50, 80, 80),    (block_unit.x, block_unit.y, block_unit.w, block_unit.h*4))
+            pygame.draw.rect(screen, (50, 80, 80),(block_unit.x, block_unit.y, block_unit.w, block_unit.h*4))
 
             # Left Collum Cells
             # First Cell
@@ -586,21 +588,21 @@ def options():
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
-            screen.blit(powerups_text, (block_unit.x + block_unit.w/2 - powerups_text.get_width()/2, block_unit.y + (block_unit.h/2)*2 - powerups_text.get_height()/2))
+            screen.blit(powerups_text, (block_unit.x + block_unit.w/2 - powerups_text.get_width()/2, block_unit.y + block_unit.h*1.5 - powerups_text.get_height()/2))
 
             # Third Cell
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h*3:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
-            screen.blit(songs_text, (block_unit.x + block_unit.w/2 - songs_text.get_width()/2, block_unit.y + (block_unit.h/2)*3 - songs_text.get_height()/2))
+            screen.blit(songs_text, (block_unit.x + block_unit.w/2 - songs_text.get_width()/2, block_unit.y + block_unit.h*2.5 - songs_text.get_height()/2))
             
             # Fourth Cell
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h*4:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
-            screen.blit(credits_text, (block_unit.x + block_unit.w/2 - credits_text.get_width()/2, block_unit.y + (block_unit.h/2)*4 - songs_text.get_height()/2))
+            screen.blit(credits_text, (block_unit.x + block_unit.w/2 - credits_text.get_width()/2, block_unit.y + block_unit.h*3.5 - songs_text.get_height()/2))
 
             # Back Button
             if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h - 100 and mouse_pos[1] < screen_h - 50:
@@ -642,6 +644,7 @@ def options():
              if mouse_pressed[0]:
                 click.play()
                 options_init = False
+                pygame.mouse.set_pos(screen_w/2, screen_h/4)
                 pygame.display.update()
         else:
             pygame.draw.rect(screen, (50, 80, 80), (50, 50, 50, 50))
@@ -782,6 +785,7 @@ def options():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
+                    options_init = False
         pygame.display.update()  
 
 # Displaying the different levels
@@ -791,26 +795,61 @@ def levels():
     scale_w = screen_w/3 - 20 - 20
     levels_level1 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level1.png'), (screen_w/5, screen_h/5))
     levels_level2 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level2.png'), (screen_w/5, screen_h/5))
+    levels_level3 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level3.png'), (screen_w/5, screen_h/5))
+    levels_level4 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level4.png'), (screen_w/5, screen_h/5))
+    levels_level5 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level5.png'), (screen_w/5, screen_h/5))
+    levels_level6 = pygame.transform.smoothscale(pygame.image.load('Levels_BG/Levels_Level6.png'), (screen_w/5, screen_h/5))
 
     levels_level1_text = my_font_30.render("Level 1", False, (255, 255, 255))
     levels_level2_text = my_font_30.render("Level 2", False, (255, 255, 255))
+    levels_level3_text = my_font_30.render("Level 3", False, (255, 255, 255))
+    levels_level4_text = my_font_30.render("Level 4", False, (255, 255, 255))
+    levels_level5_text = my_font_30.render("Level 5", False, (255, 255, 255))
+    levels_level6_text = my_font_30.render("Level 6", False, (255, 255, 255))
 
     levels_init = True
     while levels_init:
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
-
         screen.fill((40, 40, 40))
 
-        shift = 40
+        # Back Button
+        if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > 50 and mouse_pos[1] < 100:
+             pygame.draw.rect(screen, (255, 80, 80), (50, 50, 50, 50))
+             if mouse_pressed[0]:
+                click.play()
+                levels_init = False
+                pygame.display.update()
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (50, 50, 50, 50))
+        pygame.draw.rect(screen, (255, 255, 255), (50, 50, 50, 50) , 2)
+        pygame.draw.line(screen, (255, 255, 255), (60, 60), (90, 90), 3)
+        pygame.draw.line(screen, (255, 255, 255), (60, 90), (90, 60), 3)
+
+        spawn_shift = screen_w/10
+        space = screen_w/70
 
         # Level Images
-        screen.blit(levels_level1, (shift + scale_w*0, shift))
-        screen.blit(levels_level2, (shift + scale_w*1, shift))
+        # Row 1
+        screen.blit(levels_level1, (spawn_shift + space + scale_w*0, space))
+        screen.blit(levels_level2, (spawn_shift + space + scale_w*1, space))
+        screen.blit(levels_level3, (spawn_shift + space + scale_w*2, space))
+        
+        # Row 2
+        screen.blit(levels_level4, (spawn_shift + space + scale_w*0, space*20))
+        screen.blit(levels_level5, (spawn_shift + space + scale_w*1, space*20))
+        screen.blit(levels_level6, (spawn_shift + space + scale_w*2, space*20))
 
         # Level Texts
-        screen.blit(levels_level1_text, (shift + scale_w*0 + levels_level1.get_width()/2 - levels_level1_text.get_width()/2, levels_level1.get_height() + shift))
-        screen.blit(levels_level2_text, (shift + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + shift))
+        # Row 1
+        screen.blit(levels_level1_text, (spawn_shift + space + scale_w*0 + levels_level1.get_width()/2 - levels_level1_text.get_width()/2, levels_level1.get_height() + space*2))
+        screen.blit(levels_level2_text, (spawn_shift + space + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + space*2))
+        screen.blit(levels_level3_text, (spawn_shift + space + scale_w*2 + levels_level3.get_width()/2 - levels_level3_text.get_width()/2, levels_level3.get_height() + space*2))
+
+        # Row 2
+        screen.blit(levels_level4_text, (spawn_shift + space + scale_w*0 + levels_level4.get_width()/2 - levels_level4_text.get_width()/2, levels_level4.get_height() + space*21))
+        screen.blit(levels_level5_text, (spawn_shift + space + scale_w*1 + levels_level5.get_width()/2 - levels_level5_text.get_width()/2, levels_level5.get_height() + space*21))
+        screen.blit(levels_level6_text, (spawn_shift + space + scale_w*2 + levels_level6.get_width()/2 - levels_level6_text.get_width()/2, levels_level6.get_height() + space*21))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -819,7 +858,6 @@ def levels():
                 sys.exit()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
-                    levels_init = False
                     exit_menu()
         pygame.display.update()
 
@@ -836,7 +874,7 @@ def buttons():
         if mouse_pressed[0]:
             main_song.stop()
             click.play()
-            next_level(6)
+            next_level(1)
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3, main_title.get_width(), main_start.get_height()))
     screen.blit(main_start, (screen_w/2 - main_start.get_width()/2, screen_h/3))
