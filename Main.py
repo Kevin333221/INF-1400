@@ -431,7 +431,7 @@ def next_level(x):
     elif x == 6:
         level6_BG = ('Levels_BG/Level6.jpg')
         level6_title = ("Level 6 - Chaos")
-        init_level_of_your_choice(level6_BG, level6_title, level6_song, [0, 1, 1, 2, 3, 3, 0, 0, 2, 0, 0, 3,
+        init_level_of_your_choice(level6_BG, level6_title, level6_song, [0, 3, 1, 2, 3, 3, 0, 0, 2, 0, 0, 3,
                                                                          1, 0, 0, 2, 2, 3, 0, 1, 1, 1, 1, 0, 
                                                                          2, 2, 0, 2, 2, 1, 1, 0, 0, 3, 2, 3], 0)                 
     else:
