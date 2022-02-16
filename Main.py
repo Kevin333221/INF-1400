@@ -851,6 +851,19 @@ def levels():
         screen.blit(levels_level5_text, (spawn_shift + space + scale_w*1 + levels_level5.get_width()/2 - levels_level5_text.get_width()/2, levels_level5.get_height() + space*21))
         screen.blit(levels_level6_text, (spawn_shift + space + scale_w*2 + levels_level6.get_width()/2 - levels_level6_text.get_width()/2, levels_level6.get_height() + space*21))
 
+        block_unit = pygame.Rect(spawn_shift + space, space, screen_w/5, screen_h/5 + space*2.5 + levels_level1_text.get_height())
+
+        # Level Selection
+        # Row 1
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
+
+        # Row 2
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
+        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
