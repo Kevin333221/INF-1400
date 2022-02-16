@@ -1,7 +1,6 @@
 from math import sqrt
 from os import remove
 import random
-from re import M
 import sys
 import pygame
 import Player
@@ -507,10 +506,10 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
-                main_song.play()
-                pygame.mouse.set_pos(screen_w/2, screen_h/4)
+                pygame.mouse.set_pos(screen_w/2, screen_h/6)
+                if level_sounds.get_busy() == False:
+                    main_song.play()
                 main()
-
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
 
@@ -576,30 +575,38 @@ def options():
             pygame.draw.rect(screen, (50, 80, 80),(block_unit.x, block_unit.y, block_unit.w, block_unit.h*4))
 
             # Left Collum Cells
-            # First Cell
+            # Enemies Lore
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
+                if mouse_pressed[0]:
+                    pass
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
             screen.blit(enemies_text, (block_unit.x + block_unit.w/2 - enemies_text.get_width()/2, block_unit.y + block_unit.h/2 - enemies_text.get_height()/2))
 
-            # Second Cell
+            # Powerups Lore
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h*2:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                if mouse_pressed[0]:
+                    pass
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
             screen.blit(powerups_text, (block_unit.x + block_unit.w/2 - powerups_text.get_width()/2, block_unit.y + block_unit.h*1.5 - powerups_text.get_height()/2))
 
-            # Third Cell
+            # Songs/Sounds Lore
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h*3:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                if mouse_pressed[0]:
+                    pass
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
             screen.blit(songs_text, (block_unit.x + block_unit.w/2 - songs_text.get_width()/2, block_unit.y + block_unit.h*2.5 - songs_text.get_height()/2))
             
-            # Fourth Cell
+            # Credits
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h*4:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+                if mouse_pressed[0]:
+                    pass
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
             screen.blit(credits_text, (block_unit.x + block_unit.w/2 - credits_text.get_width()/2, block_unit.y + block_unit.h*3.5 - songs_text.get_height()/2))
@@ -717,8 +724,7 @@ def options():
                     screen_h = 600
                     pygame.display.set_mode((screen_w, screen_h))
                     pygame.mouse.set_pos(screen_w/2, screen_h/4)
-                    node_x = ((screen_w/2 + 20) + (screen_w/2 + main_title.get_width()/2 - 10 - 20))/2
-                    
+                    node_x = ((screen_w/2 + 20) + (screen_w/2 + main_title.get_width()/2 - 10 - 20))/2     
             screen.blit(size_800x600, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_800x600.get_width()/2), screen_h/3 + 10 + size_800x600.get_height()/2))
 
             # 1200x800 Button
@@ -743,7 +749,7 @@ def options():
                     screen_w = 1600
                     screen_h = 800
                     pygame.display.set_mode((screen_w, screen_h))
-                    pygame.mouse.set_pos(screen_w/2, screen_h/4)
+                    pygame.mouse.set_pos(screen_w/2, screen_h/6)
                     node_x = ((screen_w/2 + 20) + (screen_w/2 + main_title.get_width()/2 - 10 - 20))/2
             screen.blit(size_1600x800, ((screen_w/2 +  (main_title.get_width()/2 - 10)/2 - size_1600x800.get_width()/2), screen_h/3 + 10 + size_1600x800.get_height()/2 + main_start.get_height()*2))
 
@@ -831,78 +837,78 @@ def levels():
 
         # Level Images
         # Row 1
-        screen.blit(levels_level1, (spawn_shift + space + scale_w*0, space))
-        screen.blit(levels_level2, (spawn_shift + space + scale_w*1, space))
-        screen.blit(levels_level3, (spawn_shift + space + scale_w*2, space))
+        screen.blit(levels_level1, (spawn_shift + space + scale_w*0, space + spawn_shift/10))
+        screen.blit(levels_level2, (spawn_shift + space + scale_w*1, space + spawn_shift/10))
+        screen.blit(levels_level3, (spawn_shift + space + scale_w*2, space + spawn_shift/10))
         
         # Row 2
-        screen.blit(levels_level4, (spawn_shift + space + scale_w*0, space*20))
-        screen.blit(levels_level5, (spawn_shift + space + scale_w*1, space*20))
-        screen.blit(levels_level6, (spawn_shift + space + scale_w*2, space*20))
+        screen.blit(levels_level4, (spawn_shift + space + scale_w*0, space*20 + spawn_shift/10))
+        screen.blit(levels_level5, (spawn_shift + space + scale_w*1, space*20 + spawn_shift/10))
+        screen.blit(levels_level6, (spawn_shift + space + scale_w*2, space*20 + spawn_shift/10))
 
         # Level Texts
         # Row 1
-        screen.blit(levels_level1_text, (spawn_shift + space + scale_w*0 + levels_level1.get_width()/2 - levels_level1_text.get_width()/2, levels_level1.get_height() + space*2))
-        screen.blit(levels_level2_text, (spawn_shift + space + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + space*2))
-        screen.blit(levels_level3_text, (spawn_shift + space + scale_w*2 + levels_level3.get_width()/2 - levels_level3_text.get_width()/2, levels_level3.get_height() + space*2))
+        screen.blit(levels_level1_text, (spawn_shift + space + scale_w*0 + levels_level1.get_width()/2 - levels_level1_text.get_width()/2, levels_level1.get_height() + space*2 + spawn_shift/10))
+        screen.blit(levels_level2_text, (spawn_shift + space + scale_w*1 + levels_level2.get_width()/2 - levels_level2_text.get_width()/2, levels_level2.get_height() + space*2 + spawn_shift/10))
+        screen.blit(levels_level3_text, (spawn_shift + space + scale_w*2 + levels_level3.get_width()/2 - levels_level3_text.get_width()/2, levels_level3.get_height() + space*2 + spawn_shift/10))
 
         # Row 2
-        screen.blit(levels_level4_text, (spawn_shift + space + scale_w*0 + levels_level4.get_width()/2 - levels_level4_text.get_width()/2, levels_level4.get_height() + space*21))
-        screen.blit(levels_level5_text, (spawn_shift + space + scale_w*1 + levels_level5.get_width()/2 - levels_level5_text.get_width()/2, levels_level5.get_height() + space*21))
-        screen.blit(levels_level6_text, (spawn_shift + space + scale_w*2 + levels_level6.get_width()/2 - levels_level6_text.get_width()/2, levels_level6.get_height() + space*21))
+        screen.blit(levels_level4_text, (spawn_shift + space + scale_w*0 + levels_level4.get_width()/2 - levels_level4_text.get_width()/2, levels_level4.get_height() + space*21 + spawn_shift/10))
+        screen.blit(levels_level5_text, (spawn_shift + space + scale_w*1 + levels_level5.get_width()/2 - levels_level5_text.get_width()/2, levels_level5.get_height() + space*21 + spawn_shift/10))
+        screen.blit(levels_level6_text, (spawn_shift + space + scale_w*2 + levels_level6.get_width()/2 - levels_level6_text.get_width()/2, levels_level6.get_height() + space*21 + spawn_shift/10))
 
         block_unit = pygame.Rect(spawn_shift + space, space, screen_w/5, screen_h/5 + space*2.5 + levels_level1_text.get_height())
 
         # Level Selection
         # Row 1
-        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(1)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
-        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(2)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
-        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(3)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
         # Row 2
-        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y + space*19 + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(4)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
-        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y + space*19 + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(5)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
-        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
-            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y + space*19 + spawn_shift/10 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
             if mouse_pressed[0]:
                 main_song.stop()
                 next_level(6)
         else:
-            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + space*19 + spawn_shift/10, block_unit.w, block_unit.h), 2)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -938,6 +944,7 @@ def buttons():
         pygame.draw.rect(screen, (255, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
         if mouse_pressed[0]:
             click.play()
+            pygame.mouse.set_pos((10, screen_h/2))
             levels()
     else:
         pygame.draw.rect(screen, (50, 80, 80), (screen_w/2 - main_title.get_width()/2, screen_h/3 + 100, main_title.get_width(), main_start.get_height()))
@@ -999,7 +1006,7 @@ def main():
 clock = pygame.time.Clock()
 running = True
 click.set_volume(0.5)
-main_song.play()
+level_sounds.play(main_song) 
 
 # Game Loop
 while running:
