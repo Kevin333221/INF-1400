@@ -495,6 +495,7 @@ def exit_menu():
                 if rick.play():
                     pass
                 else:
+                    level_sounds.stop()
                     rick.play()
         else:
             pygame.draw.rect(screen, (100, 100, 100), (screen_w/3 + 40, screen_h/4 + 40 + block_height*2,  screen_w/3 - 80, block_height - 20), 2)
@@ -566,6 +567,9 @@ def options():
         songs_text = my_font_30.render("Songs/Sounds:", False, (255, 255, 255))
         credits_text = my_font_30.render("Credits:", False, (255, 255, 255))
 
+        current_display = 0
+        current_enemy = 0
+
         while runs:
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
@@ -579,7 +583,7 @@ def options():
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
                 if mouse_pressed[0]:
-                    pass
+                    current_display = 1
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
             screen.blit(enemies_text, (block_unit.x + block_unit.w/2 - enemies_text.get_width()/2, block_unit.y + block_unit.h/2 - enemies_text.get_height()/2))
@@ -588,7 +592,7 @@ def options():
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h*2:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
                 if mouse_pressed[0]:
-                    pass
+                    current_display = 2
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
             screen.blit(powerups_text, (block_unit.x + block_unit.w/2 - powerups_text.get_width()/2, block_unit.y + block_unit.h*1.5 - powerups_text.get_height()/2))
@@ -597,7 +601,7 @@ def options():
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h*3:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
                 if mouse_pressed[0]:
-                    pass
+                    current_display = 3
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
             screen.blit(songs_text, (block_unit.x + block_unit.w/2 - songs_text.get_width()/2, block_unit.y + block_unit.h*2.5 - songs_text.get_height()/2))
@@ -606,10 +610,99 @@ def options():
             if mouse_pos[0] > block_unit.x and mouse_pos[0] < block_unit.x + block_unit.w and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h*4:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
                 if mouse_pressed[0]:
-                    pass
+                    current_display = 4
             else:
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
             screen.blit(credits_text, (block_unit.x + block_unit.w/2 - credits_text.get_width()/2, block_unit.y + block_unit.h*3.5 - songs_text.get_height()/2))
+
+            # Current Display
+            if current_display == 0:
+                pass
+            if current_display == 1:
+                # Enemy 1
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*0 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*0:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_enemy = 1
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
+                
+                # Enemy 2
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*1:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_enemy = 2
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+
+                # Enemy 3
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*2:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_enemy = 3
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+
+                # Enemy 4
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*3:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_enemy = 4
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+
+                # Big Rect
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+
+                # Enemy_1
+                pygame.draw.rect(screen, (255, 50, 120), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*0.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
+                # Enemy_2
+                pygame.draw.rect(screen, (50, 255, 120), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*1.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
+                # Enemy_3
+                pygame.draw.rect(screen, (120, 50, 255), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*2.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
+                
+                # Current Enemy
+                enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w/14, block_unit.y + block_unit.h*1 - screen_h/14, (screen_w/14)*2, (screen_h/14)*2)
+                if current_enemy == 0:
+                    pass
+                if current_enemy == 1:
+                    pygame.draw.rect(screen, (255, 50, 120), (enemy_display_rect))
+                    text_text = ["This is the basic enemy:", "Health: 1", "Aesthetic: Boring", "Special Trait: None"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter, enemy_display_rect.w, enemy_display_rect.h))
+                if current_enemy == 2:
+                    text_text = ["This is the harder enemy:", "Health: 2", "Aesthetic: Nothing to special", "Special Trait: None"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter, enemy_display_rect.w, enemy_display_rect.h))
+                    pygame.draw.rect(screen, (50, 255, 120), (enemy_display_rect))
+                if current_enemy == 3:
+                    text_text = ["This is the even harder enemy:", "Health: 3", "Aesthetic: Kinda royal looking", "Special Trait: None"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter, enemy_display_rect.w, enemy_display_rect.h))
+                    pygame.draw.rect(screen, (120, 50, 255), (enemy_display_rect))
+                if current_enemy == 4:
+                    text_text = ["This is the none-existing enemy:", "Health: 0", "Aesthetic: ERROR", "Special Trait: Invisible"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter, enemy_display_rect.w, enemy_display_rect.h))
+                    pass
+
+
+            if current_display == 2:
+
+                # Big Rect
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+            if current_display == 3:
+                
+                # Big Rect
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+            if current_display == 4:
+                
+                # Big Rect
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
 
             # Back Button
             if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h - 100 and mouse_pos[1] < screen_h - 50:
@@ -628,6 +721,10 @@ def options():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_ESCAPE:
+                        exit_menu()
+                        pygame.mouse.set_pos((10, screen_h/2))
             pygame.display.update()
 
     while options_init:
@@ -918,6 +1015,7 @@ def levels():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     exit_menu()
+                    pygame.mouse.set_pos((10, screen_h/2))
         pygame.display.update()
 
 # The buttons in "main hub"
