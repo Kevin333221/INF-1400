@@ -561,19 +561,26 @@ def options():
     
     def lore():
         runs = True
-        block_unit = pygame.Rect(screen_w*0.1, screen_h*0.1, screen_w*0.2, screen_h*0.2)
+        screen_w_size = screen_w
+        screen_h_size = screen_h
         enemies_text = my_font_30.render("Enemies:", False, (255, 255, 255))
         powerups_text = my_font_30.render("Powerups:", False, (255, 255, 255))
         songs_text = my_font_30.render("Songs/Sounds:", False, (255, 255, 255))
         credits_text = my_font_30.render("Credits:", False, (255, 255, 255))
 
+        powerup_circle = pygame.transform.smoothscale(pygame.image.load("Sprites/circle.png"), (screen_w_size/14, screen_w_size/14))
+        powerup_polygon = pygame.transform.smoothscale(pygame.image.load("Sprites/polygon.png"), (screen_w_size/14, screen_w_size/14))
+        powerup_triangle = pygame.transform.smoothscale(pygame.image.load("Sprites/triangle.png"), (screen_w_size/14, screen_w_size/14))
+       
         current_display = 0
         current_enemy = 0
+        current_powerup = 0
 
         while runs:
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
             screen.fill((40, 40, 40))
+            block_unit = pygame.Rect(screen_w_size*0.1, screen_h_size*0.1, screen_w_size*0.2, screen_h_size*0.2)
 
             # Left Collum
             pygame.draw.rect(screen, (50, 80, 80),(block_unit.x, block_unit.y, block_unit.w, block_unit.h*4))
@@ -618,14 +625,17 @@ def options():
             # Current Display
             if current_display == 0:
                 pass
+            # Enemy Display
             if current_display == 1:
                 # Enemy 1
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y, block_unit.w, block_unit.h), 2)
                 if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*0 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*0:
                     pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
                     if mouse_pressed[0]:
                         current_enemy = 1
                 else:
                     pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
+                pygame.draw.rect(screen, (255, 50, 120), (block_unit.x + block_unit.w*1.5 - (screen_w_size/14)/2, block_unit.y + block_unit.h*0.5 - (screen_h_size/14)/2, screen_w_size/14, screen_h_size/14))
                 
                 # Enemy 2
                 if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*1:
@@ -634,6 +644,7 @@ def options():
                         current_enemy = 2
                 else:
                     pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                pygame.draw.rect(screen, (50, 255, 120), (block_unit.x + block_unit.w*1.5 - (screen_w_size/14)/2, block_unit.y + block_unit.h*1.5 - (screen_h_size/14)/2, screen_w_size/14, screen_h_size/14))
 
                 # Enemy 3
                 if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*2:
@@ -642,6 +653,7 @@ def options():
                         current_enemy = 3
                 else:
                     pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                pygame.draw.rect(screen, (120, 50, 255), (block_unit.x + block_unit.w*1.5 - (screen_w_size/14)/2, block_unit.y + block_unit.h*2.5 - (screen_h_size/14)/2, screen_w_size/14, screen_h_size/14))
 
                 # Enemy 4
                 if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*3:
@@ -651,18 +663,8 @@ def options():
                 else:
                     pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
 
-                # Big Rect
-                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
-
-                # Enemy_1
-                pygame.draw.rect(screen, (255, 50, 120), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*0.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
-                # Enemy_2
-                pygame.draw.rect(screen, (50, 255, 120), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*1.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
-                # Enemy_3
-                pygame.draw.rect(screen, (120, 50, 255), (block_unit.x + block_unit.w*1.5 - (screen_w/14)/2, block_unit.y + block_unit.h*2.5 - (screen_h/14)/2, screen_w/14, screen_h/14))
-                
                 # Current Enemy
-                enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w/14, block_unit.y + block_unit.h*1 - screen_h/14, (screen_w/14)*2, (screen_h/14)*2)
+                enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w_size/14, block_unit.y + block_unit.h*1 - screen_h_size/14, (screen_w_size/14)*2, (screen_h_size/14)*2)
                 if current_enemy == 0:
                     pass
                 if current_enemy == 1:
@@ -688,34 +690,109 @@ def options():
                     for counter, sentence in enumerate(text_text):
                         text = my_font_30.render(sentence, False, (255, 255, 255))
                         screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter, enemy_display_rect.w, enemy_display_rect.h))
-                    pass
+                # Big Rect
+                pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
 
-
+            # Powerup Display
             if current_display == 2:
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                # Powerup 1
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*0 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*0:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_powerup = 1
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*0, block_unit.w, block_unit.h), 2)
+                screen.blit(powerup_circle, (block_unit.x + block_unit.w*1.3, block_unit.y + block_unit.h*0.5 - screen_h_size/14))
+                
+                # Powerup 2
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*1 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*1:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_powerup = 2
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*1, block_unit.w, block_unit.h), 2)
+                screen.blit(powerup_polygon, (block_unit.x + block_unit.w*1.3, block_unit.y + block_unit.h*1.5 - screen_h_size/14))
+
+                # Powerup 3
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*2 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*2:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_powerup = 3
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                screen.blit(powerup_triangle, (block_unit.x + block_unit.w*1.3, block_unit.y + block_unit.h*2.5 - screen_h_size/14))
+
+                # Powerup 4
+                if mouse_pos[0] > block_unit.x + block_unit.w and mouse_pos[0] < block_unit.x + block_unit.w*2 and mouse_pos[1] > block_unit.y + block_unit.h*3 and mouse_pos[1] < block_unit.y + block_unit.h + block_unit.h*3:
+                    pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_powerup = 4
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + block_unit.w, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+
+                # Current Powerup
+                if current_powerup == 0:
+                    pass
+                if current_powerup == 1:
+                    enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w_size/14, block_unit.y + block_unit.h*1 - screen_h_size/14, (screen_w_size/14)*2, (screen_h_size/14)*2)
+                    text_text = ["This is the 'More balls' powerup:", "Drop-rate: 20%", "Aesthetic: Pointless :)", "Special Ability: Ball++"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter))
+                        screen.blit(pygame.transform.smoothscale(powerup_circle, (screen_w_size/8, screen_w_size/8)), (block_unit.x + block_unit.w*3 - screen_w_size/16, block_unit.y + block_unit.h - screen_h_size/8))
+                if current_powerup == 2:
+                    enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w_size/14, block_unit.y + block_unit.h*1 - screen_h_size/14, (screen_w_size/14)*2, (screen_h_size/14)*2)
+                    text_text = ["This is the 'Stronger' powerup:", "Drop-rate: ≈14%", "Aesthetic: Pentagon", "Special Ability: Stronger++"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter))
+                        screen.blit(pygame.transform.smoothscale(powerup_polygon, (screen_w_size/8, screen_w_size/8)), (block_unit.x + block_unit.w*3 - screen_w_size/16, block_unit.y + block_unit.h - screen_h_size/8))
+                if current_powerup == 3:
+                    enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w_size/14, block_unit.y + block_unit.h*1 - screen_h_size/14, (screen_w_size/14)*2, (screen_h_size/14)*2)
+                    text_text = ["This is the 'Ghost' powerup:", "Drop-rate: 5%", "Aesthetic: Pythagoras", "Special Ability: OMEGA STRONG BALL"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter))
+                        screen.blit(pygame.transform.smoothscale(powerup_triangle, (screen_w_size/8, screen_w_size/8)), (block_unit.x + block_unit.w*3 - screen_w_size/16, block_unit.y + block_unit.h - screen_h_size/8))
+                if current_powerup == 4:
+                    enemy_display_rect = pygame.Rect(block_unit.x + block_unit.w*3 - screen_w_size/14, block_unit.y + block_unit.h*1 - screen_h_size/14, (screen_w_size/14)*2, (screen_h_size/14)*2)
+                    text_text = ["This is the 'ERROR' powerup:", "Drop-rate: -1%", "Aesthetic: There isn't", "Special Ability: There isn't"]
+                    for counter, sentence in enumerate(text_text):
+                        text = my_font_30.render(sentence, False, (255, 255, 255))
+                        screen.blit(text, (enemy_display_rect.x + enemy_display_rect.w/2 - text.get_width()/2, enemy_display_rect.y + enemy_display_rect.h*2 + text.get_height()*counter))
 
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+
+            # Songs/Sounds Display
             if current_display == 3:
-                
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
+                # Songs/Sounds
+
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+            
+            # Credits Display
             if current_display == 4:
-                
+                pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
+                # Credits
+
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
 
             # Back Button
-            if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h - 100 and mouse_pos[1] < screen_h - 50:
-                pygame.draw.rect(screen, (255, 80, 80), (50, screen_h - 100, 50, 50))
+            if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h_size - 100 and mouse_pos[1] < screen_h_size - 50:
+                pygame.draw.rect(screen, (255, 80, 80), (50, screen_h_size - 100, 50, 50))
                 if mouse_pressed[0]:
                     click.play()
                     runs = False
                     pygame.display.update()
             else:
-                pygame.draw.rect(screen, (50, 80, 80), (50, screen_h - 100, 50, 50))
-            pygame.draw.rect(screen, (255, 255, 255), (50, screen_h - 100, 50, 50) , 2)
-            pygame.draw.line(screen, (255, 255, 255), (60, screen_h - 60), (90, screen_h - 90), 3)
-            pygame.draw.line(screen, (255, 255, 255), (60, screen_h - 90), (90, screen_h - 60), 3)
+                pygame.draw.rect(screen, (50, 80, 80), (50, screen_h_size - 100, 50, 50))
+            pygame.draw.rect(screen, (255, 255, 255), (50, screen_h_size - 100, 50, 50) , 2)
+            pygame.draw.line(screen, (255, 255, 255), (60, screen_h_size - 60), (90, screen_h_size - 90), 3)
+            pygame.draw.line(screen, (255, 255, 255), (60, screen_h_size - 90), (90, screen_h_size - 60), 3)
         
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -723,8 +800,12 @@ def options():
                     sys.exit()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
+                        runs = False
                         exit_menu()
-                        pygame.mouse.set_pos((10, screen_h/2))
+                        options_init = False
+                        screen_w_size = screen_w
+                        screen_h_size = screen_h
+                        pygame.mouse.set_pos((10, screen_h_size/2))
             pygame.display.update()
 
     while options_init:
