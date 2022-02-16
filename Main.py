@@ -1006,7 +1006,7 @@ def main():
 clock = pygame.time.Clock()
 running = True
 click.set_volume(0.5)
-level_sounds.play(main_song) 
+level_sounds.play(main_song)
 
 # Game Loop
 while running:
