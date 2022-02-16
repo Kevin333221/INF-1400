@@ -855,14 +855,54 @@ def levels():
 
         # Level Selection
         # Row 1
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(1)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y, block_unit.w, block_unit.h), 2)
+
+        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(2)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y, block_unit.w, block_unit.h), 2)
+
+        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y and mouse_pos[1] < block_unit.y + block_unit.h:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(3)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y, block_unit.w, block_unit.h), 2)
 
         # Row 2
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
-        pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + space*20, block_unit.w, block_unit.h), 2)
+        if mouse_pos[0] > block_unit.x + scale_w*0 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*0 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*0, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(4)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*0, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+
+        if mouse_pos[0] > block_unit.x + scale_w*1 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*1 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*1, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(5)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*1, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+
+        if mouse_pos[0] > block_unit.x + scale_w*2 and mouse_pos[0] < block_unit.x + block_unit.w + scale_w*2 and mouse_pos[1] > block_unit.y + space*19 and mouse_pos[1] < block_unit.y + block_unit.h + space*19:
+            pygame.draw.rect(screen, (60, 255, 255), (block_unit.x + scale_w*2, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
+            if mouse_pressed[0]:
+                main_song.stop()
+                next_level(6)
+        else:
+            pygame.draw.rect(screen, (50, 80, 80), (block_unit.x + scale_w*2, block_unit.y + space*19, block_unit.w, block_unit.h), 2)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
