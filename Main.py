@@ -776,7 +776,7 @@ def options():
 
             # Songs/Sounds Display
             if current_display == 3:
-                smaller_unit = pygame.Rect(block_unit.x + block_unit.w, block_unit.y + 0.5, block_unit.w, (block_unit.h*4)/8)
+                smaller_unit = pygame.Rect(block_unit.x + block_unit.w, block_unit.y + 0.5, block_unit.w, (block_unit.h*4)/10)
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
                 
                 # Song 1
@@ -846,6 +846,25 @@ def options():
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
             
+                if current_song == 0:
+                    pass
+                if current_song == 1:
+                    pass
+                if current_song == 2:
+                    pass
+                if current_song == 3:
+                    pass
+                if current_song == 4:
+                    pass
+                if current_song == 5:
+                    pass
+                if current_song == 6:
+                    pass
+                if current_song == 7:
+                    pass
+                if current_song == 8:
+                    pass
+
             # Credits Display
             if current_display == 4:
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*3, block_unit.w, block_unit.h), 2)
