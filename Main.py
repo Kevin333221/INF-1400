@@ -507,7 +507,7 @@ def exit_menu():
             pygame.draw.rect(screen, (60, 255, 255), (screen_w/3 + 40, screen_h/4 + 40 + block_height*3,  screen_w/3 - 80, block_height - 20), 2)
             if mouse_pressed[0]:
                 runs = False
-                pygame.mouse.set_pos(screen_w/2, screen_h/6)
+                pygame.mouse.set_pos(screen_w/2, screen_h/8)
                 if level_sounds.get_busy() == False:
                     main_song.play()
                 main()
@@ -572,9 +572,17 @@ def options():
         powerup_polygon = pygame.transform.smoothscale(pygame.image.load("Sprites/polygon.png"), (screen_w_size/14, screen_w_size/14))
         powerup_triangle = pygame.transform.smoothscale(pygame.image.load("Sprites/triangle.png"), (screen_w_size/14, screen_w_size/14))
        
+        level1_text = my_font_30.render("Level 1", False, (255, 255, 255))
+        level2_text = my_font_30.render("Level 2", False, (255, 255, 255))
+        level3_text = my_font_30.render("Level 3", False, (255, 255, 255))
+        level4_text = my_font_30.render("Level 4", False, (255, 255, 255))
+        level5_text = my_font_30.render("Level 5", False, (255, 255, 255))
+        level6_text = my_font_30.render("Level 6", False, (255, 255, 255))
+
         current_display = 0
         current_enemy = 0
         current_powerup = 0
+        current_song = 0
 
         while runs:
             mouse_pos = pygame.mouse.get_pos()
@@ -625,6 +633,7 @@ def options():
             # Current Display
             if current_display == 0:
                 pass
+            
             # Enemy Display
             if current_display == 1:
                 # Enemy 1
@@ -767,9 +776,73 @@ def options():
 
             # Songs/Sounds Display
             if current_display == 3:
+                smaller_unit = pygame.Rect(block_unit.x + block_unit.w, block_unit.y + 0.5, block_unit.w, (block_unit.h*4)/8)
                 pygame.draw.rect(screen, (60, 255, 255), (block_unit.x, block_unit.y + block_unit.h*2, block_unit.w, block_unit.h), 2)
-                # Songs/Sounds
+                
+                # Song 1
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*0 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*1:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*0, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 1
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*0, smaller_unit.w, smaller_unit.h), 2)
+                
+                # Song 2
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*1 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*2:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*1, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 2
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*1, smaller_unit.w, smaller_unit.h), 2)
 
+                # Song 3
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*2 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*3:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*2, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 3
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*2, smaller_unit.w, smaller_unit.h), 2)
+
+                # Song 4
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*3 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*4:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*3, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 4
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*3, smaller_unit.w, smaller_unit.h), 2)
+
+                # Song 5
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*4 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*5:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*4, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 5
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*4, smaller_unit.w, smaller_unit.h), 2)
+
+                # Song 6
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*5 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*6:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*5, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 6
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*5, smaller_unit.w, smaller_unit.h), 2)
+
+                # Song 7
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*6 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*7:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*6, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 7
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*6, smaller_unit.w, smaller_unit.h), 2)
+                
+                # Song 8
+                if mouse_pos[0] > smaller_unit.x and mouse_pos[0] < smaller_unit.x + smaller_unit.w and mouse_pos[1] > smaller_unit.y + smaller_unit.h*7 and mouse_pos[1] < smaller_unit.y + smaller_unit.h*8:
+                    pygame.draw.rect(screen, (60, 255, 255), (smaller_unit.x, smaller_unit.y + smaller_unit.h*7, smaller_unit.w, smaller_unit.h), 2)
+                    if mouse_pressed[0]:
+                        current_song = 8
+                else:
+                    pygame.draw.rect(screen, (50, 80, 80), (smaller_unit.x, smaller_unit.y + smaller_unit.h*7, smaller_unit.w, smaller_unit.h), 2)
+                
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
             
