@@ -882,25 +882,6 @@ def options():
                 
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
-            
-                if current_song == 0:
-                    pass
-                if current_song == 1:
-                    pass
-                if current_song == 2:
-                    pass
-                if current_song == 3:
-                    pass
-                if current_song == 4:
-                    pass
-                if current_song == 5:
-                    pass
-                if current_song == 6:
-                    pass
-                if current_song == 7:
-                    pass
-                if current_song == 8:
-                    pass
 
             # Credits Display
             if current_display == 4:
@@ -909,6 +890,8 @@ def options():
 
                 # Big Rect
                 pygame.draw.rect(screen, (255, 255, 255), (block_unit.x + block_unit.w, block_unit.y, block_unit.w*3, block_unit.h*4), 2)
+                credits_message = my_font_30.render("Made by Kevin", False, (255, 255, 255))
+                screen.blit(credits_message, (screen_w/2 + screen_w/5, screen_h/1.5))
 
             # Back Button
             if mouse_pos[0] > 50 and mouse_pos[0] < 100 and mouse_pos[1] > screen_h_size - 100 and mouse_pos[1] < screen_h_size - 50:
